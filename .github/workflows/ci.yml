@@ -1,0 +1,58 @@
+# Validação automática a cada envio ao GitHub.
+# 1. Gera ou atualiza o package-lock.json (o projeto é mantido sem computador local).
+# 2. Instala exatamente o que está no lockfile com `npm ci`.
+# 3. Executa o build de produção e a checagem de tipos.
+# 4. Se o lockfile mudou, salva no repositório.
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Gerar/atualizar package-lock.json
+        run: npm install --package-lock-only --no-audit --no-fund
+
+      - name: Instalar dependências (npm ci)
+        run: npm ci --no-audit --no-fund
+
+      - name: Verificar dependências instaladas
+        run: npm ls --depth=0
+
+      - name: Build de produção
+        run: npm run build
+
+      - name: Checagem de tipos
+        run: npm run typecheck
+
+      - name: Salvar package-lock.json no repositório
+        if: github.event_name == 'push'
+        run: |
+          if [ -n "$(git status --porcelain package-lock.json)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add package-lock.json
+            git commit -m "chore: atualizar package-lock.json"
+            git push
+          else
+            echo "package-lock.json já está atualizado."
+          fi
