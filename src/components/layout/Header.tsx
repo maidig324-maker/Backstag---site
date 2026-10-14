@@ -76,7 +76,7 @@ export function Header({ linkPrefix = "" }: { linkPrefix?: string } = {}) {
       >
         <div className="container-x flex h-16 items-center justify-between md:h-20">
           <a href={linkPrefix ? "/" : "#topo"} className="relative z-[70] -m-2 p-2" aria-label="Backstag — voltar ao início">
-            <Logo />
+            <Logo priority />
           </a>
 
           <nav aria-label="Principal" className="hidden lg:block">

@@ -14,8 +14,7 @@ export function Footer() {
       <div className="container-x">
         <div className="grid gap-14 md:grid-cols-12 md:gap-10">
           <div className="md:col-span-5">
-            <Logo />
-            <p className="mt-6 text-sm text-paper/85">{site.fullName}</p>
+            <Logo size="lg" />
             <p className="display mt-6 text-3xl text-paper/90 md:text-4xl">
               Gestão. Estratégia. <span className="accent">Tecnologia.</span>
             </p>
@@ -76,12 +75,7 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Assinatura em escala — o nome encerra a página */}
-        <p aria-hidden className="mt-20 select-none overflow-hidden whitespace-nowrap font-display text-[clamp(4rem,24vw,22rem)] leading-[0.8] tracking-[0.02em] text-paper/[0.04] md:mt-28">
-          {site.name}
-        </p>
-
-        <div className="flex flex-col gap-3 border-t border-line py-8 text-xs text-mute sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-16 flex flex-col gap-3 border-t border-line py-8 md:mt-20 text-xs text-mute sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {year} {site.name}. Todos os direitos reservados.
           </p>

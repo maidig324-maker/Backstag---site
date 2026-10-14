@@ -17,8 +17,6 @@ export function ConceptTag({ className = "" }: { className?: string }) {
       transition={{ duration: 1, delay: 0.2 }}
     >
       <span aria-hidden className="inline-block size-1.5 bg-gold" />
-      <span>Backstag</span>
-      <span aria-hidden className="h-px w-6 bg-gold/50" />
       <span lang="en">{hero2026.concept}</span>
     </motion.p>
   );

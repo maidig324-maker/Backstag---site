@@ -25,9 +25,9 @@ export const site = {
    * (não é um símbolo substituto, apenas a grafia do nome).
    */
   logo: {
-    src: null as string | null, // ex.: "/brand/backstag-logo.svg"
-    width: 180,
-    height: 40,
+    src: "/brand/backstag-logo.png" as string | null, // arquivo original, só com as margens vazias recortadas
+    width: 2033,
+    height: 570,
     alt: "BACKSTAG — Gestão e Soluções Digitais",
   },
 
