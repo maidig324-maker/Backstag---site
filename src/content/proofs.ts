@@ -54,29 +54,47 @@ export type Comparison = Base & {
   source: string;
 };
 
-export type Proof = Testimonial | Metric | Screenshot | Video | Comparison;
-
-export const proofsIntro = {
-  label: "Resultados e provas",
-  title: "O que os clientes e os números mostram.",
+/** Vídeo real da operação de um cliente, com título, texto e canais. */
+export type VideoCase = Base & {
+  kind: "video-case";
+  title: string[];
+  text: string;
+  tags?: string[];
+  src: string;
+  poster?: string;
+  width: number;
+  height: number;
+  alt: string;
+  caption: string;
 };
 
-/**
- * Prova em destaque: operação real de e-commerce estruturada pela Backstag.
- * Vídeo enviado pelo fundador; primeiros segundos cortados e primeiro plano
- * desfocado para proteger nome e endereço dos compradores nas etiquetas.
- */
-export const featuredProof = {
-  id: "ecommerce-marketplaces",
-  title: ["Estrutura completa", "para vender nos marketplaces."],
-  text: "Montamos toda a estrutura para a empresa vender no e-commerce. O resultado aparece na operação: pedidos virando etiquetas de envio, uma atrás da outra.",
-  channels: ["Mercado Livre", "Shopee", "Amazon", "e outros canais"],
-  video: { src: "/proofs/ecommerce-etiquetas.mp4", poster: "/proofs/ecommerce-etiquetas-poster.jpg", width: 720, height: 960 },
-  caption: "Gravação real da operação de um cliente. Dados dos compradores desfocados.",
+export type Proof = Testimonial | Metric | Screenshot | Video | Comparison | VideoCase;
+
+export const proofsIntro = {
+  label: "Prova social",
+  title: "Resultados reais, direto da operação dos clientes.",
 };
 
 export const proofs: Proof[] = [
-  // Nenhuma prova cadastrada ainda. Exemplos de formato:
+  // Operação de e-commerce estruturada pela Backstag. Vídeo enviado pelo
+  // fundador; primeiros segundos cortados e primeiro plano desfocado para
+  // proteger nome e endereço dos compradores nas etiquetas.
+  {
+    id: "ecommerce-marketplaces",
+    kind: "video-case",
+    verified: true,
+    title: ["Estrutura completa", "para vender nos marketplaces."],
+    text: "Montamos toda a estrutura para a empresa vender no e-commerce. O resultado aparece na operação: pedidos virando etiquetas de envio, uma atrás da outra.",
+    tags: ["Mercado Livre", "Shopee", "Amazon", "e outros canais"],
+    src: "/proofs/ecommerce-etiquetas.mp4",
+    poster: "/proofs/ecommerce-etiquetas-poster.jpg",
+    width: 720,
+    height: 960,
+    alt: "Impressora térmica imprimindo etiquetas de envio de pedidos em sequência",
+    caption: "Gravação real da operação de um cliente. Dados dos compradores desfocados.",
+  },
+
+  // Próximas provas. Exemplos de formato:
   //
   // { id: "dep-1", kind: "testimonial", verified: true, authorized: true,
   //   quote: "Texto real do depoimento.", author: "Nome", role: "Cargo", company: "Empresa" },
