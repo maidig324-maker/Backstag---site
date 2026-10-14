@@ -419,41 +419,29 @@ ol > .rv-line {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* ---------- Projetos — galeria em camadas (--d = distância até o centro) ---------- */
-.pg-item {
-  perspective: 1200px;
-  overflow: hidden;
-  padding: 0.25rem 2.6rem 0.5rem 0.5rem;
+/* ---------- Projetos — carrossel 3D (--o = distância até a frente) ---------- */
+.c3-stage {
+  perspective: 1400px;
+  perspective-origin: 50% 40%;
 }
-/* camadas do baralho atrás do quadro em foco */
-.pg-deck {
-  background: linear-gradient(160deg, #232326, #141416);
-  border-color: rgb(215 168 62 / 0.35);
-  box-shadow: 0 20px 40px -20px rgb(0 0 0 / 0.8);
-  opacity: calc(1 - var(--ad, 0) * 2.2);
-  pointer-events: none;
-}
-.pg-deck-1 { transform: translateX(20px) scale(0.93); }
-.pg-deck-2 { transform: translateX(38px) scale(0.85); opacity: calc((1 - var(--ad, 0) * 2.2) * 0.55); }
-.pg-card {
-  transform: rotateY(calc(var(--d, 0) * -24deg)) scale(calc(1 - var(--ad, 0) * 0.1));
-  opacity: calc(1 - var(--ad, 0) * 0.5);
-  transform-origin: 50% 50%;
+.c3-card {
+  transform-style: preserve-3d;
+  transform: translate(-50%, -50%) translateX(calc(var(--o, 0) * var(--sx))) translateZ(calc(var(--ao, 0) * -1 * var(--sz)))
+    rotateY(calc(var(--o, 0) * -32deg));
+  opacity: calc(1 - max(var(--ao, 0) - 1.2, 0) * 1.4);
   will-change: transform;
 }
-.pg-frame {
-  clip-path: inset(calc(var(--ad, 0) * 6%) round 6px);
+.c3-face {
+  background: #141416;
+  box-shadow: 0 40px 80px -30px rgb(0 0 0 / 0.9);
+  filter: brightness(calc(1 - var(--ao, 0) * 0.35));
+  transition: border-color 0.4s ease;
 }
-.pg-img {
-  transform: translateX(calc(var(--d, 0) * -12%)) scale(calc(1.14 + var(--ad, 0) * 0.08));
+.c3-shine {
+  background: linear-gradient(115deg, transparent 30%, rgb(240 199 102 / 0.12) 50%, transparent 70%);
+  transform: translateX(calc(var(--o, 0) * 60%));
+  opacity: calc(1 - var(--ao, 0));
 }
-.pg-ghost {
-  transform: translateX(calc(var(--d, 0) * -40%));
+.c3-open {
+  opacity: calc(1 - var(--ao, 0) * 3);
 }
-.pg-shine {
-  background: radial-gradient(ellipse 70% 60% at calc(50% - var(--d, 0) * 60%) 30%, rgb(240 199 102 / 0.14), transparent 70%);
-  opacity: calc(1 - var(--ad, 0) * 1.5);
-}
-.pg-l1 { transform: translateX(calc(var(--d, 0) * 60px)); opacity: calc(1 - var(--ad, 0) * 1.4); }
-.pg-l2 { transform: translateX(calc(var(--d, 0) * 120px)); opacity: calc(1 - var(--ad, 0) * 1.7); }
-.pg-l3 { transform: translateX(calc(var(--d, 0) * 190px)); opacity: calc(1 - var(--ad, 0) * 2); }

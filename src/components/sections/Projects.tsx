@@ -16,141 +16,252 @@ const statusLabel: Record<ProjectStatus, string> = {
 };
 
 /**
- * 04 — EXPERIÊNCIA E PROJETOS
- * Galeria imersiva: ao deslizar para o lado, cada projeto se monta em
- * camadas (imagem, setor, título e descrição em ritmos diferentes) e os
- * vizinhos ficam girados em profundidade. Sem setas no celular nem
- * contadores. Cada quadro abre o estudo de caso completo.
+ * PROJETOS — carrossel 3D
+ * Os projetos ficam num anel em profundidade: o da frente no centro, os
+ * vizinhos menores e girados de cada lado. Arrastar com o dedo gira o anel
+ * (contínuo, volta ao primeiro depois do último). Tocar num vizinho traz
+ * ele para a frente; tocar no da frente abre o estudo de caso. A legenda
+ * do projeto em foco entra em camadas. Rolagem vertical da página livre.
  */
 export function Projects() {
   const [active, setActive] = useState<Project | null>(null);
-  const trackRef = useRef<HTMLUListElement>(null);
+  const items = visibleProjects;
+  const n = items.length;
+  const stageRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const pos = useRef(0); // posição contínua do anel
+  const target = useRef(0);
+  const [current, setCurrent] = useState(0);
+  const goRef = useRef<(to: number) => void>(() => {});
+  const movedRef = useRef(false);
 
-  // Cada quadro recebe --d: distância até o centro do trilho (0 = em foco).
-  // O CSS usa esse valor para montar as camadas enquanto o visitante desliza.
+  const wrap = (v: number) => ((v % n) + n) % n;
+
   useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
-    let raf = 0;
-    const update = () => {
-      raf = 0;
-      const tr = track.getBoundingClientRect();
-      const mid = tr.left + tr.width / 2;
-      for (const el of Array.from(track.children) as HTMLElement[]) {
-        const r = el.getBoundingClientRect();
-        const d = Math.max(-1.5, Math.min(1.5, (r.left + r.width / 2 - mid) / (r.width * 0.9)));
-        el.style.setProperty("--d", d.toFixed(3));
-        el.style.setProperty("--ad", Math.abs(d).toFixed(3));
-      }
-    };
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update);
-    };
-    update();
-    track.addEventListener("scroll", onScroll, { passive: true });
-
-    // convite: na primeira vez que a galeria aparece, desliza um pouco e volta
+    if (n === 0) return;
+    const stage = stageRef.current!;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let nudgeTimer = 0;
+    let raf = 0;
+
+    const paint = () => {
+      for (let i = 0; i < n; i++) {
+        const el = cardRefs.current[i];
+        if (!el) continue;
+        let o = i - pos.current;
+        o = ((((o + n / 2) % n) + n) % n) - n / 2; // menor distância no anel
+        const ao = Math.abs(o);
+        el.style.setProperty("--o", o.toFixed(3));
+        el.style.setProperty("--ao", ao.toFixed(3));
+        el.style.zIndex = String(100 - Math.round(ao * 10));
+        el.style.visibility = ao > 2.2 ? "hidden" : "visible";
+      }
+      setCurrent(wrap(Math.round(pos.current)));
+    };
+
+    const tick = () => {
+      const d = target.current - pos.current;
+      pos.current += reduced ? d : d * 0.14;
+      if (Math.abs(d) < 0.001) pos.current = target.current;
+      paint();
+      raf = pos.current === target.current ? 0 : requestAnimationFrame(tick);
+    };
+    const animate = () => {
+      if (!raf) raf = requestAnimationFrame(tick);
+    };
+    goRef.current = (to: number) => {
+      target.current = to;
+      animate();
+    };
+
+    // arraste horizontal (a rolagem vertical continua com o navegador)
+    let startX = 0, startY = 0, startPos = 0, dragging = false, decided = false, lastX = 0, lastT = 0, vel = 0;
+    const spacing = () => stage.clientWidth * 0.42;
+    const down = (e: PointerEvent) => {
+      startX = lastX = e.clientX;
+      startY = e.clientY;
+      startPos = pos.current;
+      lastT = performance.now();
+      dragging = true;
+      decided = false;
+      vel = 0;
+    };
+    const move = (e: PointerEvent) => {
+      if (!dragging) return;
+      const dx = e.clientX - startX, dy = e.clientY - startY;
+      if (!decided) {
+        if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+        decided = true;
+        if (Math.abs(dy) > Math.abs(dx)) {
+          dragging = false; // gesto vertical: deixa a página rolar
+          return;
+        }
+        stage.setPointerCapture(e.pointerId);
+        movedRef.current = true;
+      }
+      const now = performance.now();
+      vel = (e.clientX - lastX) / Math.max(1, now - lastT);
+      lastX = e.clientX;
+      lastT = now;
+      cancelAnimationFrame(raf);
+      raf = 0;
+      pos.current = startPos - dx / spacing();
+      target.current = pos.current;
+      paint();
+    };
+    const up = () => {
+      if (!dragging) return;
+      dragging = false;
+      if (!decided) return;
+      // impulso: um gesto rápido avança um projeto mesmo com arraste curto
+      const fling = -vel * 260 / spacing();
+      goRef.current(Math.round(pos.current + Math.max(-1, Math.min(1, fling))));
+      window.setTimeout(() => (movedRef.current = false), 50);
+    };
+    stage.addEventListener("pointerdown", down);
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+    window.addEventListener("pointercancel", up);
+
+    // convite: na primeira aparição, o anel gira um pouco e volta
+    let t1 = 0;
     const io = new IntersectionObserver(
       ([e]) => {
         if (!e.isIntersecting) return;
         io.disconnect();
-        if (reduced || track.scrollLeft > 4) return;
-        track.style.scrollSnapType = "none";
-        track.scrollTo({ left: 70, behavior: "smooth" });
-        nudgeTimer = window.setTimeout(() => {
-          track.scrollTo({ left: 0, behavior: "smooth" });
-          nudgeTimer = window.setTimeout(() => (track.style.scrollSnapType = ""), 600);
-        }, 650);
+        if (reduced) return;
+        goRef.current(0.35);
+        t1 = window.setTimeout(() => goRef.current(0), 600);
       },
       { threshold: 0.6 },
     );
-    io.observe(track);
-    window.addEventListener("resize", onScroll);
+    io.observe(stage);
+
+    paint();
     return () => {
-      io.disconnect();
-      window.clearTimeout(nudgeTimer);
-      track.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
       cancelAnimationFrame(raf);
+      window.clearTimeout(t1);
+      io.disconnect();
+      stage.removeEventListener("pointerdown", down);
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", up);
+      window.removeEventListener("pointercancel", up);
     };
-  }, []);
+  }, [n]);
 
-  // setas (só no computador): vai para o quadro vizinho do que está mais ao centro
-  const go = (dir: 1 | -1) => {
-    const track = trackRef.current;
-    if (!track) return;
-    const items = Array.from(track.children) as HTMLElement[];
-    const mid = track.getBoundingClientRect().left + track.clientWidth / 2;
-    let cur = 0, best = Infinity;
-    items.forEach((el, i) => {
-      const r = el.getBoundingClientRect();
-      const dist = Math.abs(r.left + r.width / 2 - mid);
-      if (dist < best) { best = dist; cur = i; }
-    });
-    items[Math.min(items.length - 1, Math.max(0, cur + dir))]?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+  const step = (dir: 1 | -1) => goRef.current(Math.round(target.current) + dir);
+
+  if (n === 0) return null;
+  const front = items[current];
+
+  const onCardClick = (i: number) => {
+    if (movedRef.current) return;
+    if (i === current) setActive(items[i]);
+    else {
+      let o = i - Math.round(target.current);
+      o = ((((o + n / 2) % n) + n) % n) - n / 2;
+      goRef.current(Math.round(target.current) + o);
+    }
   };
-
-  if (visibleProjects.length === 0) return null;
 
   return (
     <section id="projetos" aria-label={projectsIntro.label} className="relative overflow-hidden pb-28 pt-16 md:pb-40 md:pt-24">
       <div className="container-x">
         <div className="grid gap-10 md:grid-cols-12">
-          <SectionIntro
-            className="md:col-span-7"
-            label={projectsIntro.label}
-            titleLines={splitLines(projectsIntro.title, 24)}
-          />
+          <SectionIntro className="md:col-span-7" label={projectsIntro.label} titleLines={splitLines(projectsIntro.title, 24)} />
           <Reveal className="md:col-span-4 md:col-start-9 md:self-end" delay={0.15}>
             <p className="leading-relaxed text-mute">{projectsIntro.text}</p>
           </Reveal>
         </div>
-
-        {/* Controles da galeria */}
-        <div className="mt-14 hidden justify-end md:mt-20 md:flex">
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={() => go(-1)}
-              aria-label="Projeto anterior"
-              className="inline-flex size-12 items-center justify-center rounded-full border border-line-strong text-paper transition-colors hover:border-gold disabled:opacity-30"
-            >
-              <ArrowLeft className="size-4" strokeWidth={1.75} aria-hidden />
-            </button>
-            <button
-              type="button"
-              onClick={() => go(1)}
-              aria-label="Próximo projeto"
-              className="inline-flex size-12 items-center justify-center rounded-full border border-line-strong text-paper transition-colors hover:border-gold disabled:opacity-30"
-            >
-              <ArrowRight className="size-4" strokeWidth={1.75} aria-hidden />
-            </button>
-          </div>
-        </div>
       </div>
 
-      {/* Trilho horizontal */}
-      <ul
-        ref={trackRef}
-        className="no-scrollbar mt-10 flex snap-x snap-mandatory gap-2 overflow-x-auto pb-4 [--gx:1.25rem] md:gap-8 md:[--gx:2.5rem]"
-        style={{
-          // alinha o primeiro quadro à grade do site em qualquer largura
-          paddingInline: "max(var(--gx), calc((100vw - 88rem) / 2 + var(--gx)))",
-          scrollPaddingInline: "var(--gx)",
+      {/* Palco 3D */}
+      <div
+        ref={stageRef}
+        role="region"
+        aria-roledescription="carrossel"
+        aria-label="Projetos"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === "ArrowRight") step(1);
+          if (e.key === "ArrowLeft") step(-1);
+          if (e.key === "Enter") setActive(front);
         }}
+        className="c3-stage relative mx-auto mt-12 h-[min(108vw,34rem)] w-full max-w-[88rem] cursor-grab select-none [--cw:60vw] [--sx:33vw] [--sz:260px] active:cursor-grabbing md:mt-20 md:h-[min(44vw,38rem)] md:[--cw:min(30vw,26rem)] md:[--sx:min(24vw,22rem)] md:[--sz:320px]"
+        style={{ touchAction: "pan-y" }}
       >
-        {visibleProjects.map((p, i) => (
-          <li
+        {items.map((p, i) => (
+          <div
             key={p.id}
-            className="pg-item w-[84vw] shrink-0 snap-center md:w-[min(62vw,56rem)]"
-            style={{ ["--d" as string]: i === 0 ? 0 : 1, ["--ad" as string]: i === 0 ? 0 : 1 }}
+            ref={(el) => {
+              cardRefs.current[i] = el;
+            }}
+            className="c3-card absolute left-1/2 top-1/2 w-[var(--cw)]"
+            aria-hidden={i !== current}
+            onClick={() => onCardClick(i)}
           >
-            <ProjectFrame project={p} onOpen={() => setActive(p)} hasNext={i < visibleProjects.length - 1} />
-          </li>
+            <CardFace project={p} />
+          </div>
         ))}
-      </ul>
+        {/* reflexo/chão do palco */}
+        <span aria-hidden className="pointer-events-none absolute inset-x-[10%] bottom-0 h-16 rounded-[100%] bg-[radial-gradient(ellipse_at_center,rgb(215_168_62/0.18),transparent_70%)] blur-md" />
+      </div>
+
+      {/* Legenda do projeto da frente, em camadas */}
+      <div className="container-x mt-8 md:mt-12">
+        <div key={front.id} className="mx-auto max-w-2xl text-center">
+          <motion.p
+            data-reveal
+            className="label-tech flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-paper/55"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: EASE }}
+          >
+            <span>{front.sector}</span>
+            <span aria-hidden className="h-px w-4 bg-line-strong" />
+            <span className={front.status === "em-documentacao" ? "text-gold" : ""}>{statusLabel[front.status]}</span>
+          </motion.p>
+          <motion.h3
+            data-reveal
+            className="display mt-3 text-[clamp(1.8rem,3.4vw,2.75rem)]"
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.08, ease: EASE }}
+          >
+            <button type="button" onClick={() => setActive(front)} aria-haspopup="dialog" className="hover:text-gold-light">
+              {projectTitle(front)}
+              <span className="sr-only"> — ver estudo de caso</span>
+            </button>
+          </motion.h3>
+          <motion.p
+            data-reveal
+            className="mt-3 text-sm leading-relaxed text-mute md:text-base"
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.16, ease: EASE }}
+          >
+            {front.headline ?? "Material em preparação. Este estudo de caso será publicado após validação das informações com o cliente."}
+          </motion.p>
+        </div>
+        {/* setas só no computador */}
+        <div className="mt-8 hidden justify-center gap-2 md:flex">
+          <button
+            type="button"
+            onClick={() => step(-1)}
+            aria-label="Projeto anterior"
+            className="inline-flex size-12 items-center justify-center rounded-full border border-line-strong text-paper transition-colors hover:border-gold"
+          >
+            <ArrowLeft className="size-4" strokeWidth={1.75} aria-hidden />
+          </button>
+          <button
+            type="button"
+            onClick={() => step(1)}
+            aria-label="Próximo projeto"
+            className="inline-flex size-12 items-center justify-center rounded-full border border-line-strong text-paper transition-colors hover:border-gold"
+          >
+            <ArrowRight className="size-4" strokeWidth={1.75} aria-hidden />
+          </button>
+        </div>
+      </div>
 
       <AnimatePresence>
         {active && <CaseStudy project={active} onClose={() => setActive(null)} />}
@@ -159,71 +270,26 @@ export function Projects() {
   );
 }
 
-function ProjectFrame({ project: p, onOpen, hasNext }: { project: Project; onOpen: () => void; hasNext: boolean }) {
+function CardFace({ project: p }: { project: Project }) {
   const cover = p.disclosure.imagesAuthorized ? p.images[0] : undefined;
-  const isPlaceholder = p.status === "em-documentacao";
-
   return (
-    <article className="pg-card group relative cursor-pointer" onClick={onOpen}>
-      <div className="relative">
-      {/* camadas menores atrás: sinal de que há mais projetos para deslizar */}
-      {hasNext && (
-        <>
-          <span aria-hidden className="pg-deck pg-deck-2 absolute inset-0 rounded-md border border-line-strong" />
-          <span aria-hidden className="pg-deck pg-deck-1 absolute inset-0 rounded-md border border-line-strong" />
-        </>
+    <div className="c3-face relative aspect-[4/5] w-full overflow-hidden rounded-lg border border-line-strong">
+      {cover ? (
+        <Image src={cover.src} alt={cover.alt} fill sizes="(min-width: 768px) 30vw, 62vw" className="object-cover" draggable={false} />
+      ) : (
+        <div className="placeholder-surface flex h-full w-full flex-col justify-between p-5 md:p-6">
+          <span className="label-tech text-paper/50">Imagens reais pendentes</span>
+          <span className="display text-[clamp(2.4rem,8vw,4.5rem)] leading-[0.9] text-paper/[0.1]">{p.sector}</span>
+        </div>
       )}
-      <div className="pg-frame relative aspect-[4/5] w-full overflow-hidden rounded-md border border-line-strong sm:aspect-[16/10]">
-        {cover ? (
-          <Image
-            src={cover.src}
-            alt={cover.alt}
-            fill
-            sizes="(min-width: 768px) 62vw, 84vw"
-            className="pg-img object-cover"
-          />
-        ) : (
-          <div className="pg-img placeholder-surface flex h-full w-full flex-col justify-between p-5 md:p-8">
-            <span className="label-tech text-paper/50">Placeholder · imagens reais pendentes</span>
-            <span className="pg-ghost display text-[clamp(3rem,9vw,7.5rem)] leading-[0.9] text-paper/[0.08]">{p.sector}</span>
-          </div>
-        )}
-        {/* brilho que acompanha o quadro em foco */}
-        <span aria-hidden className="pg-shine pointer-events-none absolute inset-0" />
-        <span
-          aria-hidden
-          className="absolute right-4 top-4 inline-flex size-11 items-center justify-center rounded-full bg-ink/70 text-paper backdrop-blur transition-colors duration-500 group-hover:bg-gold group-hover:text-ink"
-        >
-          <ArrowUpRight className="size-4" strokeWidth={1.75} />
-        </span>
-      </div>
-      </div>
-
-      <div className="mt-5 flex flex-col gap-2">
-        <p className="pg-l1 label-tech flex flex-wrap items-center gap-x-3 gap-y-1 text-paper/55">
-          <span>{p.sector}</span>
-          <span aria-hidden className="h-px w-4 bg-line-strong" />
-          <span className={isPlaceholder ? "text-gold" : ""}>{statusLabel[p.status]}</span>
-        </p>
-        <h3 className="pg-l2 display text-[clamp(1.6rem,3vw,2.5rem)] transition-colors duration-500 group-hover:text-gold-light">
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              onOpen();
-            }}
-            aria-haspopup="dialog"
-            className="text-left"
-          >
-            {projectTitle(p)}
-            <span className="sr-only"> — ver estudo de caso</span>
-          </button>
-        </h3>
-        <p className="pg-l3 max-w-lg text-sm leading-relaxed text-mute md:text-base">
-          {p.headline ?? "Material em preparação. Este estudo de caso será publicado após validação das informações com o cliente."}
-        </p>
-      </div>
-    </article>
+      <span aria-hidden className="c3-shine pointer-events-none absolute inset-0" />
+      <span
+        aria-hidden
+        className="c3-open absolute right-3 top-3 inline-flex size-10 items-center justify-center rounded-full bg-gold text-ink"
+      >
+        <ArrowUpRight className="size-4" strokeWidth={1.75} />
+      </span>
+    </div>
   );
 }
 
