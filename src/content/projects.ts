@@ -143,11 +143,14 @@ export const projects: Project[] = [
     anonymousTitle: "Projeto na indústria alimentícia",
     sector: "Gestão de indústrias e empresas",
     status: "publicado",
-    headline: "Linha de produção em funcionamento: abastecimento, pesagem automática e embalagem, cada etapa conectada à seguinte.",
+    headline:
+      "Da negociação com fornecedores à força da marca: logística, cotações que ganham margem, portfólio forte e autoridade no digital para uma indústria alimentícia.",
     initialSituation: null,
     challenge: null,
-    solution: null,
-    backstagRole: null,
+    solution:
+      "Apoio na logística e na relação com fornecedores, cotações negociadas para brigar por preço e ganhar margem de lucro, construção de um portfólio forte e estudo de mercado para ganhar competitividade frente à concorrência.",
+    backstagRole:
+      "Logística, cotações e negociação com fornecedores, portfólio de produtos, pesquisa de mercado e construção de autoridade no digital, com o objetivo de tornar a marca conhecida nacionalmente.",
     provenResult: null,
     images: [],
     video: {
@@ -158,6 +161,7 @@ export const projects: Project[] = [
       height: 960,
       note: "Gravação real da linha de produção de um cliente.",
     },
+    tags: ["Logística", "Cotações e fornecedores", "Margem de lucro", "Portfólio", "Pesquisa de mercado", "Autoridade digital"],
     link: null,
     disclosure: { clientNameAuthorized: false, linkAuthorized: false, imagesAuthorized: true },
   },
