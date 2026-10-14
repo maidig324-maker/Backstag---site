@@ -5,6 +5,9 @@ import { problem } from "@/content/site";
 import { Reveal } from "@/components/ui/motion";
 import { SectionIntro, splitLines } from "@/components/ui/SectionIntro";
 import { discoverySymbols } from "./DiscoverySymbols";
+import { MessageCircle } from "lucide-react";
+import { primaryContact } from "@/lib/contact";
+import { ButtonLink } from "@/components/ui/ButtonLink";
 
 /**
  * 02 — DESCOBERTA · "Entre na nossa visão"
@@ -18,6 +21,7 @@ import { discoverySymbols } from "./DiscoverySymbols";
 const STEP = 55;
 
 export function Problem() {
+  const main = primaryContact();
   const items = problem.items;
   const n = items.length;
   const trackRef = useRef<HTMLDivElement>(null);
@@ -139,11 +143,15 @@ export function Problem() {
         </div>
       </div>
 
-      {/* Ponte: a Backstag entra em cena */}
-      <div className="container-x py-24 md:py-36">
-        <Reveal className="grid gap-6 border-t border-gold/40 pt-10 md:grid-cols-12 md:pt-14">
-          <p className="label-tech text-gold md:col-span-3">A Backstag</p>
-          <p className="display text-[clamp(1.6rem,3.2vw,2.75rem)] leading-[1.1] md:col-span-9">{problem.bridge}</p>
+      {/* Fecho da Descoberta: convite direto, no momento em que o visitante se reconheceu */}
+      <div className="container-x pb-6 pt-16 md:pb-10 md:pt-24">
+        <Reveal className="flex flex-col gap-6 border-t border-gold/40 pt-10 md:flex-row md:items-end md:justify-between md:pt-14">
+          <p className="display max-w-2xl text-[clamp(2rem,5vw,3.75rem)]">
+            Viu a sua empresa em <span className="accent">algum desses desafios?</span>
+          </p>
+          <ButtonLink href={main.href} external icon={<MessageCircle className="size-4" strokeWidth={1.75} />} className="shrink-0 self-start md:self-auto">
+            {main.channel === "whatsapp" ? "Conversar pelo WhatsApp" : "Fale com a Backstag"}
+          </ButtonLink>
         </Reveal>
       </div>
     </section>

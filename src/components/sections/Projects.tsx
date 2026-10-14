@@ -50,7 +50,7 @@ export function Projects() {
   if (visibleProjects.length === 0) return null;
 
   return (
-    <section id="projetos" aria-label={projectsIntro.label} className="relative overflow-hidden py-28 md:py-40">
+    <section id="projetos" aria-label={projectsIntro.label} className="relative overflow-hidden pb-28 pt-16 md:pb-40 md:pt-24">
       <div className="container-x">
         <div className="grid gap-10 md:grid-cols-12">
           <SectionIntro
