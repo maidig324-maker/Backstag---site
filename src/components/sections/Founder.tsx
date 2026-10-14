@@ -1,7 +1,10 @@
+"use client";
+
 import Image from "next/image";
 import { founder } from "@/content/founder";
 import { site } from "@/content/site";
-import { ImageReveal, LineReveal, Reveal } from "@/components/ui/motion";
+import { motion } from "motion/react";
+import { EASE, ImageReveal, LineReveal, Reveal } from "@/components/ui/motion";
 import { sectionNumber } from "@/lib/visibility";
 
 export function Founder() {
@@ -12,7 +15,7 @@ export function Founder() {
       <div className="container-x grid gap-14 md:grid-cols-12 md:gap-10">
         {showPhotoSlot && (
           <div className="md:col-span-5">
-            <ImageReveal className="relative aspect-[4/5] w-full overflow-hidden">
+            <ImageReveal className="relative aspect-[4/5] w-full overflow-hidden rounded-md border border-line-strong">
               {founder.photo ? (
                 <Image
                   src={founder.photo.src}
@@ -60,16 +63,27 @@ export function Founder() {
             ))}
           </div>
 
-          <Reveal delay={0.2}>
-            <ul className="mt-12 grid border-t border-line sm:grid-cols-3">
-              {founder.principles.map((p) => (
-                <li key={p} className="border-b border-line py-4 text-sm text-paper/85 sm:border-b-0 sm:py-5 sm:pr-4">
-                  <span aria-hidden className="mr-2 text-gold">—</span>
-                  {p}
-                </li>
-              ))}
-            </ul>
-          </Reveal>
+          {/* Da visão à execução: os princípios como um fluxo conectado */}
+          <ol className="relative mt-12 grid gap-6 sm:grid-cols-3 sm:gap-4">
+            <motion.span
+              aria-hidden
+              data-reveal
+              className="absolute left-[5px] top-2 h-[calc(100%-1rem)] w-px origin-top bg-gold sm:left-0 sm:right-0 sm:top-[5px] sm:h-px sm:w-full sm:origin-left"
+              initial={{ scaleX: 0, scaleY: 0 }}
+              whileInView={{ scaleX: 1, scaleY: 1 }}
+              viewport={{ once: true, margin: "0px 0px -15% 0px" }}
+              transition={{ duration: 1.4, ease: EASE }}
+            />
+            {founder.principles.map((p, i) => (
+              <li key={p} className="relative pl-7 sm:pl-0 sm:pt-7">
+                <span aria-hidden className="absolute left-0 top-1 size-[11px] rounded-full border border-gold bg-ink sm:top-0" />
+                <Reveal delay={0.25 + i * 0.2} y={10}>
+                  <p className="label-tech text-gold">{["Visão", "Execução", "Evolução"][i]}</p>
+                  <p className="mt-2 text-sm text-paper/85">{p}</p>
+                </Reveal>
+              </li>
+            ))}
+          </ol>
         </div>
       </div>
     </section>

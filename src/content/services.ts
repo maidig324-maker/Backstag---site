@@ -8,9 +8,9 @@ export type Service = {
 };
 
 export const servicesIntro = {
-  label: "O que fazemos",
-  title: "Quatro frentes, uma mesma lógica: a operação precisa sustentar o crescimento.",
-  text: "Atuamos de forma integrada. Uma melhoria no site pode depender de um processo de atendimento; uma automação só faz sentido quando a rotina está organizada.",
+  label: "Capacidades",
+  title: "Quatro frentes conectadas por uma mesma lógica.",
+  text: "A operação precisa sustentar o crescimento. Atuamos de forma integrada. Uma melhoria no site pode depender de um processo de atendimento; uma automação só faz sentido quando a rotina está organizada.",
 };
 
 export const services: Service[] = [
@@ -43,7 +43,7 @@ export const services: Service[] = [
   {
     id: "digital",
     number: "03",
-    title: "Sites e Soluções Digitais",
+    title: "Desenvolvimento Digital",
     summary:
       "Sites institucionais, páginas comerciais, catálogos, estruturação de canais digitais e melhorias de experiência do cliente.",
     scope: [

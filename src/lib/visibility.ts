@@ -23,14 +23,15 @@ export function projectTitle(p: Project): string {
 
 /** Numeração das seções visíveis, sem saltos quando alguma é ocultada. */
 const order = [
-  "problema",
+  "desafios",
   "solucoes",
   ...(showProjects ? ["projetos"] : []),
   "metodo",
-  ...(showProofs ? ["resultados"] : []),
+  ...(publishableProofs.length > 0 ? ["resultados"] : []),
   "sobre",
   "contato",
 ];
 export function sectionNumber(id: string): string {
-  return String(order.indexOf(id) + 1).padStart(2, "0");
+  // +2: o hero é o capítulo 01
+  return String(order.indexOf(id) + 2).padStart(2, "0");
 }

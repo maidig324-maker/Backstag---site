@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "motion/react";
-import type { ReactNode } from "react";
+import { motion, useInView } from "motion/react";
+import { useRef, type ElementType, type ReactNode } from "react";
 
 export const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -41,7 +41,12 @@ type LinesProps = {
   as?: "h1" | "h2" | "h3" | "p";
 };
 
-/** Texto revelado linha a linha, como uma cortina subindo. */
+/**
+ * Texto revelado linha a linha, como uma cortina subindo.
+ * A visibilidade é observada no título inteiro: cada linha começa
+ * escondida dentro de um recorte (overflow hidden), e observar a linha
+ * em si nunca dispararia a animação.
+ */
 export function LineReveal({
   lines,
   className,
@@ -49,19 +54,21 @@ export function LineReveal({
   delay = 0,
   stagger = 0.09,
   trigger = "view",
-  as: Tag = "h2",
+  as = "h2",
 }: LinesProps) {
+  const ref = useRef<HTMLElement>(null);
+  const inView = useInView(ref, VIEWPORT);
+  const show = trigger === "mount" || inView;
+  const Tag = as as ElementType;
   return (
-    <Tag className={className}>
+    <Tag ref={ref} className={className}>
       {lines.map((line, i) => (
         <span key={i} className="block overflow-hidden pb-[0.12em] -mb-[0.12em]">
           <motion.span
             data-reveal
             className={`block ${lineClassName?.(i) ?? ""}`}
             initial={{ y: "110%", opacity: 0 }}
-            {...(trigger === "mount"
-              ? { animate: { y: "0%", opacity: 1 } }
-              : { whileInView: { y: "0%", opacity: 1 }, viewport: VIEWPORT })}
+            animate={show ? { y: "0%", opacity: 1 } : { y: "110%", opacity: 0 }}
             transition={{ duration: 1.05, delay: delay + i * stagger, ease: EASE }}
           >
             {line}

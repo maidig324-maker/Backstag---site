@@ -22,7 +22,7 @@ export default function PrivacyPage() {
       </Link>
       <h1 className="display mt-16 text-5xl md:text-6xl">Política de privacidade</h1>
 
-      <div className="mt-12 space-y-8 leading-relaxed text-paper/85 [&_h2]:font-serif [&_h2]:text-3xl [&_h2]:text-paper">
+      <div className="mt-12 space-y-8 leading-relaxed text-paper/85 [&_h2]:text-2xl [&_h2]:font-medium [&_h2]:tracking-tight [&_h2]:text-paper">
         <section>
           <h2>Quais dados recebemos</h2>
           <p className="mt-3">

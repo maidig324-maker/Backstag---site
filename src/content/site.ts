@@ -84,7 +84,7 @@ export const hero = {
 } as const;
 
 export const problem = {
-  label: "O problema",
+  label: "Descoberta",
   title: "O crescimento começa quando a estrutura acompanha a ambição.",
   intro:
     "Muitas empresas crescem mais rápido do que a própria organização. O cliente vê o palco — mas, muitas vezes, o que trava o negócio está nos bastidores.",
@@ -92,22 +92,27 @@ export const problem = {
     {
       title: "Falta de organização operacional",
       text: "Rotinas que dependem da memória de poucas pessoas e informações espalhadas em lugares diferentes.",
+      approach: "Mapeamos rotinas e responsabilidades e organizamos a informação num fluxo que a equipe consegue seguir.",
     },
     {
       title: "Processos manuais e retrabalho",
       text: "Tarefas repetidas à mão, planilhas duplicadas e tempo gasto corrigindo o que poderia funcionar sozinho.",
+      approach: "Identificamos tarefas repetitivas e avaliamos onde automação e integração entre ferramentas fazem sentido.",
     },
     {
       title: "Presença digital pouco estruturada",
       text: "Canais que existem, mas não comunicam com clareza o que a empresa faz nem facilitam o contato.",
+      approach: "Estruturamos site, canais e comunicação para explicar com clareza o que a empresa faz e facilitar o contato.",
     },
     {
       title: "Atendimento, marketing e operação desconectados",
       text: "Cada área trabalha com sua própria versão dos fatos, e o cliente sente essa distância.",
+      approach: "Conectamos atendimento, marketing e operação para que as áreas trabalhem com a mesma informação.",
     },
     {
       title: "Dificuldade para acompanhar e melhorar",
       text: "Sem informação organizada, fica difícil saber o que está funcionando e por onde começar a mudar.",
+      approach: "Organizamos indicadores simples e rotinas de acompanhamento para orientar as próximas melhorias.",
     },
   ],
   bridge:
@@ -115,7 +120,7 @@ export const problem = {
 } as const;
 
 export const contactSection = {
-  label: "Vamos conversar",
+  label: "Conversão",
   title: "Sua empresa tem desafios. Vamos construir as soluções.",
   text: "Conte o que sua empresa precisa melhorar e descubra como podemos ajudar a estruturar os próximos passos.",
   whatsappCta: "Conversar pelo WhatsApp",

@@ -3,10 +3,10 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowUpRight, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, X } from "lucide-react";
 import { projectsIntro, type Project, type ProjectStatus } from "@/content/projects";
 import { projectTitle, visibleProjects, sectionNumber } from "@/lib/visibility";
-import { EASE, ImageReveal, Reveal } from "@/components/ui/motion";
+import { EASE, Reveal } from "@/components/ui/motion";
 import { SectionIntro, splitLines } from "@/components/ui/SectionIntro";
 
 const statusLabel: Record<ProjectStatus, string> = {
@@ -15,22 +15,51 @@ const statusLabel: Record<ProjectStatus, string> = {
   "em-documentacao": "Estudo de caso em documentação",
 };
 
-/** Posições do layout assimétrico, aplicadas em sequência. */
-const layout = [
-  "md:col-span-7",
-  "md:col-span-5 md:mt-40",
-  "md:col-span-5 md:col-start-2",
-  "md:col-span-6 md:mt-28",
-];
-
-const aspect = ["aspect-[4/5] md:aspect-[5/4]", "aspect-[4/5]", "aspect-[4/5]", "aspect-[4/3]"];
-
+/**
+ * 04 — EXPERIÊNCIA E PROJETOS
+ * Galeria imersiva em trilho horizontal com rolagem nativa (snap), pronta
+ * para imagens, demonstrações e comparativos reais. O quadro em foco ganha
+ * destaque; os demais recuam. Cada quadro abre o estudo de caso completo.
+ */
 export function Projects() {
   const [active, setActive] = useState<Project | null>(null);
+  const [focus, setFocus] = useState(0);
+  const trackRef = useRef<HTMLUListElement>(null);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const items = Array.from(track.children) as HTMLElement[];
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) if (e.isIntersecting) setFocus(items.indexOf(e.target as HTMLElement));
+      },
+      { root: track, threshold: 0.6 },
+    );
+    items.forEach((el) => io.observe(el));
+    const onScroll = () => {
+      const max = track.scrollWidth - track.clientWidth;
+      setProgress(max > 0 ? track.scrollLeft / max : 0);
+    };
+    track.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      io.disconnect();
+      track.removeEventListener("scroll", onScroll);
+    };
+  }, []);
+
+  const go = (dir: 1 | -1) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const next = Math.min(visibleProjects.length - 1, Math.max(0, focus + dir));
+    (track.children[next] as HTMLElement)?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+  };
+
   if (visibleProjects.length === 0) return null;
 
   return (
-    <section id="projetos" aria-label={projectsIntro.label} className="relative py-28 md:py-44">
+    <section id="projetos" aria-label={projectsIntro.label} className="relative overflow-hidden py-28 md:py-40">
       <div className="container-x">
         <div className="grid gap-10 md:grid-cols-12">
           <SectionIntro
@@ -39,19 +68,63 @@ export function Projects() {
             label={projectsIntro.label}
             titleLines={splitLines(projectsIntro.title, 24)}
           />
-          <Reveal className="md:col-span-4 md:col-start-9 md:self-end" delay={0.2}>
+          <Reveal className="md:col-span-4 md:col-start-9 md:self-end" delay={0.15}>
             <p className="leading-relaxed text-mute">{projectsIntro.text}</p>
           </Reveal>
         </div>
 
-        <ul className="mt-20 grid gap-x-10 gap-y-20 md:mt-28 md:grid-cols-12 md:gap-y-28">
-          {visibleProjects.map((p, i) => (
-            <li key={p.id} className={layout[i % layout.length]}>
-              <ProjectCard project={p} index={i} onOpen={() => setActive(p)} />
-            </li>
-          ))}
-        </ul>
+        {/* Controles da galeria */}
+        <div className="mt-14 flex items-center justify-between gap-6 md:mt-20">
+          <p className="label-tech tabular-nums text-paper/60" aria-live="polite">
+            <span className="text-gold">{String(focus + 1).padStart(2, "0")}</span> / {String(visibleProjects.length).padStart(2, "0")}
+          </p>
+          <div className="relative mx-2 h-px flex-1 bg-line-strong" aria-hidden>
+            <span className="absolute inset-y-0 left-0 bg-gold" style={{ width: `${Math.max(8, progress * 100)}%` }} />
+          </div>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => go(-1)}
+              disabled={focus === 0}
+              aria-label="Projeto anterior"
+              className="inline-flex size-12 items-center justify-center rounded-full border border-line-strong text-paper transition-colors hover:border-gold disabled:opacity-30"
+            >
+              <ArrowLeft className="size-4" strokeWidth={1.75} aria-hidden />
+            </button>
+            <button
+              type="button"
+              onClick={() => go(1)}
+              disabled={focus === visibleProjects.length - 1}
+              aria-label="Próximo projeto"
+              className="inline-flex size-12 items-center justify-center rounded-full border border-line-strong text-paper transition-colors hover:border-gold disabled:opacity-30"
+            >
+              <ArrowRight className="size-4" strokeWidth={1.75} aria-hidden />
+            </button>
+          </div>
+        </div>
       </div>
+
+      {/* Trilho horizontal */}
+      <ul
+        ref={trackRef}
+        className="no-scrollbar mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 [--gx:1.25rem] md:gap-8 md:[--gx:2.5rem]"
+        style={{
+          // alinha o primeiro quadro à grade do site em qualquer largura
+          paddingInline: "max(var(--gx), calc((100vw - 88rem) / 2 + var(--gx)))",
+          scrollPaddingInline: "var(--gx)",
+        }}
+      >
+        {visibleProjects.map((p, i) => (
+          <li
+            key={p.id}
+            className={`w-[84vw] shrink-0 snap-center transition-[opacity,transform] duration-700 ease-[var(--ease-stage)] md:w-[min(62vw,56rem)] ${
+              i === focus ? "opacity-100" : "scale-[0.96] opacity-45"
+            }`}
+          >
+            <ProjectFrame project={p} index={i} onOpen={() => setActive(p)} />
+          </li>
+        ))}
+      </ul>
 
       <AnimatePresence>
         {active && <CaseStudy project={active} onClose={() => setActive(null)} />}
@@ -60,51 +133,47 @@ export function Projects() {
   );
 }
 
-function ProjectCard({
-  project: p,
-  index,
-  onOpen,
-}: {
-  project: Project;
-  index: number;
-  onOpen: () => void;
-}) {
+function ProjectFrame({ project: p, index, onOpen }: { project: Project; index: number; onOpen: () => void }) {
   const cover = p.disclosure.imagesAuthorized ? p.images[0] : undefined;
   const isPlaceholder = p.status === "em-documentacao";
 
   return (
-    // Clique em qualquer ponto do card (mouse); teclado usa o botão do título.
     <article className="group relative cursor-pointer" onClick={onOpen}>
-      <ImageReveal className={`relative w-full overflow-hidden ${aspect[index % aspect.length]}`}>
+      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-md border border-line-strong sm:aspect-[16/10]">
         {cover ? (
           <Image
             src={cover.src}
             alt={cover.alt}
             fill
-            sizes="(min-width: 768px) 55vw, 100vw"
+            sizes="(min-width: 768px) 62vw, 84vw"
             className="object-cover transition-transform duration-[1.2s] ease-[var(--ease-stage)] group-hover:scale-[1.03]"
           />
         ) : (
-          <div className="placeholder-surface flex h-full w-full flex-col justify-between p-5 md:p-7">
-            <span className="cue text-paper/50">Placeholder · imagens reais pendentes</span>
-            <span className="display text-[clamp(4rem,10vw,9rem)] leading-none text-paper/[0.07]">
+          <div className="placeholder-surface flex h-full w-full flex-col justify-between p-5 md:p-8">
+            <span className="label-tech text-paper/50">Placeholder · imagens reais pendentes</span>
+            <span className="display text-[clamp(5rem,14vw,12rem)] leading-none text-paper/[0.07]">
               {String(index + 1).padStart(2, "0")}
             </span>
           </div>
         )}
-        <span aria-hidden className="absolute right-4 top-4 inline-flex size-11 items-center justify-center rounded-full bg-ink/70 text-paper backdrop-blur transition-colors duration-500 group-hover:bg-gold group-hover:text-ink">
-          <ArrowUpRight className="size-4" strokeWidth={1.75} aria-hidden />
+        {/* marcações de canto */}
+        <span aria-hidden className="absolute left-3 top-3 size-3 border-l border-t border-gold/60" />
+        <span aria-hidden className="absolute bottom-3 right-3 size-3 border-b border-r border-gold/60" />
+        <span
+          aria-hidden
+          className="absolute right-4 top-4 inline-flex size-11 items-center justify-center rounded-full bg-ink/70 text-paper backdrop-blur transition-colors duration-500 group-hover:bg-gold group-hover:text-ink"
+        >
+          <ArrowUpRight className="size-4" strokeWidth={1.75} />
         </span>
-      </ImageReveal>
+      </div>
 
-      <Reveal className="mt-6 flex flex-col gap-3" y={16}>
-        <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs uppercase tracking-[0.16em] text-mute">
+      <div className="mt-5 flex flex-col gap-2">
+        <p className="label-tech flex flex-wrap items-center gap-x-3 gap-y-1 text-paper/55">
           <span>{p.sector}</span>
           <span aria-hidden className="h-px w-4 bg-line-strong" />
           <span className={isPlaceholder ? "text-gold" : ""}>{statusLabel[p.status]}</span>
         </p>
-        <h3 className="display text-[clamp(1.9rem,3.4vw,2.9rem)] transition-colors duration-500 group-hover:text-gold-light">
-          {/* Botão "esticado": o card inteiro é clicável, com HTML válido */}
+        <h3 className="display text-[clamp(1.6rem,3vw,2.5rem)] transition-colors duration-500 group-hover:text-gold-light">
           <button
             type="button"
             onClick={(e) => {
@@ -112,19 +181,16 @@ function ProjectCard({
               onOpen();
             }}
             aria-haspopup="dialog"
-            className="text-left after:absolute after:inset-0 after:content-['']"
+            className="text-left"
           >
             {projectTitle(p)}
             <span className="sr-only"> — ver estudo de caso</span>
           </button>
         </h3>
-        <p className="max-w-md leading-relaxed text-mute">
+        <p className="max-w-lg text-sm leading-relaxed text-mute md:text-base">
           {p.headline ?? "Material em preparação. Este estudo de caso será publicado após validação das informações com o cliente."}
         </p>
-        <span aria-hidden className="mt-1 text-sm text-paper underline decoration-gold/50 underline-offset-[6px] transition-colors group-hover:decoration-gold">
-          Ver estudo de caso
-        </span>
-      </Reveal>
+      </div>
     </article>
   );
 }
