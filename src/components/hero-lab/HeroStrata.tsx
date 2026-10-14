@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import type React from "react";
 import { hero2026 } from "@/content/hero-2026";
-import { ConceptTag, FrameMarks, HeadlineTech, prefersReducedMotion, SubAndCtas } from "./HeroCopy";
+import { ConceptTag, HeadlineTech, prefersReducedMotion, SubAndCtas } from "./HeroCopy";
 import { panels } from "./Panels";
 
 /**
@@ -129,7 +129,6 @@ export function HeroStrata() {
       aria-label="Apresentação"
       className="relative isolate flex min-h-[100svh] flex-col overflow-hidden"
     >
-      <FrameMarks />
 
       {/* Composição 3D */}
       <div

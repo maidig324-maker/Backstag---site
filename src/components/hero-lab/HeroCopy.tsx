@@ -85,19 +85,6 @@ export function SubAndCtas({ className = "", stacked = false }: { className?: st
   );
 }
 
-/** Marcadores de canto: enquadram a cena como uma área técnica. */
-export function FrameMarks() {
-  const c = "absolute size-3 border-gold/60";
-  return (
-    <div aria-hidden className="pointer-events-none absolute inset-4 md:inset-6">
-      <span className={`${c} left-0 top-0 border-l border-t`} />
-      <span className={`${c} right-0 top-0 border-r border-t`} />
-      <span className={`${c} bottom-0 left-0 border-b border-l`} />
-      <span className={`${c} bottom-0 right-0 border-b border-r`} />
-    </div>
-  );
-}
-
 /** Respeita prefers-reduced-motion em código imperativo (canvas, rAF). */
 export function prefersReducedMotion(): boolean {
   return typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;

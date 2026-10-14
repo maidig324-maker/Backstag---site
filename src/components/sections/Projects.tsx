@@ -17,34 +17,58 @@ const statusLabel: Record<ProjectStatus, string> = {
 
 /**
  * 04 — EXPERIÊNCIA E PROJETOS
- * Galeria imersiva em trilho horizontal com rolagem nativa (snap), pronta
- * para imagens, demonstrações e comparativos reais. O quadro em foco ganha
- * destaque; os demais recuam. Cada quadro abre o estudo de caso completo.
+ * Galeria imersiva: ao deslizar para o lado, cada projeto se monta em
+ * camadas (imagem, setor, título e descrição em ritmos diferentes) e os
+ * vizinhos ficam girados em profundidade. Sem setas no celular nem
+ * contadores. Cada quadro abre o estudo de caso completo.
  */
 export function Projects() {
   const [active, setActive] = useState<Project | null>(null);
-  const [focus, setFocus] = useState(0);
   const trackRef = useRef<HTMLUListElement>(null);
 
+  // Cada quadro recebe --d: distância até o centro do trilho (0 = em foco).
+  // O CSS usa esse valor para montar as camadas enquanto o visitante desliza.
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
-    const items = Array.from(track.children) as HTMLElement[];
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) if (e.isIntersecting) setFocus(items.indexOf(e.target as HTMLElement));
-      },
-      { root: track, threshold: 0.6 },
-    );
-    items.forEach((el) => io.observe(el));
-    return () => io.disconnect();
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const tr = track.getBoundingClientRect();
+      const mid = tr.left + tr.width / 2;
+      for (const el of Array.from(track.children) as HTMLElement[]) {
+        const r = el.getBoundingClientRect();
+        const d = Math.max(-1.5, Math.min(1.5, (r.left + r.width / 2 - mid) / (r.width * 0.9)));
+        el.style.setProperty("--d", d.toFixed(3));
+        el.style.setProperty("--ad", Math.abs(d).toFixed(3));
+      }
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    track.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      track.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(raf);
+    };
   }, []);
 
+  // setas (só no computador): vai para o quadro vizinho do que está mais ao centro
   const go = (dir: 1 | -1) => {
     const track = trackRef.current;
     if (!track) return;
-    const next = Math.min(visibleProjects.length - 1, Math.max(0, focus + dir));
-    (track.children[next] as HTMLElement)?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    const items = Array.from(track.children) as HTMLElement[];
+    const mid = track.getBoundingClientRect().left + track.clientWidth / 2;
+    let cur = 0, best = Infinity;
+    items.forEach((el, i) => {
+      const r = el.getBoundingClientRect();
+      const dist = Math.abs(r.left + r.width / 2 - mid);
+      if (dist < best) { best = dist; cur = i; }
+    });
+    items[Math.min(items.length - 1, Math.max(0, cur + dir))]?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
   };
 
   if (visibleProjects.length === 0) return null;
@@ -64,13 +88,11 @@ export function Projects() {
         </div>
 
         {/* Controles da galeria */}
-        <div className="mt-14 flex items-center justify-between gap-6 md:mt-20">
-          <p className="label-tech text-paper/50">Deslize para ver os projetos</p>
+        <div className="mt-14 hidden justify-end md:mt-20 md:flex">
           <div className="flex gap-2">
             <button
               type="button"
               onClick={() => go(-1)}
-              disabled={focus === 0}
               aria-label="Projeto anterior"
               className="inline-flex size-12 items-center justify-center rounded-full border border-line-strong text-paper transition-colors hover:border-gold disabled:opacity-30"
             >
@@ -79,7 +101,6 @@ export function Projects() {
             <button
               type="button"
               onClick={() => go(1)}
-              disabled={focus === visibleProjects.length - 1}
               aria-label="Próximo projeto"
               className="inline-flex size-12 items-center justify-center rounded-full border border-line-strong text-paper transition-colors hover:border-gold disabled:opacity-30"
             >
@@ -92,7 +113,7 @@ export function Projects() {
       {/* Trilho horizontal */}
       <ul
         ref={trackRef}
-        className="no-scrollbar mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 [--gx:1.25rem] md:gap-8 md:[--gx:2.5rem]"
+        className="no-scrollbar mt-10 flex snap-x snap-mandatory gap-2 overflow-x-auto pb-4 [--gx:1.25rem] md:gap-8 md:[--gx:2.5rem]"
         style={{
           // alinha o primeiro quadro à grade do site em qualquer largura
           paddingInline: "max(var(--gx), calc((100vw - 88rem) / 2 + var(--gx)))",
@@ -102,9 +123,8 @@ export function Projects() {
         {visibleProjects.map((p, i) => (
           <li
             key={p.id}
-            className={`w-[84vw] shrink-0 snap-center transition-[opacity,transform] duration-700 ease-[var(--ease-stage)] md:w-[min(62vw,56rem)] ${
-              i === focus ? "opacity-100" : "scale-[0.96] opacity-45"
-            }`}
+            className="pg-item w-[84vw] shrink-0 snap-center md:w-[min(62vw,56rem)]"
+            style={{ ["--d" as string]: i === 0 ? 0 : 1, ["--ad" as string]: i === 0 ? 0 : 1 }}
           >
             <ProjectFrame project={p} onOpen={() => setActive(p)} />
           </li>
@@ -123,25 +143,24 @@ function ProjectFrame({ project: p, onOpen }: { project: Project; onOpen: () => 
   const isPlaceholder = p.status === "em-documentacao";
 
   return (
-    <article className="group relative cursor-pointer" onClick={onOpen}>
-      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-md border border-line-strong sm:aspect-[16/10]">
+    <article className="pg-card group relative cursor-pointer" onClick={onOpen}>
+      <div className="pg-frame relative aspect-[4/5] w-full overflow-hidden rounded-md border border-line-strong sm:aspect-[16/10]">
         {cover ? (
           <Image
             src={cover.src}
             alt={cover.alt}
             fill
             sizes="(min-width: 768px) 62vw, 84vw"
-            className="object-cover transition-transform duration-[1.2s] ease-[var(--ease-stage)] group-hover:scale-[1.03]"
+            className="pg-img object-cover"
           />
         ) : (
-          <div className="placeholder-surface flex h-full w-full flex-col justify-between p-5 md:p-8">
+          <div className="pg-img placeholder-surface flex h-full w-full flex-col justify-between p-5 md:p-8">
             <span className="label-tech text-paper/50">Placeholder · imagens reais pendentes</span>
-            <span className="display text-[clamp(3rem,9vw,7.5rem)] leading-[0.9] text-paper/[0.08]">{p.sector}</span>
+            <span className="pg-ghost display text-[clamp(3rem,9vw,7.5rem)] leading-[0.9] text-paper/[0.08]">{p.sector}</span>
           </div>
         )}
-        {/* marcações de canto */}
-        <span aria-hidden className="absolute left-3 top-3 size-3 border-l border-t border-gold/60" />
-        <span aria-hidden className="absolute bottom-3 right-3 size-3 border-b border-r border-gold/60" />
+        {/* brilho que acompanha o quadro em foco */}
+        <span aria-hidden className="pg-shine pointer-events-none absolute inset-0" />
         <span
           aria-hidden
           className="absolute right-4 top-4 inline-flex size-11 items-center justify-center rounded-full bg-ink/70 text-paper backdrop-blur transition-colors duration-500 group-hover:bg-gold group-hover:text-ink"
@@ -151,12 +170,12 @@ function ProjectFrame({ project: p, onOpen }: { project: Project; onOpen: () => 
       </div>
 
       <div className="mt-5 flex flex-col gap-2">
-        <p className="label-tech flex flex-wrap items-center gap-x-3 gap-y-1 text-paper/55">
+        <p className="pg-l1 label-tech flex flex-wrap items-center gap-x-3 gap-y-1 text-paper/55">
           <span>{p.sector}</span>
           <span aria-hidden className="h-px w-4 bg-line-strong" />
           <span className={isPlaceholder ? "text-gold" : ""}>{statusLabel[p.status]}</span>
         </p>
-        <h3 className="display text-[clamp(1.6rem,3vw,2.5rem)] transition-colors duration-500 group-hover:text-gold-light">
+        <h3 className="pg-l2 display text-[clamp(1.6rem,3vw,2.5rem)] transition-colors duration-500 group-hover:text-gold-light">
           <button
             type="button"
             onClick={(e) => {
@@ -170,7 +189,7 @@ function ProjectFrame({ project: p, onOpen }: { project: Project; onOpen: () => 
             <span className="sr-only"> — ver estudo de caso</span>
           </button>
         </h3>
-        <p className="max-w-lg text-sm leading-relaxed text-mute md:text-base">
+        <p className="pg-l3 max-w-lg text-sm leading-relaxed text-mute md:text-base">
           {p.headline ?? "Material em preparação. Este estudo de caso será publicado após validação das informações com o cliente."}
         </p>
       </div>

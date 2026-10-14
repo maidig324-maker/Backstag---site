@@ -418,3 +418,32 @@ ol > .rv-line {
   opacity: 0.05;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
+
+/* ---------- Projetos — galeria em camadas (--d = distância até o centro) ---------- */
+.pg-item {
+  perspective: 1200px;
+  overflow: hidden;
+  padding: 0.25rem 0.5rem 0.5rem;
+}
+.pg-card {
+  transform: rotateY(calc(var(--d, 0) * -24deg)) scale(calc(1 - var(--ad, 0) * 0.1));
+  opacity: calc(1 - var(--ad, 0) * 0.5);
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+.pg-frame {
+  clip-path: inset(calc(var(--ad, 0) * 6%) round 6px);
+}
+.pg-img {
+  transform: translateX(calc(var(--d, 0) * -12%)) scale(calc(1.14 + var(--ad, 0) * 0.08));
+}
+.pg-ghost {
+  transform: translateX(calc(var(--d, 0) * -40%));
+}
+.pg-shine {
+  background: radial-gradient(ellipse 70% 60% at calc(50% - var(--d, 0) * 60%) 30%, rgb(240 199 102 / 0.14), transparent 70%);
+  opacity: calc(1 - var(--ad, 0) * 1.5);
+}
+.pg-l1 { transform: translateX(calc(var(--d, 0) * 60px)); opacity: calc(1 - var(--ad, 0) * 1.4); }
+.pg-l2 { transform: translateX(calc(var(--d, 0) * 120px)); opacity: calc(1 - var(--ad, 0) * 1.7); }
+.pg-l3 { transform: translateX(calc(var(--d, 0) * 190px)); opacity: calc(1 - var(--ad, 0) * 2); }

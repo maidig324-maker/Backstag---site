@@ -3,7 +3,7 @@
 import { motion, useScroll, useTransform } from "motion/react";
 import { useEffect, useRef } from "react";
 import { hero2026 } from "@/content/hero-2026";
-import { ConceptTag, FrameMarks, HeadlineTech, prefersReducedMotion, SubAndCtas } from "./HeroCopy";
+import { ConceptTag, HeadlineTech, prefersReducedMotion, SubAndCtas } from "./HeroCopy";
 
 /**
  * ALTERNATIVA A — "REDE"
@@ -393,7 +393,6 @@ export function HeroNetwork() {
         aria-hidden
         className="absolute inset-0 -z-10 h-full w-full touch-pan-y"
       />
-      <FrameMarks />
 
       <motion.div style={{ y: copyY, opacity: copyO }} className="container-x flex flex-1 flex-col justify-between pb-10 pt-24 md:pb-14 md:pt-32">
         <ConceptTag />
