@@ -112,25 +112,28 @@ export const projects: Project[] = [
   {
     id: "petshop-palmares",
     clientName: "Petshop Palmares", // exibido somente após autorização
-    anonymousTitle: "Projeto em varejo pet",
-    sector: "Varejo pet",
+    anonymousTitle: "Projeto em varejo e atacado pet",
+    sector: "Varejo e atacado pet",
     status: "publicado",
-    headline: "Redes sociais que aproximam a loja do tutor: perfil estruturado, destaques organizados por tema e um feed com os pets e os produtos da loja.",
+    headline:
+      "Posicionamento, vendas e operação de uma empresa de varejo e atacado pet: do site que vende todos os meses à gestão comercial, às cotações e à logística.",
     initialSituation: null,
     challenge: null,
-    solution: null,
-    backstagRole: null,
+    solution:
+      "Reposicionamento da empresa no mercado, ampliação das redes de venda junto com o e-commerce e um site forte, estruturado para gerar vendas todos os meses, com foco em aumentar o faturamento.",
+    backstagRole:
+      "Posicionamento de mercado, expansão dos canais de venda e do e-commerce, desenvolvimento do site, melhoria da gestão comercial e apoio nas cotações e na logística.",
     provenResult: null,
-    images: [
-      {
-        src: "/projects/petshop-palmares/perfis.webp",
-        alt: "Perfis de Instagram estruturados lado a lado, com destaque para o perfil de uma loja pet com destaques temáticos e feed de cães e gatos",
-        width: 1122,
-        height: 1402,
-        pan: true,
-      },
-    ],
-    tags: ["Instagram", "Destaques por tema", "Feed", "Conteúdo de produto"],
+    images: [],
+    video: {
+      src: "/projects/varejo-atacado-pet/operacao.mp4",
+      poster: "/projects/varejo-atacado-pet/operacao-poster.jpg",
+      alt: "Centro de distribuição de produtos pet: prateleiras abastecidas, empilhadeira, leitura de código de barras e caixas na esteira",
+      width: 540,
+      height: 960,
+      note: "Vídeo ilustrativo da operação de varejo e atacado pet.",
+    },
+    tags: ["Posicionamento", "E-commerce", "Site de vendas", "Gestão comercial", "Cotações e logística"],
     link: null,
     disclosure: { clientNameAuthorized: false, linkAuthorized: false, imagesAuthorized: true },
   },
