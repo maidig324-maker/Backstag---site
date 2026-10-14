@@ -114,3 +114,26 @@
     );
   }
 }
+
+/* ---------- Hero B — animações dos painéis (só no painel em destaque) ---------- */
+@keyframes bs-in { from { opacity: 0.15; transform: translateY(3px); } to { opacity: 1; transform: none; } }
+@keyframes bs-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes bs-grow { from { transform: scaleY(0.15); } to { transform: scaleY(1); } }
+@keyframes bs-pop { 0% { transform: scale(0.4); opacity: 0; } 70% { transform: scale(1.25); } 100% { transform: scale(1); opacity: 1; } }
+@keyframes bs-flow { to { stroke-dashoffset: -10; } }
+@keyframes bs-pulse { 0%, 100% { opacity: 0.15; transform: scale(0.94); } 50% { opacity: 0.7; transform: scale(1.06); } }
+@keyframes bs-sweep { from { left: -35%; } to { left: 105%; } }
+
+.bs-on .bs-step,
+.bs-on .bs-row { animation: bs-in 0.6s var(--ease-stage) both; animation-delay: var(--d, 0s); }
+.bs-on .bs-draw { stroke-dasharray: 1; animation: bs-draw 1.6s var(--ease-stage) both; }
+.bs-bar { transform-box: fill-box; transform-origin: bottom; }
+.bs-on .bs-bar { animation: bs-grow 0.9s var(--ease-stage) both; animation-delay: var(--d, 0s); }
+.bs-pop, .bs-pulse { transform-box: fill-box; transform-origin: center; }
+.bs-on .bs-pop { animation: bs-pop 0.7s var(--ease-stage) 1.2s both; }
+.bs-on .bs-flow { animation: bs-flow 0.8s linear infinite; }
+.bs-on .bs-pulse { animation: bs-pulse 1.8s ease-in-out infinite; }
+.bs-sweep {
+  background: linear-gradient(90deg, transparent, rgb(240 199 102 / 0.09), transparent);
+  animation: bs-sweep 2.4s var(--ease-stage) 0.2s both;
+}
