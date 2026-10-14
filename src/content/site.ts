@@ -51,7 +51,9 @@ export const contact = {
    * WhatsApp comercial — só dígitos, com 55 + DDD.
    * SUBSTITUIR via variável NEXT_PUBLIC_WHATSAPP_NUMBER (nunca inventar número).
    */
-  whatsappNumber: (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "").replace(/\D/g, ""),
+  // (21) 98608-4118 — pode ser sobrescrito por NEXT_PUBLIC_WHATSAPP_NUMBER na Vercel
+  whatsappNumber: (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "5521986084118").replace(/\D/g, ""),
+  whatsappDisplay: "(21) 98608-4118",
   whatsappGreeting:
     "Olá! Conheci a Backstag pelo site e gostaria de conversar sobre soluções para minha empresa.",
 

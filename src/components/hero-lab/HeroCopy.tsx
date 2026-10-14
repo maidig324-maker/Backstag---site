@@ -1,7 +1,8 @@
 "use client";
 
 import { motion } from "motion/react";
-import { ArrowDown } from "lucide-react";
+import { ArrowDown, MessageCircle } from "lucide-react";
+import { primaryContact } from "@/lib/contact";
 import { hero2026 } from "@/content/hero-2026";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { EASE } from "@/components/ui/motion";
@@ -56,6 +57,7 @@ export function HeadlineTech({ className = "" }: { className?: string }) {
 }
 
 export function SubAndCtas({ className = "", stacked = false }: { className?: string; stacked?: boolean }) {
+  const main = primaryContact();
   return (
     <motion.div
       data-reveal
@@ -66,7 +68,13 @@ export function SubAndCtas({ className = "", stacked = false }: { className?: st
     >
       <p className="max-w-sm text-base leading-relaxed text-paper/75 md:text-[1.05rem]">{hero2026.sub}</p>
       <div className={`mt-7 flex flex-col gap-3 ${stacked ? "" : "sm:flex-row sm:items-center"}`}>
-        <ButtonLink href={hero2026.primaryCta.href}>{hero2026.primaryCta.label}</ButtonLink>
+        <ButtonLink
+          href={main.href}
+          external
+          icon={<MessageCircle className="size-4" strokeWidth={1.75} />}
+        >
+          {main.channel === "whatsapp" ? "Conversar pelo WhatsApp" : hero2026.primaryCta.label}
+        </ButtonLink>
         <ButtonLink
           href={hero2026.secondaryCta.href}
           variant="ghost"

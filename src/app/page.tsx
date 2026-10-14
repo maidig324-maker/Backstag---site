@@ -1,5 +1,6 @@
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { FloatingWhatsApp } from "@/components/layout/FloatingWhatsApp";
 import { HeroStrata } from "@/components/hero-lab/HeroStrata";
 import { Problem } from "@/components/sections/Problem";
 import { Services } from "@/components/sections/Services";
@@ -31,6 +32,7 @@ export default function Home() {
         <Contact />
       </main>
       <Footer />
+      <FloatingWhatsApp />
     </>
   );
 }

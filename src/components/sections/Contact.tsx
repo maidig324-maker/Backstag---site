@@ -48,6 +48,11 @@ export function Contact() {
               <ButtonLink href={contact.instagramUrl} variant="ghost" external>
                 {contactSection.instagramCta}
               </ButtonLink>
+              {hasWhatsapp && (
+                <p className="label-tech mt-3 text-paper/60">
+                  WhatsApp comercial <span className="select-all text-paper">{contact.whatsappDisplay}</span>
+                </p>
+              )}
               {!hasWhatsapp && (
                 <p className="mt-2 max-w-sm text-xs leading-relaxed text-mute">
                   O atendimento por WhatsApp será disponibilizado em breve. Enquanto isso, fale com a Backstag

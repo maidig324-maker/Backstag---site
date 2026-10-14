@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useScroll, useSpring } from "motion/react";
-import { Menu, X } from "lucide-react";
+import { Menu, MessageCircle, X } from "lucide-react";
+import { primaryContact } from "@/lib/contact";
 import { contact, hero } from "@/content/site";
 import { visibleNavigation } from "@/lib/visibility";
 import { Logo } from "@/components/ui/Logo";
@@ -10,6 +11,7 @@ import { EASE } from "@/components/ui/motion";
 
 /** Com linkPrefix "/", as âncoras apontam para a home quando o Header é usado fora dela. */
 export function Header({ linkPrefix = "" }: { linkPrefix?: string } = {}) {
+  const main = primaryContact();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
@@ -98,10 +100,14 @@ export function Header({ linkPrefix = "" }: { linkPrefix?: string } = {}) {
 
           <div className="flex items-center gap-2">
             <a
-              href={linkPrefix + hero.primaryCta.href}
-              className="hidden min-h-11 items-center rounded-full border border-gold/50 px-5 text-sm text-gold-light transition-colors hover:bg-gold hover:text-ink md:inline-flex"
+              href={main.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden min-h-11 items-center gap-2 rounded-full border border-gold/50 px-5 text-sm text-gold-light transition-colors hover:bg-gold hover:text-ink md:inline-flex"
             >
-              {hero.primaryCta.label}
+              <MessageCircle className="size-4" strokeWidth={1.75} aria-hidden />
+              {main.channel === "whatsapp" ? "WhatsApp" : hero.primaryCta.label}
+              <span className="sr-only"> (abre em nova aba)</span>
             </a>
             <button
               ref={menuButton}
@@ -153,9 +159,19 @@ export function Header({ linkPrefix = "" }: { linkPrefix?: string } = {}) {
             </nav>
             <div className="flex flex-col gap-3">
               <a
+                href={main.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setOpen(false)}
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-gold font-medium text-ink"
+              >
+                <MessageCircle className="size-4" strokeWidth={1.75} aria-hidden />
+                {main.channel === "whatsapp" ? "Conversar pelo WhatsApp" : hero.primaryCta.label}
+              </a>
+              <a
                 href={linkPrefix + hero.primaryCta.href}
                 onClick={() => setOpen(false)}
-                className="inline-flex min-h-12 items-center justify-center rounded-full bg-gold font-medium text-ink"
+                className="inline-flex min-h-12 items-center justify-center rounded-full border border-line-strong text-sm text-paper"
               >
                 {hero.primaryCta.label}
               </a>
