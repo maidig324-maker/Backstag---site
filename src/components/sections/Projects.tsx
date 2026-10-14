@@ -4,13 +4,14 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowLeft, ArrowRight, ArrowUpRight, X } from "lucide-react";
-import { projectsIntro, type Project, type ProjectStatus } from "@/content/projects";
+import { projectsIntro, type Project, type ProjectStatus, type ProjectVideo } from "@/content/projects";
 import { projectTitle, visibleProjects } from "@/lib/visibility";
 import { EASE, Reveal } from "@/components/ui/motion";
 import { SectionIntro, splitLines } from "@/components/ui/SectionIntro";
 
 const statusLabel: Record<ProjectStatus, string> = {
   publicado: "Publicado",
+  "em-operacao": "Em operação",
   "em-andamento": "Em andamento",
   "em-documentacao": "Estudo de caso em documentação",
 };
@@ -238,6 +239,21 @@ export function Projects() {
           >
             {front.headline ?? "Material em preparação. Este estudo de caso será publicado após validação das informações com o cliente."}
           </motion.p>
+          {front.tags && (
+            <motion.ul
+              data-reveal
+              className="mt-5 flex flex-wrap justify-center gap-2"
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.24, ease: EASE }}
+            >
+              {front.tags.map((t) => (
+                <li key={t} className="label-tech rounded-full border border-gold/40 px-3 py-1.5 text-[0.68rem] text-gold-light">
+                  {t}
+                </li>
+              ))}
+            </motion.ul>
+          )}
         </div>
         {/* setas só no computador */}
         <div className="mt-8 hidden justify-center gap-2 md:flex">
@@ -267,11 +283,46 @@ export function Projects() {
   );
 }
 
+/** Vídeo real que toca sozinho (mudo) só enquanto está na tela. */
+function LoopVideo({ video, className = "", controls = false }: { video: ProjectVideo; className?: string; controls?: boolean }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const v = ref.current!;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const io = new IntersectionObserver(([e]) => (e.isIntersecting ? v.play().catch(() => {}) : v.pause()), { threshold: 0.3 });
+    io.observe(v);
+    return () => io.disconnect();
+  }, []);
+  return (
+    <video
+      ref={ref}
+      className={className}
+      src={video.src}
+      poster={video.poster}
+      width={video.width}
+      height={video.height}
+      muted
+      loop
+      playsInline
+      preload="metadata"
+      controls={controls}
+      aria-label={video.alt}
+    />
+  );
+}
+
 function CardFace({ project: p }: { project: Project }) {
   const cover = p.disclosure.imagesAuthorized ? p.images[0] : undefined;
+  const video = p.disclosure.imagesAuthorized ? p.video : undefined;
   return (
     <div className="c3-face relative aspect-[4/5] w-full overflow-hidden rounded-lg border border-line-strong">
-      {cover ? (
+      {video ? (
+        <>
+          <LoopVideo video={video} className="pointer-events-none absolute inset-0 h-full w-full object-cover" />
+          <span aria-hidden className="fp-scan pointer-events-none absolute inset-x-0 h-1/4" />
+          <span aria-hidden className="pointer-events-none absolute inset-0 rounded-lg ring-1 ring-inset ring-gold/40" />
+        </>
+      ) : cover ? (
         <Image src={cover.src} alt={cover.alt} fill sizes="(min-width: 768px) 30vw, 62vw" className="object-cover" draggable={false} />
       ) : (
         <div className="placeholder-surface flex h-full w-full flex-col justify-between p-5 md:p-6">
@@ -325,6 +376,7 @@ function CaseStudy({ project: p, onClose }: { project: Project; onClose: () => v
   }, [onClose]);
 
   const images = p.disclosure.imagesAuthorized ? p.images : [];
+  const video = p.disclosure.imagesAuthorized ? p.video : undefined;
   const showLink = p.link && p.disclosure.linkAuthorized;
   const titleId = `caso-${p.id}`;
 
@@ -373,6 +425,22 @@ function CaseStudy({ project: p, onClose }: { project: Project; onClose: () => v
             {projectTitle(p)}
           </h3>
           {p.headline && <p className="mt-5 text-lg leading-relaxed text-paper/80">{p.headline}</p>}
+          {p.tags && (
+            <ul className="mt-6 flex flex-wrap gap-2">
+              {p.tags.map((t) => (
+                <li key={t} className="label-tech rounded-full border border-gold/40 px-3.5 py-2 text-gold-light">
+                  {t}
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {video && (
+            <figure className="mt-10">
+              <LoopVideo video={video} controls className="mx-auto block max-h-[70svh] w-auto max-w-full rounded-lg" />
+              {video.note && <figcaption className="mt-3 text-center text-xs text-mute">{video.note}</figcaption>}
+            </figure>
+          )}
 
           {images.length > 0 && (
             <div className="mt-10 grid gap-4">

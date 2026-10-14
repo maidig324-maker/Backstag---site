@@ -27,7 +27,7 @@ export default function Home() {
         <Problem />
         <Projects />
         <Methodology />
-        {/* Prova social: só entra com material real e verificado */}
+        {/* Provas sociais só entram com material real e verificado */}
         {publishableProofs.length > 0 && <Proofs />}
         <Founder />
         <Contact />

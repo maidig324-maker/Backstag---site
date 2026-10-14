@@ -24,7 +24,18 @@ export type ProjectImage = {
   height: number;
 };
 
-export type ProjectStatus = "publicado" | "em-andamento" | "em-documentacao";
+export type ProjectStatus = "publicado" | "em-operacao" | "em-andamento" | "em-documentacao";
+
+/** Vídeo real do projeto (arquivo local em /public/projects/<id>/ ou /public/proofs/). */
+export type ProjectVideo = {
+  src: string;
+  poster?: string;
+  alt: string;
+  width: number;
+  height: number;
+  /** Observação exibida junto ao vídeo (ex.: dados desfocados). */
+  note?: string;
+};
 
 export type Project = {
   id: string;
@@ -44,6 +55,10 @@ export type Project = {
   /** Somente resultados comprovados/documentados. */
   provenResult: string | null;
   images: ProjectImage[];
+  /** Vídeo real: vira a capa do card no carrossel (exige imagesAuthorized). */
+  video?: ProjectVideo;
+  /** Canais/frentes do projeto, exibidos como etiquetas. */
+  tags?: string[];
   link: string | null;
   disclosure: {
     clientNameAuthorized: boolean;
@@ -61,6 +76,35 @@ export const projectsIntro = {
 };
 
 export const projects: Project[] = [
+  {
+    // Vídeo enviado pelo fundador; primeiros segundos cortados e primeiro
+    // plano desfocado para proteger nome e endereço dos compradores.
+    id: "ecommerce-marketplaces",
+    clientName: "Operação de e-commerce", // nome do cliente não informado
+    anonymousTitle: "Estrutura para vender nos marketplaces",
+    sector: "E-commerce",
+    status: "em-operacao",
+    headline:
+      "Montamos toda a estrutura para a empresa vender no e-commerce. O resultado aparece na operação: pedidos virando etiquetas de envio, uma atrás da outra.",
+    initialSituation: null,
+    challenge: null,
+    solution: "Estrutura completa para a empresa vender nos marketplaces: Mercado Livre, Shopee, Amazon e outros canais.",
+    backstagRole: "Montagem de toda a estrutura de desenvolvimento da empresa para vender no e-commerce.",
+    provenResult: null,
+    images: [],
+    video: {
+      src: "/proofs/ecommerce-etiquetas.mp4",
+      poster: "/proofs/ecommerce-etiquetas-poster.jpg",
+      alt: "Impressora térmica imprimindo etiquetas de envio de pedidos em sequência",
+      width: 720,
+      height: 960,
+      note: "Gravação real da operação de um cliente. Dados dos compradores desfocados.",
+    },
+    tags: ["Mercado Livre", "Shopee", "Amazon", "e outros canais"],
+    link: null,
+    disclosure: { clientNameAuthorized: false, linkAuthorized: false, imagesAuthorized: true },
+    featured: true,
+  },
   {
     id: "petshop-palmares",
     clientName: "Petshop Palmares", // exibido somente após autorização

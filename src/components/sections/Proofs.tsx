@@ -1,37 +1,25 @@
 import Image from "next/image";
 import { site } from "@/content/site";
-import { proofsIntro, type Proof, type VideoCase } from "@/content/proofs";
+import { proofsIntro, type Proof } from "@/content/proofs";
 import { publishableProofs } from "@/lib/visibility";
 import { Reveal } from "@/components/ui/motion";
 import { SectionIntro, splitLines } from "@/components/ui/SectionIntro";
-import { ProofVideoCase } from "./ProofVideoCase";
 
 /**
- * Bloco de prova social. Exibe apenas provas reais e verificadas:
- * vídeos de operação em destaque e, abaixo, depoimentos, números e prints.
+ * Exibe apenas provas reais e verificadas.
  * Sem material: mostra um aviso de espaço reservado (modo placeholder)
  * ou não renderiza nada (modo publicação).
  */
 export function Proofs() {
-  const all = publishableProofs;
-  if (all.length === 0 && !site.showPlaceholders) return null;
-  const cases = all.filter((p): p is VideoCase => p.kind === "video-case");
-  const items = all.filter((p): p is Exclude<Proof, VideoCase> => p.kind !== "video-case");
+  const items = publishableProofs;
+  if (items.length === 0 && !site.showPlaceholders) return null;
 
   return (
-    <section id="resultados" aria-label={proofsIntro.label} className="relative overflow-x-clip py-28 md:py-40">
+    <section id="resultados" aria-label={proofsIntro.label} className="relative py-28 md:py-40">
       <div className="container-x">
         <SectionIntro label={proofsIntro.label} titleLines={splitLines(proofsIntro.title, 26)} />
 
-        {cases.length > 0 && (
-          <div className="mt-16 space-y-28 md:mt-24 md:space-y-40">
-            {cases.map((c, i) => (
-              <ProofVideoCase key={c.id} item={c} flip={i % 2 === 1} />
-            ))}
-          </div>
-        )}
-
-        {all.length === 0 ? (
+        {items.length === 0 ? (
           <Reveal className="placeholder-surface mt-16 grid gap-6 border border-dashed border-line-strong p-6 md:mt-20 md:grid-cols-12 md:p-10">
             <p className="cue md:col-span-3">Placeholder</p>
             <div className="md:col-span-9">
@@ -45,11 +33,11 @@ export function Proofs() {
               </p>
             </div>
           </Reveal>
-        ) : items.length > 0 && (
-          <ul className="mt-20 grid gap-14 md:mt-28 md:grid-cols-2 md:gap-10">
+        ) : (
+          <ul className="mt-16 grid gap-px overflow-hidden border border-line bg-line md:mt-20 md:grid-cols-2">
             {items.map((item, i) => (
-              <li key={item.id} className={item.kind === "screenshot" || item.kind === "video" ? "md:col-span-2" : ""}>
-                <Reveal delay={(i % 2) * 0.08} className="h-full">
+              <li key={item.id} className={`bg-ink ${item.kind === "screenshot" || item.kind === "video" ? "md:col-span-2" : ""}`}>
+                <Reveal delay={(i % 2) * 0.08} className="h-full p-6 md:p-10">
                   <ProofItem item={item} />
                 </Reveal>
               </li>
@@ -61,7 +49,7 @@ export function Proofs() {
   );
 }
 
-function ProofItem({ item }: { item: Exclude<Proof, VideoCase> }) {
+function ProofItem({ item }: { item: Proof }) {
   switch (item.kind) {
     case "testimonial":
       return (
