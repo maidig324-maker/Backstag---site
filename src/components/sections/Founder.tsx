@@ -11,9 +11,17 @@ export function Founder() {
 
   return (
     <section id="sobre" aria-label={founder.label} className="relative overflow-x-clip py-28 md:py-44">
-      <div className="container-x grid gap-14 md:grid-cols-12 md:gap-10">
+      <div className="container-x grid gap-8 md:grid-cols-12 md:gap-x-10 md:gap-y-0">
+        {/* nome primeiro: no celular aparece antes da foto */}
+        <div className={`text-center md:text-left ${showPhotoSlot ? "md:col-span-6 md:col-start-7 md:row-start-1 md:self-end" : "md:col-span-8"}`}>
+          <LineReveal as="h2" lines={[founder.name]} className="display t-h2" />
+          <Reveal delay={0.1}>
+            <p className="mt-3 text-sm uppercase tracking-[0.16em] text-mute">{founder.role}</p>
+          </Reveal>
+        </div>
+
         {showPhotoSlot && (
-          <div className="md:col-span-6">
+          <div className="md:col-span-6 md:col-start-1 md:row-span-2 md:row-start-1 md:self-center">
             {founder.photo ? (
               <FounderVisual photo={founder.photo} />
             ) : (
@@ -29,17 +37,8 @@ export function Founder() {
           </div>
         )}
 
-        <div className={showPhotoSlot ? "md:col-span-6 md:self-center" : "md:col-span-8"}>
-          <LineReveal
-            as="h2"
-            lines={[founder.name]}
-            className="display t-h2"
-          />
-          <Reveal delay={0.1}>
-            <p className="mt-3 text-sm uppercase tracking-[0.16em] text-mute">{founder.role}</p>
-          </Reveal>
-
-          <div className="mt-10 space-y-5">
+        <div className={showPhotoSlot ? "md:col-span-6 md:col-start-7 md:row-start-2" : "md:col-span-8"}>
+          <div className="space-y-5 md:mt-10">
             {founder.paragraphs.map((t, i) => (
               <Reveal key={i} delay={0.08 * i}>
                 <p className={i === 0 ? "text-lg leading-relaxed text-paper md:text-xl" : "leading-relaxed text-mute md:text-lg"}>

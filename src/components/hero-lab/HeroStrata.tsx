@@ -139,7 +139,7 @@ export function HeroStrata() {
       {/* Composição 3D */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-[17%] -z-10 h-[31vh] [--u:20px] [perspective:1400px] md:inset-x-auto md:right-[5%] md:top-[29%] md:h-[46vh] md:w-[42vw] md:[--u:36px]"
+        className="pointer-events-none absolute inset-x-0 top-[13%] -z-10 h-[28vh] [--u:20px] [perspective:1400px] md:inset-x-auto md:right-[5%] md:top-[29%] md:h-[46vh] md:w-[42vw] md:[--u:36px]"
       >
         <div
           ref={stackRef}
@@ -187,12 +187,12 @@ export function HeroStrata() {
         </div>
       </div>
 
-      <motion.div style={{ y: copyY, opacity: copyO }} className="container-x flex flex-1 flex-col pb-10 pt-24 md:pb-14 md:pt-32">
+      <motion.div style={{ y: copyY, opacity: copyO }} className="container-x flex flex-1 flex-col pb-8 pt-20 md:pb-14 md:pt-32">
         <ConceptTag />
-        <HeadlineTech className="mt-[33vh] text-[clamp(3.6rem,min(15vw,19vh),13.5rem)] md:mt-10" />
+        <HeadlineTech className="mt-[26vh] text-[clamp(3rem,min(15vw,8.5vh),13.5rem)] md:mt-10 md:text-[clamp(3.6rem,min(15vw,19vh),13.5rem)]" />
 
         {/* Celular: toque num pilar para destacar o painel correspondente */}
-        <div role="group" aria-label="Pilares" className="mt-5 grid grid-cols-2 gap-2 md:hidden">
+        <div role="group" aria-label="Pilares" className="no-scrollbar -mx-5 mt-5 flex gap-2 overflow-x-auto px-5 md:hidden">
           {layers.map((l, i) => (
             <button
               key={l.code}
@@ -202,7 +202,7 @@ export function HeroStrata() {
                 setInteracted(true);
                 setActive(active === i ? null : i);
               }}
-              className={`label-tech inline-flex min-h-11 items-center gap-2 rounded-full border px-3 text-left text-[0.6rem] leading-tight transition-colors ${
+              className={`label-tech inline-flex min-h-10 shrink-0 items-center gap-2 whitespace-nowrap rounded-full border px-3 text-[0.6rem] leading-tight transition-colors ${
                 shown === i ? "border-gold bg-gold/10 text-gold-light" : "border-line-strong text-paper/70"
               }`}
             >
@@ -213,7 +213,7 @@ export function HeroStrata() {
         </div>
         <PillarBlurb pillar={blurb} className="mt-4 min-h-[3.4rem] md:hidden" />
 
-        <div className="mt-auto grid gap-10 pt-6 md:grid-cols-12 md:items-end md:pt-10">
+        <div className="mt-auto grid gap-10 pt-4 md:grid-cols-12 md:items-end md:pt-10">
           <SubAndCtas className="md:col-span-5" hideSubMobile />
           {/* Legenda dos pilares — interage com os painéis */}
           <div className="hidden md:col-span-5 md:col-start-8 md:block">

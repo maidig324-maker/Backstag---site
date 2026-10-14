@@ -1,88 +1,45 @@
 import Link from "next/link";
 import { contact, site } from "@/content/site";
-import { services } from "@/content/services";
 import { hasWhatsapp, whatsappLink } from "@/lib/contact";
-import { visibleNavigation } from "@/lib/visibility";
 import { Logo } from "@/components/ui/Logo";
 
+/** Rodapé enxuto: marca, assinatura e os canais. A navegação já está no topo. */
 export function Footer() {
   const wa = whatsappLink();
   const year = new Date().getFullYear();
+  const link = "inline-flex min-h-11 items-center text-sm text-mute transition-colors hover:text-paper";
 
   return (
-    <footer className="pt-20 md:pt-28">
-      <div className="container-x">
-        <div className="grid gap-14 md:grid-cols-12 md:gap-10">
-          <div className="md:col-span-5">
-            <Logo size="lg" />
-            <p className="display mt-6 text-3xl text-paper/90 md:text-4xl">
-              Gestão. Estratégia. <span className="accent">Tecnologia.</span>
-            </p>
-          </div>
+    <footer className="pb-8 pt-16 md:pt-24">
+      <div className="container-x flex flex-col items-center text-center">
+        <Logo size="lg" />
+        <p className="display mt-6 text-2xl text-paper/90 md:text-3xl">
+          Gestão. Estratégia. <span className="accent">Tecnologia.</span>
+        </p>
 
-          <nav aria-label="Serviços" className="md:col-span-3">
-            <p className="cue">Serviços</p>
-            <ul className="mt-5 space-y-1">
-              {services.map((s) => (
-                <li key={s.id}>
-                  <a href="/#desafios" className="inline-flex min-h-10 items-center text-sm text-mute hover:text-paper">
-                    {s.title}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
+        <ul className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-1">
+          {hasWhatsapp && wa && (
+            <li>
+              <a href={wa} target="_blank" rel="noopener noreferrer" className={link}>
+                WhatsApp
+              </a>
+            </li>
+          )}
+          <li>
+            <a href={contact.instagramUrl} target="_blank" rel="noopener noreferrer" className={link}>
+              Instagram {contact.instagramHandle}
+            </a>
+          </li>
+          <li>
+            <Link href="/privacidade" className={link}>
+              Política de privacidade
+            </Link>
+          </li>
+        </ul>
 
-          <nav aria-label="Rodapé" className="md:col-span-2">
-            <p className="cue">Navegação</p>
-            <ul className="mt-5 space-y-1">
-              {visibleNavigation.map((n) => (
-                <li key={n.href}>
-                  <a href={n.href} className="inline-flex min-h-10 items-center text-sm text-mute hover:text-paper">
-                    {n.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <div className="md:col-span-2">
-            <p className="cue">Contato</p>
-            <ul className="mt-5 space-y-1">
-              <li>
-                <a
-                  href={contact.instagramUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex min-h-10 items-center text-sm text-mute hover:text-paper"
-                >
-                  Instagram {contact.instagramHandle}
-                </a>
-              </li>
-              {hasWhatsapp && wa && (
-                <li>
-                  <a
-                    href={wa}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex min-h-10 items-center text-sm text-mute hover:text-paper"
-                  >
-                    WhatsApp
-                  </a>
-                </li>
-              )}
-            </ul>
-          </div>
-        </div>
-
-        <div className="mt-16 flex flex-col gap-3 py-8 md:mt-20 text-xs text-mute sm:flex-row sm:items-center sm:justify-between">
-          <p>
-            © {year} {site.name}. Todos os direitos reservados.
-          </p>
-          <Link href="/privacidade" className="inline-flex min-h-10 items-center hover:text-paper">
-            Política de privacidade
-          </Link>
-        </div>
+        <p className="mt-10 text-xs text-mute">
+          © {year} {site.name}. Todos os direitos reservados.
+        </p>
       </div>
     </footer>
   );

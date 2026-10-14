@@ -184,7 +184,7 @@ export function Projects() {
           if (e.key === "ArrowLeft") step(-1);
           if (e.key === "Enter") setActive(front);
         }}
-        className="c3-stage relative mx-auto mt-12 h-[min(108vw,34rem)] w-full max-w-[88rem] cursor-grab select-none [--cw:60vw] [--sx:33vw] [--sz:260px] active:cursor-grabbing md:mt-20 md:h-[min(44vw,38rem)] md:[--cw:min(30vw,26rem)] md:[--sx:min(24vw,22rem)] md:[--sz:320px]"
+        className="c3-stage relative mx-auto mt-8 h-[min(90vw,30rem)] w-full max-w-[88rem] cursor-grab select-none [--cw:60vw] [--sx:33vw] [--sz:260px] active:cursor-grabbing md:mt-12 md:h-[min(40vw,36rem)] md:[--cw:min(30vw,26rem)] md:[--sx:min(24vw,22rem)] md:[--sz:320px]"
         style={{ touchAction: "pan-y" }}
       >
         {items.map((p, i) => (
@@ -205,7 +205,7 @@ export function Projects() {
       </div>
 
       {/* Legenda do projeto da frente, em camadas */}
-      <div className="container-x mt-8 md:mt-12">
+      <div className="container-x mt-6 md:mt-10">
         {/* altura fixa: trocar de projeto não empurra o resto da página */}
         <div key={front.id} className="mx-auto min-h-[16rem] max-w-2xl text-center md:min-h-[12.5rem]">
           <motion.p

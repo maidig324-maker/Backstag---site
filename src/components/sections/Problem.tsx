@@ -113,7 +113,7 @@ export function Problem() {
 
   return (
     <section id="desafios" aria-label={problem.label} className="relative">
-      <div className="container-x pb-10 pt-28 md:pb-16 md:pt-40">
+      <div className="container-x pb-2 pt-24 md:pb-4 md:pt-32">
         <SectionIntro
           label={problem.label}
           titleLines={splitSentences(problem.vision.title)}
@@ -182,7 +182,7 @@ function Scene({ item, Symbol }: { item: Item; Symbol: () => ReactElement }) {
   return (
     <div className="container-x relative grid h-full grid-rows-[auto_minmax(0,1fr)_auto] gap-3 pb-16 pt-[4.75rem] md:grid-cols-12 md:grid-rows-1 md:items-center md:gap-10 md:pb-20 md:pt-24">
       {/* cabeçalho da cena */}
-      <div className="rv flex items-center justify-end gap-4 md:absolute md:inset-x-10 md:top-24" style={{ ["--d" as string]: "0.05s" }}>
+      <div className="rv flex items-center md:hidden" style={{ ["--d" as string]: "0.05s" }}>
         <span className="label-tech rounded-full border border-gold/40 px-3 py-1.5 text-gold-light">{item.front}</span>
       </div>
 
@@ -193,6 +193,10 @@ function Scene({ item, Symbol }: { item: Item; Symbol: () => ReactElement }) {
 
       {/* narrativa */}
       <div className="md:col-span-6">
+        {/* no computador a etiqueta abre o bloco de texto, no mesmo alinhamento */}
+        <span className="rv label-tech mb-6 hidden rounded-full border border-gold/40 px-3 py-1.5 text-gold-light md:inline-flex" style={{ ["--d" as string]: "0.05s" }}>
+          {item.front}
+        </span>
         <p className="rv label-tech text-paper/45" style={{ ["--d" as string]: "0.15s" }}>
           Na sua empresa hoje
         </p>
