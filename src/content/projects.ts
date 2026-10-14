@@ -24,6 +24,8 @@ export type ProjectImage = {
   height: number;
   /** Ponto de foco no recorte do card (object-position), ex.: "30% 50%". */
   focus?: string;
+  /** Card animado: câmera passeia pela imagem (zoom e deslocamento). */
+  pan?: boolean;
 };
 
 export type ProjectStatus = "publicado" | "em-operacao" | "em-andamento" | "em-documentacao";
@@ -113,7 +115,7 @@ export const projects: Project[] = [
     anonymousTitle: "Projeto em varejo pet",
     sector: "Varejo pet",
     status: "publicado",
-    headline: "Perfil do Instagram estruturado: destaques organizados por tema e feed com os pets e os produtos da loja.",
+    headline: "Redes sociais que aproximam a loja do tutor: perfil estruturado, destaques organizados por tema e um feed com os pets e os produtos da loja.",
     initialSituation: null,
     challenge: null,
     solution: null,
@@ -121,18 +123,14 @@ export const projects: Project[] = [
     provenResult: null,
     images: [
       {
-        src: "/projects/petshop-palmares/capa.webp",
-        alt: "Perfil do Instagram de uma loja pet com destaques temáticos e feed de fotos de cães e gatos",
-        width: 800,
-        height: 1000,
-      },
-      {
         src: "/projects/petshop-palmares/perfis.webp",
-        alt: "Quatro perfis de Instagram estruturados lado a lado: restaurante, padaria, loja pet e hamburgueria",
+        alt: "Perfis de Instagram estruturados lado a lado, com destaque para o perfil de uma loja pet com destaques temáticos e feed de cães e gatos",
         width: 1122,
         height: 1402,
+        pan: true,
       },
     ],
+    tags: ["Instagram", "Destaques por tema", "Feed", "Conteúdo de produto"],
     link: null,
     disclosure: { clientNameAuthorized: false, linkAuthorized: false, imagesAuthorized: true },
   },

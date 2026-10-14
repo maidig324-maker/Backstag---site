@@ -328,7 +328,7 @@ function CardFace({ project: p }: { project: Project }) {
           alt={cover.alt}
           fill
           sizes="(min-width: 768px) 30vw, 62vw"
-          className="pointer-events-none object-cover"
+          className={`pointer-events-none object-cover ${cover.pan ? "c3-pan" : ""}`}
           style={{ objectPosition: cover.focus ?? "50% 50%" }}
           draggable={false}
         />
