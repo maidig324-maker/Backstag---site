@@ -315,7 +315,7 @@ function CardFace({ project: p }: { project: Project }) {
   const cover = p.disclosure.imagesAuthorized ? p.images[0] : undefined;
   const video = p.disclosure.imagesAuthorized ? p.video : undefined;
   return (
-    <div className="c3-face relative aspect-[4/5] w-full overflow-hidden rounded-lg border border-line-strong">
+    <div className="c3-face tone-dark relative aspect-[4/5] w-full overflow-hidden rounded-lg border border-line-strong">
       {video ? (
         <>
           <LoopVideo video={video} className="pointer-events-none absolute inset-0 h-full w-full object-cover" />
@@ -382,7 +382,7 @@ function CaseStudy({ project: p, onClose }: { project: Project; onClose: () => v
 
   return (
     <motion.div
-      className="fixed inset-0 z-[80] flex justify-end"
+      className="tone-dark fixed inset-0 z-[80] flex justify-end"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}

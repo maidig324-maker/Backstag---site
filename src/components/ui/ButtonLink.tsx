@@ -6,7 +6,7 @@ const base =
   "group relative inline-flex min-h-12 items-center justify-center gap-3 overflow-hidden rounded-full text-[0.95rem] font-medium tracking-tight transition-colors duration-300 ease-[var(--ease-stage)]";
 
 const variants: Record<Variant, string> = {
-  primary: "bg-gold px-6 text-ink hover:bg-gold-light",
+  primary: "bg-gold px-6 text-on-gold hover:bg-gold-light",
   ghost: "border border-line-strong px-6 text-paper hover:border-gold hover:text-gold-light",
   text: "min-h-11 px-0 text-paper hover:text-gold-light",
 };

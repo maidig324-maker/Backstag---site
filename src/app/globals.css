@@ -15,6 +15,7 @@
   --color-gold-light: #f0c766;   /* dourado claro */
   --color-paper: #f5f5f2;        /* branco suave */
   --color-mute: #a3a29c;         /* texto secundário — contraste AA sobre #09090b */
+  --color-on-gold: #09090b;      /* texto do botão principal */
 
   --font-sans: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
   --font-display: var(--font-oswald), "Arial Narrow", sans-serif;
@@ -564,3 +565,90 @@ ol > .rv-line {
   animation: fp-scan 4.5s linear infinite;
 }
 @keyframes fp-scan { from { top: -30%; } to { top: 105%; } }
+
+/* ------------------------------------------------------------------
+   ZONAS DE COR — blocos claros e dourados
+   Cada zona troca os tokens da marca (os componentes não mudam) e tem
+   um fundo que nasce e se desfaz em degradê, sem marcar a divisão.
+------------------------------------------------------------------- */
+.tone-dark {
+  --color-ink: #09090b;
+  --color-ink-2: #191919;
+  --color-ink-3: #232323;
+  --color-line: rgb(245 245 242 / 0.12);
+  --color-line-strong: rgb(245 245 242 / 0.22);
+  --color-gold: #d7a83e;
+  --color-gold-light: #f0c766;
+  --color-paper: #f5f5f2;
+  --color-mute: #a3a29c;
+  --color-on-gold: #09090b;
+  color: var(--color-paper);
+}
+.tone-light {
+  --zone-rgb: 245 242 235;
+  --color-ink: #f5f2eb;
+  --color-ink-2: #ebe6da;
+  --color-ink-3: #ded7c7;
+  --color-line: rgb(20 18 14 / 0.12);
+  --color-line-strong: rgb(20 18 14 / 0.24);
+  --color-gold: #b07f17;
+  --color-gold-light: #8c620b;
+  --color-paper: #14120e;
+  --color-mute: #5a5549;
+  --color-on-gold: #09090b;
+  color: var(--color-paper);
+}
+.tone-gold {
+  --zone-rgb: 217 170 66;
+  --color-ink: #d9aa42;
+  --color-ink-2: #cb9c36;
+  --color-ink-3: #bd8f2d;
+  --color-line: rgb(11 11 12 / 0.16);
+  --color-line-strong: rgb(11 11 12 / 0.32);
+  --color-gold: #0b0b0c;
+  --color-gold-light: #5e400a;
+  --color-paper: #0b0b0c;
+  --color-mute: #3b3121;
+  --color-on-gold: #f0c766;
+  color: var(--color-paper);
+}
+.zone {
+  --fade: 8rem;
+  position: relative;
+  isolation: isolate;
+  padding-block: var(--fade);
+}
+@media (min-width: 768px) {
+  .zone { --fade: 12rem; }
+}
+.zone::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgb(var(--zone-rgb) / 0) 0,
+    rgb(var(--zone-rgb) / 0.35) calc(var(--fade) * 0.4),
+    rgb(var(--zone-rgb) / 0.85) calc(var(--fade) * 0.75),
+    rgb(var(--zone-rgb)) var(--fade),
+    rgb(var(--zone-rgb)) calc(100% - var(--fade)),
+    rgb(var(--zone-rgb) / 0.85) calc(100% - var(--fade) * 0.75),
+    rgb(var(--zone-rgb) / 0.35) calc(100% - var(--fade) * 0.4),
+    rgb(var(--zone-rgb) / 0) 100%
+  );
+}
+/* brilho dourado suave dentro da zona clara */
+.tone-light.zone::after {
+  content: "";
+  position: absolute;
+  inset: var(--fade) 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(60% 40% at 85% 20%, rgb(215 168 62 / 0.14), transparent 70%),
+    radial-gradient(50% 35% at 10% 75%, rgb(215 168 62 / 0.1), transparent 70%);
+}
+.tone-light .c3-face {
+  box-shadow: 0 40px 70px -32px rgb(20 18 14 / 0.55);
+}

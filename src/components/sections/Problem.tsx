@@ -16,8 +16,13 @@ import { ButtonLink } from "@/components/ui/ButtonLink";
  * avança em direção ao visitante e se dissolve, como mergulhar na visão
  * que a Backstag tem da empresa. Rolagem 100% livre: sem encaixe forçado.
  */
-/** Distância de rolagem por cena (em svh): curta, para a troca ser imediata. */
-const STEP = 48;
+/**
+ * Distância de rolagem por cena (em svh). Cada cena tem uma zona de
+ * descanso: a troca só acontece no miolo do trecho (HOLD de cada lado),
+ * então um toque leve não pula duas cenas.
+ */
+const STEP = 80;
+const HOLD = 0.22;
 
 export function Problem() {
   const main = primaryContact();
@@ -36,7 +41,10 @@ export function Problem() {
       raf = 0;
       const vh = window.innerHeight;
       const w = window.innerWidth;
-      const seg = Math.min(n - 1, Math.max(0, -track.getBoundingClientRect().top / (vh * (STEP / 100))));
+      const raw = Math.min(n - 1, Math.max(0, -track.getBoundingClientRect().top / (vh * (STEP / 100))));
+      const k = Math.floor(raw);
+      const f = Math.min(1, Math.max(0, (raw - k - HOLD) / (1 - HOLD * 2)));
+      const seg = Math.min(n - 1, k + f);
       const R = Math.sqrt((w * w + vh * vh) / 2) * 1.5; // raio que cobre a tela
       let ring = { r: 0, o: 0 };
       for (let i = 0; i < n; i++) {

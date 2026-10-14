@@ -38,8 +38,8 @@ export function Methodology() {
               <motion.span
                 aria-hidden
                 className="absolute left-0 top-2 flex size-6 items-center justify-center rounded-full border bg-ink-2"
-                initial={{ borderColor: "rgb(245 245 242 / 0.22)" }}
-                whileInView={{ borderColor: "rgb(215 168 62 / 1)" }}
+                initial={{ borderColor: "rgb(128 128 128 / 0.4)" }}
+                whileInView={{ borderColor: "rgb(190 140 40 / 1)" }}
                 viewport={{ margin: "0px 0px -45% 0px", once: true }}
                 transition={{ duration: 0.5 }}
               >

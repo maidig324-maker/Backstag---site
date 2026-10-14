@@ -47,7 +47,9 @@ export function Contact() {
           </div>
 
           <Reveal delay={0.15} className="md:col-span-6 md:col-start-7">
-            <LeadForm />
+            <div className="tone-dark rounded-xl bg-ink p-6 shadow-[0_40px_90px_-40px_rgb(11_11_12/0.7)] md:p-10">
+              <LeadForm />
+            </div>
           </Reveal>
         </div>
       </div>
