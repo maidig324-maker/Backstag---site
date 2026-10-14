@@ -113,7 +113,7 @@ export const projects: Project[] = [
     anonymousTitle: "Projeto em varejo pet",
     sector: "Varejo pet",
     status: "publicado",
-    headline: "Comunicação para redes sociais: produtos em destaque, campanhas e posts do feed com a identidade da marca.",
+    headline: "Perfil do Instagram estruturado: destaques organizados por tema e feed com os pets e os produtos da loja.",
     initialSituation: null,
     challenge: null,
     solution: null,
@@ -122,10 +122,15 @@ export const projects: Project[] = [
     images: [
       {
         src: "/projects/petshop-palmares/capa.webp",
-        alt: "Posts de redes sociais de uma loja pet: produto da semana, acessórios e petiscos",
-        width: 808,
-        height: 632,
-        focus: "26% 50%",
+        alt: "Perfil do Instagram de uma loja pet com destaques temáticos e feed de fotos de cães e gatos",
+        width: 800,
+        height: 1000,
+      },
+      {
+        src: "/projects/petshop-palmares/perfis.webp",
+        alt: "Quatro perfis de Instagram estruturados lado a lado: restaurante, padaria, loja pet e hamburgueria",
+        width: 1122,
+        height: 1402,
       },
     ],
     link: null,
