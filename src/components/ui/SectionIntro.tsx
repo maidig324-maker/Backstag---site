@@ -10,21 +10,26 @@ type Props = {
   size?: "lg" | "md";
 };
 
-export function SectionIntro({ titleLines, text, className = "", size = "lg" }: Props) {
+export function SectionIntro({ titleLines, text, className = "" }: Props) {
   return (
     <div className={className}>
       <LineReveal
         as="h2"
         lines={titleLines}
-        className={`display ${size === "lg" ? "text-[clamp(2.6rem,6vw,5.5rem)]" : "text-[clamp(2.4rem,4.2vw,4rem)]"}`}
+        className="display t-h2 max-w-4xl"
       />
       {text && (
         <Reveal delay={0.15}>
-          <p className="mt-7 max-w-xl text-base leading-relaxed text-mute md:text-lg">{text}</p>
+          <p className="mt-6 max-w-xl text-base leading-relaxed text-mute md:text-lg">{text}</p>
         </Reveal>
       )}
     </div>
   );
+}
+
+/** Uma linha por frase; dentro dela o texto quebra naturalmente (fica alinhado em qualquer tela). */
+export function splitSentences(text: string): string[] {
+  return text.split(/(?<=[.!?])\s+/).filter(Boolean);
 }
 
 /** Quebra um título em linhas de ~N caracteres, respeitando palavras. */

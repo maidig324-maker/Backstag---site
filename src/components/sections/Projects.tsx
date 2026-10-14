@@ -7,7 +7,7 @@ import { ArrowLeft, ArrowRight, ArrowUpRight, X } from "lucide-react";
 import { projectsIntro, type Project, type ProjectStatus, type ProjectVideo } from "@/content/projects";
 import { projectTitle, visibleProjects } from "@/lib/visibility";
 import { EASE, Reveal } from "@/components/ui/motion";
-import { SectionIntro, splitLines } from "@/components/ui/SectionIntro";
+import { SectionIntro, splitSentences } from "@/components/ui/SectionIntro";
 
 const statusLabel: Record<ProjectStatus, string> = {
   publicado: "Projeto realizado",
@@ -168,7 +168,7 @@ export function Projects() {
     <section id="projetos" aria-label={projectsIntro.label} className="relative overflow-hidden pb-28 pt-16 md:pb-40 md:pt-24">
       <div className="container-x">
         <div className="grid gap-10 md:grid-cols-12">
-          <SectionIntro className="md:col-span-7" label={projectsIntro.label} titleLines={splitLines(projectsIntro.title, 24)} />
+          <SectionIntro className="md:col-span-7" label={projectsIntro.label} titleLines={splitSentences(projectsIntro.title)} />
         </div>
       </div>
 
@@ -206,10 +206,11 @@ export function Projects() {
 
       {/* Legenda do projeto da frente, em camadas */}
       <div className="container-x mt-8 md:mt-12">
-        <div key={front.id} className="mx-auto max-w-2xl text-center">
+        {/* altura fixa: trocar de projeto não empurra o resto da página */}
+        <div key={front.id} className="min-h-[16rem] max-w-2xl md:min-h-[12.5rem]">
           <motion.p
             data-reveal
-            className="label-tech flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-paper/55"
+            className="label-tech flex flex-wrap items-center gap-x-3 gap-y-1 text-paper/55"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: EASE }}
@@ -220,19 +221,19 @@ export function Projects() {
           </motion.p>
           <motion.h3
             data-reveal
-            className="display mt-3 text-[clamp(1.8rem,3.4vw,2.75rem)]"
+            className="display t-h3 mt-3"
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.08, ease: EASE }}
           >
-            <button type="button" onClick={() => setActive(front)} aria-haspopup="dialog" className="hover:text-gold-light">
+            <button type="button" onClick={() => setActive(front)} aria-haspopup="dialog" className="text-left [text-transform:inherit] hover:text-gold-light">
               {projectTitle(front)}
               <span className="sr-only"> — ver estudo de caso</span>
             </button>
           </motion.h3>
           <motion.p
             data-reveal
-            className="mt-3 text-sm leading-relaxed text-mute md:text-base"
+            className="mt-3 max-w-xl text-sm leading-relaxed text-mute md:text-base"
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.16, ease: EASE }}
@@ -242,7 +243,7 @@ export function Projects() {
           {front.tags && (
             <motion.ul
               data-reveal
-              className="mt-5 flex flex-wrap justify-center gap-2"
+              className="mt-5 flex flex-wrap gap-2"
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.24, ease: EASE }}
@@ -256,7 +257,7 @@ export function Projects() {
           )}
         </div>
         {/* setas só no computador */}
-        <div className="mt-8 hidden justify-center gap-2 md:flex">
+        <div className="mt-6 hidden gap-2 md:flex">
           <button
             type="button"
             onClick={() => step(-1)}
@@ -429,7 +430,7 @@ function CaseStudy({ project: p, onClose }: { project: Project; onClose: () => v
 
         <div className="px-5 pb-16 pt-10 md:px-10">
           <p className="text-xs uppercase tracking-[0.16em] text-mute">{p.sector}</p>
-          <h3 id={titleId} className="display mt-3 text-[clamp(2.4rem,6vw,4rem)]">
+          <h3 id={titleId} className="display t-h2 mt-3">
             {projectTitle(p)}
           </h3>
           {p.headline && <p className="mt-5 text-lg leading-relaxed text-paper/80">{p.headline}</p>}

@@ -3,7 +3,7 @@ import { site } from "@/content/site";
 import { proofsIntro, type Proof } from "@/content/proofs";
 import { publishableProofs } from "@/lib/visibility";
 import { Reveal } from "@/components/ui/motion";
-import { SectionIntro, splitLines } from "@/components/ui/SectionIntro";
+import { SectionIntro, splitSentences } from "@/components/ui/SectionIntro";
 
 /**
  * Exibe apenas provas reais e verificadas.
@@ -17,7 +17,7 @@ export function Proofs() {
   return (
     <section id="resultados" aria-label={proofsIntro.label} className="relative py-28 md:py-40">
       <div className="container-x">
-        <SectionIntro label={proofsIntro.label} titleLines={splitLines(proofsIntro.title, 26)} />
+        <SectionIntro label={proofsIntro.label} titleLines={splitSentences(proofsIntro.title)} />
 
         {items.length === 0 ? (
           <Reveal className="placeholder-surface mt-16 grid gap-6 border border-dashed border-line-strong p-6 md:mt-20 md:grid-cols-12 md:p-10">

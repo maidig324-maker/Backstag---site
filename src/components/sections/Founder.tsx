@@ -33,7 +33,7 @@ export function Founder() {
           <LineReveal
             as="h2"
             lines={[founder.name]}
-            className="display text-[clamp(2.75rem,6vw,5.25rem)]"
+            className="display t-h2"
           />
           <Reveal delay={0.1}>
             <p className="mt-3 text-sm uppercase tracking-[0.16em] text-mute">{founder.role}</p>

@@ -17,7 +17,7 @@ export function Contact() {
           lines={contactSection.title
             .split(/(?<=\.)\s+/)
             .map((l, i) => (i === 0 ? l : <span key={i} className="accent">{l}</span>))}
-          className="display max-w-6xl text-[clamp(2.7rem,7.2vw,7.5rem)] leading-[0.95]"
+          className="display t-h2 max-w-4xl"
         />
 
         <div className="mt-14 grid gap-16 md:mt-20 md:grid-cols-12 md:gap-10">

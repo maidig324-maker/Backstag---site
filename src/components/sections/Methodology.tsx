@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { motion, useScroll, useSpring } from "motion/react";
 import { methodologyIntro, methodologySteps } from "@/content/methodology";
 import { EASE } from "@/components/ui/motion";
-import { SectionIntro, splitLines } from "@/components/ui/SectionIntro";
+import { SectionIntro, splitSentences } from "@/components/ui/SectionIntro";
 
 export function Methodology() {
   const listRef = useRef<HTMLOListElement>(null);
@@ -18,7 +18,7 @@ export function Methodology() {
           <div className="md:sticky md:top-32">
             <SectionIntro
               label={methodologyIntro.label}
-              titleLines={splitLines(methodologyIntro.title, 20)}
+              titleLines={splitSentences(methodologyIntro.title)}
               size="md"
             />
           </div>
@@ -34,7 +34,7 @@ export function Methodology() {
           />
 
           {methodologySteps.map((step, i) => (
-            <li key={step.number} className="relative pb-20 pl-14 last:pb-0 md:pb-28 md:pl-20">
+            <li key={step.number} className="relative pb-14 pl-10 last:pb-0 md:pb-20 md:pl-16">
               <motion.span
                 aria-hidden
                 className="absolute left-0 top-2 flex size-6 items-center justify-center rounded-full border bg-ink-2"
@@ -59,8 +59,8 @@ export function Methodology() {
                 viewport={{ margin: "0px 0px -35% 0px", once: true }}
                 transition={{ duration: 0.9, delay: i === 0 ? 0 : 0.05, ease: EASE }}
               >
-                <h3 className="display text-[clamp(1.85rem,5vw,4.25rem)] hyphens-auto">{step.title}</h3>
-                <p className="mt-5 max-w-md leading-relaxed text-mute md:text-lg">{step.text}</p>
+                <h3 className="display t-h3 hyphens-auto">{step.title}</h3>
+                <p className="mt-3 max-w-xl leading-relaxed text-mute md:text-lg">{step.text}</p>
               </motion.div>
             </li>
           ))}

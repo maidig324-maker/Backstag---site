@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type ReactElement } from "react";
 import { problem } from "@/content/site";
 import { Reveal } from "@/components/ui/motion";
-import { SectionIntro, splitLines } from "@/components/ui/SectionIntro";
+import { SectionIntro, splitSentences } from "@/components/ui/SectionIntro";
 import { discoverySymbols } from "./DiscoverySymbols";
 import { MessageCircle } from "lucide-react";
 import { primaryContact } from "@/lib/contact";
@@ -116,7 +116,7 @@ export function Problem() {
       <div className="container-x pb-10 pt-28 md:pb-16 md:pt-40">
         <SectionIntro
           label={problem.label}
-          titleLines={splitLines(problem.vision.title, 22)}
+          titleLines={splitSentences(problem.vision.title)}
         />
       </div>
 
@@ -164,7 +164,7 @@ export function Problem() {
       {/* Fecho da Descoberta: convite direto, no momento em que o visitante se reconheceu */}
       <div className="container-x pb-6 pt-16 md:pb-10 md:pt-24">
         <Reveal className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <p className="display max-w-2xl text-[clamp(2rem,5vw,3.75rem)]">
+          <p className="display t-h2 max-w-2xl">
             Viu a sua empresa em <span className="accent">algum desses desafios?</span>
           </p>
           <ButtonLink href={main.href} external icon={<MessageCircle className="size-4" strokeWidth={1.75} />} className="shrink-0 self-start md:self-auto">
@@ -196,7 +196,7 @@ function Scene({ item, Symbol }: { item: Item; Symbol: () => ReactElement }) {
         <p className="rv label-tech text-paper/45" style={{ ["--d" as string]: "0.15s" }}>
           Na sua empresa hoje
         </p>
-        <h3 className="rv display mt-2 text-[clamp(1.6rem,4.2vw,3.4rem)]" style={{ ["--d" as string]: "0.22s" }}>
+        <h3 className="rv display t-h3 mt-2" style={{ ["--d" as string]: "0.22s" }}>
           {item.title}
         </h3>
         <p className="rv mt-2 max-w-lg text-[0.84rem] leading-relaxed text-mute [@media(max-height:740px)]:hidden md:mt-4 md:text-base" style={{ ["--d" as string]: "0.3s" }}>
