@@ -557,3 +557,14 @@ ol > .rv-line {
   fill: rgb(240 199 102);
   animation: fv-pulse 2.8s ease-in-out infinite;
 }
+
+/* ---------- Prova real (vídeo) ---------- */
+.fp-frame {
+  background: #111113;
+  box-shadow: 0 0 0 1px rgb(240 199 102 / 0.35), 0 40px 90px -30px rgb(0 0 0 / 0.9), 0 0 60px -10px rgb(215 168 62 / 0.35);
+}
+.fp-scan {
+  background: linear-gradient(180deg, transparent, rgb(240 199 102 / 0.1), transparent);
+  animation: fp-scan 4.5s linear infinite;
+}
+@keyframes fp-scan { from { top: -30%; } to { top: 105%; } }

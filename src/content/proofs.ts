@@ -61,6 +61,20 @@ export const proofsIntro = {
   title: "O que os clientes e os números mostram.",
 };
 
+/**
+ * Prova em destaque: operação real de e-commerce estruturada pela Backstag.
+ * Vídeo enviado pelo fundador; primeiros segundos cortados e primeiro plano
+ * desfocado para proteger nome e endereço dos compradores nas etiquetas.
+ */
+export const featuredProof = {
+  id: "ecommerce-marketplaces",
+  title: ["Estrutura completa", "para vender nos marketplaces."],
+  text: "Montamos toda a estrutura para a empresa vender no e-commerce. O resultado aparece na operação: pedidos virando etiquetas de envio, uma atrás da outra.",
+  channels: ["Mercado Livre", "Shopee", "Amazon", "e outros canais"],
+  video: { src: "/proofs/ecommerce-etiquetas.mp4", poster: "/proofs/ecommerce-etiquetas-poster.jpg", width: 720, height: 960 },
+  caption: "Gravação real da operação de um cliente. Dados dos compradores desfocados.",
+};
+
 export const proofs: Proof[] = [
   // Nenhuma prova cadastrada ainda. Exemplos de formato:
   //
