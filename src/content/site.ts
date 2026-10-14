@@ -87,6 +87,11 @@ export const hero = {
 
 export const problem = {
   label: "Descoberta",
+  // Abertura da experiência "entre na nossa visão"
+  vision: {
+    title: "Veja a sua empresa pelos nossos olhos.",
+    text: "Role a tela e entre na nossa visão: para cada desafio de hoje, mostramos a transformação que enxergamos e como chegamos lá.",
+  },
   title: "O crescimento começa quando a estrutura acompanha a ambição.",
   intro:
     "Muitas empresas crescem mais rápido do que a própria organização. O cliente vê o palco — mas, muitas vezes, o que trava o negócio está nos bastidores.",
@@ -95,26 +100,36 @@ export const problem = {
       title: "Falta de organização operacional",
       text: "Rotinas que dependem da memória de poucas pessoas e informações espalhadas em lugares diferentes.",
       approach: "Mapeamos rotinas e responsabilidades e organizamos a informação num fluxo que a equipe consegue seguir.",
+      front: "Gestão Empresarial",
+      steps: ["Mapear rotinas e responsáveis", "Definir o fluxo e os padrões", "Centralizar as informações"],
     },
     {
       title: "Processos manuais e retrabalho",
       text: "Tarefas repetidas à mão, planilhas duplicadas e tempo gasto corrigindo o que poderia funcionar sozinho.",
       approach: "Identificamos tarefas repetitivas e avaliamos onde automação e integração entre ferramentas fazem sentido.",
+      front: "IA e Automação",
+      steps: ["Identificar tarefas repetitivas", "Avaliar automações e integrações", "Implantar e treinar a equipe"],
     },
     {
       title: "Presença digital pouco estruturada",
       text: "Canais que existem, mas não comunicam com clareza o que a empresa faz nem facilitam o contato.",
       approach: "Estruturamos site, canais e comunicação para explicar com clareza o que a empresa faz e facilitar o contato.",
+      front: "Desenvolvimento Digital",
+      steps: ["Revisar posicionamento e canais", "Estruturar site e comunicação", "Facilitar o contato comercial"],
     },
     {
       title: "Atendimento, marketing e operação desconectados",
       text: "Cada área trabalha com sua própria versão dos fatos, e o cliente sente essa distância.",
       approach: "Conectamos atendimento, marketing e operação para que as áreas trabalhem com a mesma informação.",
+      front: "Estratégia e Marketing",
+      steps: ["Mapear a jornada do cliente", "Integrar canais e ferramentas", "Alinhar a informação entre áreas"],
     },
     {
       title: "Dificuldade para acompanhar e melhorar",
       text: "Sem informação organizada, fica difícil saber o que está funcionando e por onde começar a mudar.",
       approach: "Organizamos indicadores simples e rotinas de acompanhamento para orientar as próximas melhorias.",
+      front: "Gestão Empresarial",
+      steps: ["Definir indicadores simples", "Criar a rotina de acompanhamento", "Priorizar as próximas melhorias"],
     },
   ],
   bridge:

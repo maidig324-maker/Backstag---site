@@ -71,7 +71,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <body className="bg-ink text-paper antialiased">
         <noscript>
-          <style>{`[data-reveal]{opacity:1!important;transform:none!important;clip-path:none!important}`}</style>
+          <style>{`[data-reveal],.rv{opacity:1!important;transform:none!important;clip-path:none!important}`}</style>
         </noscript>
         <a
           href="#conteudo"

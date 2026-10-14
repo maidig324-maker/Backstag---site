@@ -17,7 +17,13 @@ export function FloatingWhatsApp() {
       const contact = document.getElementById("contato");
       const pastHero = window.scrollY > window.innerHeight * 0.9;
       const atContact = contact ? contact.getBoundingClientRect().top < window.innerHeight * 0.6 : false;
-      setShow(pastHero && !atContact);
+      // some durante as cenas fixas (elas têm o próprio indicador no rodapé)
+      const pins = Array.from(document.querySelectorAll<HTMLElement>("[data-pin]"));
+      const pinned = pins.some((el) => {
+        const r = el.getBoundingClientRect();
+        return r.top <= 0 && r.bottom >= window.innerHeight;
+      });
+      setShow(pastHero && !atContact && !pinned);
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
