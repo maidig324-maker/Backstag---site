@@ -3,7 +3,6 @@ import { hasWhatsapp, primaryContact } from "@/lib/contact";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { LineReveal, Reveal } from "@/components/ui/motion";
 import { LeadForm } from "./LeadForm";
-import { sectionNumber } from "@/lib/visibility";
 
 export function Contact() {
   const main = primaryContact();
@@ -22,8 +21,7 @@ export function Contact() {
       <div className="container-x">
         <Reveal>
           <p className="cue flex items-center gap-3">
-            <span>{sectionNumber("contato")}</span>
-            <span aria-hidden className="h-px w-8 bg-gold/60" />
+            <span aria-hidden className="h-px w-8 bg-gold" />
             <span>{contactSection.label}</span>
           </p>
         </Reveal>

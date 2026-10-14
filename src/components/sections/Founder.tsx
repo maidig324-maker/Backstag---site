@@ -5,7 +5,6 @@ import { founder } from "@/content/founder";
 import { site } from "@/content/site";
 import { motion } from "motion/react";
 import { EASE, ImageReveal, LineReveal, Reveal } from "@/components/ui/motion";
-import { sectionNumber } from "@/lib/visibility";
 
 export function Founder() {
   const showPhotoSlot = founder.photo || site.showPlaceholders;
@@ -39,8 +38,7 @@ export function Founder() {
         <div className={showPhotoSlot ? "md:col-span-6 md:col-start-7 md:self-center" : "md:col-span-8"}>
           <Reveal>
             <p className="cue flex items-center gap-3">
-              <span>{sectionNumber("sobre")}</span>
-              <span aria-hidden className="h-px w-8 bg-gold/60" />
+              <span aria-hidden className="h-px w-8 bg-gold" />
               <span>{founder.label}</span>
             </p>
           </Reveal>

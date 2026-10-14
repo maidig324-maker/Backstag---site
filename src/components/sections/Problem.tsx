@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState, type ReactElement } from "react";
 import { problem } from "@/content/site";
-import { sectionNumber } from "@/lib/visibility";
 import { Reveal } from "@/components/ui/motion";
 import { SectionIntro, splitLines } from "@/components/ui/SectionIntro";
 import { discoverySymbols } from "./DiscoverySymbols";
@@ -15,6 +14,9 @@ import { discoverySymbols } from "./DiscoverySymbols";
  * que a Backstag tem da empresa. Pontos de encaixe (snap) fazem cada
  * passada de dedo terminar numa cena completa.
  */
+/** Distância de rolagem por cena (em svh): curta, para a troca ser imediata. */
+const STEP = 55;
+
 export function Problem() {
   const items = problem.items;
   const n = items.length;
@@ -31,14 +33,14 @@ export function Problem() {
       raf = 0;
       const vh = window.innerHeight;
       const w = window.innerWidth;
-      const seg = Math.min(n - 1, Math.max(0, -track.getBoundingClientRect().top / vh));
+      const seg = Math.min(n - 1, Math.max(0, -track.getBoundingClientRect().top / (vh * (STEP / 100))));
       const R = Math.sqrt((w * w + vh * vh) / 2) * 1.5; // raio que cobre a tela
       let ring = { r: 0, o: 0 };
       for (let i = 0; i < n; i++) {
         const el = slideRefs.current[i];
         if (!el) continue;
         // revelação desta cena (0 → 1) e saída (cena seguinte entrando)
-        const reveal = i === 0 ? 1 : Math.min(1, Math.max(0, seg - (i - 1)));
+        const reveal = i === 0 ? 1 : Math.min(1, Math.max(0, (seg - (i - 1)) / 0.85));
         const leave = i === n - 1 ? 0 : Math.min(1, Math.max(0, seg - i));
         const eased = 1 - Math.pow(1 - reveal, 2);
         el.style.clipPath = i === 0 || reveal >= 1 ? "none" : `circle(${(eased * R).toFixed(1)}px at 50% 46%)`;
@@ -85,7 +87,6 @@ export function Problem() {
     <section id="desafios" aria-label={problem.label} className="relative">
       <div className="container-x pb-10 pt-28 md:pb-16 md:pt-40">
         <SectionIntro
-          index={sectionNumber("desafios")}
           label={problem.label}
           titleLines={splitLines(problem.vision.title, 22)}
           text={problem.vision.text}
@@ -93,10 +94,10 @@ export function Problem() {
       </div>
 
       {/* Trilho: uma tela de rolagem por cena */}
-      <div ref={trackRef} data-pin className="relative" style={{ height: `${n * 100}svh` }}>
+      <div ref={trackRef} data-pin className="relative" style={{ height: `${(n - 1) * STEP + 100}svh` }}>
         {/* pontos de encaixe: cada passada de dedo para numa cena inteira */}
         {items.map((_, i) => (
-          <span key={i} aria-hidden className="absolute left-0 h-px w-px snap-start" style={{ top: `${i * 100}svh` }} />
+          <span key={i} aria-hidden className="absolute left-0 h-px w-px snap-start" style={{ top: `${i * STEP}svh` }} />
         ))}
 
         <div className="sticky top-0 h-[100svh] overflow-hidden">
@@ -123,7 +124,7 @@ export function Problem() {
                         "radial-gradient(ellipse 60% 45% at 50% 40%, rgb(215 168 62 / 0.09), transparent 70%), linear-gradient(rgb(245 245 242 / 0.035) 1px, transparent 1px) 0 0 / 100% 56px",
                     }}
                   />
-                  <Scene item={item} index={i} total={n} Symbol={Symbol} />
+                  <Scene item={item} Symbol={Symbol} />
                 </div>
               </div>
             );
@@ -135,20 +136,6 @@ export function Problem() {
             className="pointer-events-none absolute left-1/2 top-[46%] z-[20] -translate-x-1/2 -translate-y-1/2 rounded-full border border-gold-light/80 shadow-[0_0_40px_6px_rgb(240_199_102/0.35),inset_0_0_40px_6px_rgb(240_199_102/0.2)]"
             style={{ opacity: 0 }}
           />
-          {/* indicador de progresso fixo */}
-          <div className="pointer-events-none absolute inset-x-0 bottom-[calc(1.25rem+env(safe-area-inset-bottom,0px))] z-[21]">
-            <div className="container-x flex items-center gap-3">
-              <span className="label-tech tabular-nums text-paper/60">
-                <span className="text-gold">{String(active + 1).padStart(2, "0")}</span> / {String(n).padStart(2, "0")}
-              </span>
-              <div className="flex flex-1 gap-1.5">
-                {items.map((_, i) => (
-                  <span key={i} className={`h-0.5 flex-1 transition-colors duration-500 ${i <= active ? "bg-gold" : "bg-line-strong"}`} />
-                ))}
-              </div>
-              <span className="label-tech hidden text-paper/40 sm:inline">{active < n - 1 ? "Role para continuar" : "Fim da visão"}</span>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -165,13 +152,13 @@ export function Problem() {
 
 type Item = (typeof problem.items)[number];
 
-function Scene({ item, index, total, Symbol }: { item: Item; index: number; total: number; Symbol: () => ReactElement }) {
+function Scene({ item, Symbol }: { item: Item; Symbol: () => ReactElement }) {
   return (
     <div className="container-x relative grid h-full grid-rows-[auto_minmax(0,1fr)_auto] gap-3 pb-16 pt-[4.75rem] md:grid-cols-12 md:grid-rows-1 md:items-center md:gap-10 md:pb-20 md:pt-24">
       {/* cabeçalho da cena */}
       <div className="rv flex items-center justify-between gap-4 md:absolute md:inset-x-10 md:top-24" style={{ ["--d" as string]: "0.05s" }}>
         <span className="label-tech text-gold">
-          Visão Backstag · {String(index + 1).padStart(2, "0")}/{String(total).padStart(2, "0")}
+          Visão Backstag
         </span>
         <span className="label-tech rounded-full border border-gold/40 px-3 py-1.5 text-gold-light">{item.front}</span>
       </div>
@@ -205,15 +192,13 @@ function Scene({ item, index, total, Symbol }: { item: Item; index: number; tota
         <p className="rv label-tech mt-4 text-paper/45 md:mt-8" style={{ ["--d" as string]: "1.05s" }}>
           Como chegamos lá
         </p>
-        <ol className="mt-2 grid grid-cols-3 gap-2 md:gap-3">
+        {/* etapas livres, ligadas por uma linha — sem caixas nem números */}
+        <ol className="relative mt-3 flex flex-col gap-2.5 md:mt-4 md:flex-row md:gap-8">
+          <span aria-hidden className="rv-line absolute bottom-1.5 left-[3px] top-1.5 w-px origin-top bg-gold/50 md:bottom-auto md:left-0 md:right-0 md:top-[3px] md:h-px md:w-auto md:origin-left" style={{ ["--d" as string]: "1.1s" }} />
           {item.steps.map((s, k) => (
-            <li
-              key={s}
-              className="rv rounded-md border border-line-strong p-2.5 md:p-4"
-              style={{ ["--d" as string]: `${1.15 + k * 0.12}s` }}
-            >
-              <span className="label-tech text-gold">{String(k + 1).padStart(2, "0")}</span>
-              <span className="mt-1.5 block text-[0.72rem] leading-snug text-paper/85 md:text-sm">{s}</span>
+            <li key={s} className="rv relative flex items-center gap-3 md:flex-1 md:flex-col md:items-start md:gap-3" style={{ ["--d" as string]: `${1.2 + k * 0.14}s` }}>
+              <span aria-hidden className="relative size-[7px] shrink-0 rounded-full bg-gold shadow-[0_0_10px_rgb(240_199_102/0.7)]" />
+              <span className="text-sm font-medium leading-snug text-paper md:text-base">{s}</span>
             </li>
           ))}
         </ol>

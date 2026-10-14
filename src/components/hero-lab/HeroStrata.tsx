@@ -167,7 +167,7 @@ export function HeroStrata() {
                 {/* barra do painel */}
                 <div className="flex items-center justify-between border-b px-[6%] py-[3.5%]" style={{ borderColor: "rgb(245 245 242 / 0.1)" }}>
                   <span className={`label-tech text-[clamp(0.42rem,0.62vw,0.62rem)] ${on ? "text-gold" : "text-paper/55"}`}>
-                    {l.code} · {shortTitle(l.title)}
+                    {shortTitle(l.title)}
                   </span>
                   <span className={`size-1.5 rounded-full ${on ? "bg-gold" : "bg-paper/25"}`} />
                 </div>
@@ -184,7 +184,7 @@ export function HeroStrata() {
 
       <motion.div style={{ y: copyY, opacity: copyO }} className="container-x flex flex-1 flex-col pb-10 pt-24 md:pb-14 md:pt-32">
         <ConceptTag />
-        <HeadlineTech className="mt-[33vh] text-[clamp(3.4rem,min(11vw,18vh),12.5rem)] md:mt-10" />
+        <HeadlineTech className="mt-[33vh] text-[clamp(3.6rem,min(15vw,19vh),13.5rem)] md:mt-10" />
 
         {/* Celular: toque num pilar para destacar o painel correspondente */}
         <div role="group" aria-label="Pilares" className="mt-5 grid grid-cols-2 gap-2 md:hidden">
@@ -201,7 +201,7 @@ export function HeroStrata() {
                 shown === i ? "border-gold bg-gold/10 text-gold-light" : "border-line-strong text-paper/70"
               }`}
             >
-              <span className="text-gold">{l.code}</span>
+              <span aria-hidden className={`size-1.5 shrink-0 rounded-full ${shown === i ? "bg-gold" : "bg-paper/30"}`} />
               {shortTitle(l.title)}
             </button>
           ))}
@@ -214,7 +214,7 @@ export function HeroStrata() {
             {layers.map((l, i) => (
               <li key={l.code}>
                 <a
-                  href="/#solucoes"
+                  href="/#desafios"
                   onPointerEnter={() => {
                     setInteracted(true);
                     setActive(i);
@@ -229,7 +229,7 @@ export function HeroStrata() {
                     shown === i ? "border-gold text-paper" : "border-line text-paper/65 hover:text-paper"
                   }`}
                 >
-                  <span className="label-tech text-gold">{l.code}</span>
+                  <span aria-hidden className={`size-1.5 shrink-0 self-center rounded-full ${shown === i ? "bg-gold" : "bg-paper/30"}`} />
                   {l.title}
                 </a>
               </li>

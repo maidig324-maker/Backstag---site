@@ -21,7 +21,7 @@ export function Logo({ className = "" }: { className?: string }) {
   }
   return (
     <span
-      className={`font-sans text-[1.05rem] font-semibold tracking-[0.32em] text-paper ${className}`}
+      className={`font-sans text-[1.05rem] font-bold tracking-[0.3em] text-paper ${className}`}
       title="Logo oficial pendente — configurar em src/content/site.ts"
     >
       {site.name}

@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowLeft, ArrowRight, ArrowUpRight, X } from "lucide-react";
 import { projectsIntro, type Project, type ProjectStatus } from "@/content/projects";
-import { projectTitle, visibleProjects, sectionNumber } from "@/lib/visibility";
+import { projectTitle, visibleProjects } from "@/lib/visibility";
 import { EASE, Reveal } from "@/components/ui/motion";
 import { SectionIntro, splitLines } from "@/components/ui/SectionIntro";
 
@@ -25,7 +25,6 @@ export function Projects() {
   const [active, setActive] = useState<Project | null>(null);
   const [focus, setFocus] = useState(0);
   const trackRef = useRef<HTMLUListElement>(null);
-  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const track = trackRef.current;
@@ -38,15 +37,7 @@ export function Projects() {
       { root: track, threshold: 0.6 },
     );
     items.forEach((el) => io.observe(el));
-    const onScroll = () => {
-      const max = track.scrollWidth - track.clientWidth;
-      setProgress(max > 0 ? track.scrollLeft / max : 0);
-    };
-    track.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      io.disconnect();
-      track.removeEventListener("scroll", onScroll);
-    };
+    return () => io.disconnect();
   }, []);
 
   const go = (dir: 1 | -1) => {
@@ -64,7 +55,6 @@ export function Projects() {
         <div className="grid gap-10 md:grid-cols-12">
           <SectionIntro
             className="md:col-span-7"
-            index={sectionNumber("projetos")}
             label={projectsIntro.label}
             titleLines={splitLines(projectsIntro.title, 24)}
           />
@@ -75,12 +65,7 @@ export function Projects() {
 
         {/* Controles da galeria */}
         <div className="mt-14 flex items-center justify-between gap-6 md:mt-20">
-          <p className="label-tech tabular-nums text-paper/60" aria-live="polite">
-            <span className="text-gold">{String(focus + 1).padStart(2, "0")}</span> / {String(visibleProjects.length).padStart(2, "0")}
-          </p>
-          <div className="relative mx-2 h-px flex-1 bg-line-strong" aria-hidden>
-            <span className="absolute inset-y-0 left-0 bg-gold" style={{ width: `${Math.max(8, progress * 100)}%` }} />
-          </div>
+          <p className="label-tech text-paper/50">Deslize para ver os projetos</p>
           <div className="flex gap-2">
             <button
               type="button"
@@ -121,7 +106,7 @@ export function Projects() {
               i === focus ? "opacity-100" : "scale-[0.96] opacity-45"
             }`}
           >
-            <ProjectFrame project={p} index={i} onOpen={() => setActive(p)} />
+            <ProjectFrame project={p} onOpen={() => setActive(p)} />
           </li>
         ))}
       </ul>
@@ -133,7 +118,7 @@ export function Projects() {
   );
 }
 
-function ProjectFrame({ project: p, index, onOpen }: { project: Project; index: number; onOpen: () => void }) {
+function ProjectFrame({ project: p, onOpen }: { project: Project; onOpen: () => void }) {
   const cover = p.disclosure.imagesAuthorized ? p.images[0] : undefined;
   const isPlaceholder = p.status === "em-documentacao";
 
@@ -151,9 +136,7 @@ function ProjectFrame({ project: p, index, onOpen }: { project: Project; index: 
         ) : (
           <div className="placeholder-surface flex h-full w-full flex-col justify-between p-5 md:p-8">
             <span className="label-tech text-paper/50">Placeholder · imagens reais pendentes</span>
-            <span className="display text-[clamp(5rem,14vw,12rem)] leading-none text-paper/[0.07]">
-              {String(index + 1).padStart(2, "0")}
-            </span>
+            <span className="display text-[clamp(3rem,9vw,7.5rem)] leading-[0.9] text-paper/[0.08]">{p.sector}</span>
           </div>
         )}
         {/* marcações de canto */}

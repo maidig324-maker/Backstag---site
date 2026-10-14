@@ -1,18 +1,21 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Anton, Archivo } from "next/font/google";
 import { contact, site } from "@/content/site";
 import { MotionProvider } from "@/components/providers/MotionProvider";
 import "./globals.css";
 
-const sans = Geist({
+// Títulos: condensada e pesada, em caixa alta — a voz visual do Instagram da Backstag
+const display = Anton({
   subsets: ["latin"],
-  variable: "--font-geist",
+  weight: "400",
+  variable: "--font-anton",
   display: "swap",
 });
 
-const mono = Geist_Mono({
+// Texto e interface: grotesca encorpada, legível no celular
+const sans = Archivo({
   subsets: ["latin"],
-  variable: "--font-geist-mono",
+  variable: "--font-archivo",
   display: "swap",
 });
 
@@ -66,7 +69,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="pt-BR"
-      className={`${sans.variable} ${mono.variable}`}
+      className={`${display.variable} ${sans.variable}`}
       suppressHydrationWarning
     >
       <body className="bg-ink text-paper antialiased">

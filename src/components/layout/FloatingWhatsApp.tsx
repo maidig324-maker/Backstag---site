@@ -21,7 +21,7 @@ export function FloatingWhatsApp() {
       const pins = Array.from(document.querySelectorAll<HTMLElement>("[data-pin]"));
       const pinned = pins.some((el) => {
         const r = el.getBoundingClientRect();
-        return r.top <= 0 && r.bottom >= window.innerHeight;
+        return r.top <= 2 && r.bottom >= window.innerHeight - 2;
       });
       setShow(pastHero && !atContact && !pinned);
     };

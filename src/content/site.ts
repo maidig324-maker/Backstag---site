@@ -64,7 +64,7 @@ export const contact = {
 } as const;
 
 export const navigation = [
-  { label: "Soluções", href: "#solucoes" },
+  { label: "Soluções", href: "#desafios" },
   { label: "Projetos", href: "#projetos" },
   { label: "Método", href: "#metodo" },
   { label: "Sobre", href: "#sobre" },

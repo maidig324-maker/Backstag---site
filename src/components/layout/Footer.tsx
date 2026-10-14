@@ -26,7 +26,7 @@ export function Footer() {
             <ul className="mt-5 space-y-1">
               {services.map((s) => (
                 <li key={s.id}>
-                  <a href="#solucoes" className="inline-flex min-h-10 items-center text-sm text-mute hover:text-paper">
+                  <a href="/#desafios" className="inline-flex min-h-10 items-center text-sm text-mute hover:text-paper">
                     {s.title}
                   </a>
                 </li>
@@ -77,7 +77,7 @@ export function Footer() {
         </div>
 
         {/* Assinatura em escala — o nome encerra a página */}
-        <p aria-hidden className="mt-20 select-none overflow-hidden whitespace-nowrap font-sans text-[clamp(3rem,14.5vw,14rem)] font-semibold leading-[0.8] tracking-[0.04em] text-paper/[0.04] md:mt-28">
+        <p aria-hidden className="mt-20 select-none overflow-hidden whitespace-nowrap font-display text-[clamp(4rem,24vw,22rem)] leading-[0.8] tracking-[0.02em] text-paper/[0.04] md:mt-28">
           {site.name}
         </p>
 

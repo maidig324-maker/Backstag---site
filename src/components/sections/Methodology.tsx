@@ -5,7 +5,6 @@ import { motion, useScroll, useSpring } from "motion/react";
 import { methodologyIntro, methodologySteps } from "@/content/methodology";
 import { EASE } from "@/components/ui/motion";
 import { SectionIntro, splitLines } from "@/components/ui/SectionIntro";
-import { sectionNumber } from "@/lib/visibility";
 
 export function Methodology() {
   const listRef = useRef<HTMLOListElement>(null);
@@ -18,7 +17,6 @@ export function Methodology() {
         <div className="md:col-span-5">
           <div className="md:sticky md:top-32">
             <SectionIntro
-              index={sectionNumber("metodo")}
               label={methodologyIntro.label}
               titleLines={splitLines(methodologyIntro.title, 20)}
               size="md"
@@ -26,7 +24,7 @@ export function Methodology() {
           </div>
         </div>
 
-        <ol ref={listRef} className="relative md:col-span-6 md:col-start-7">
+        <ol ref={listRef} className="relative min-w-0 md:col-span-6 md:col-start-7">
           {/* Linha do tempo: trilho + preenchimento dourado ligado ao scroll */}
           <span aria-hidden className="absolute bottom-0 left-[0.6875rem] top-2 w-px bg-line" />
           <motion.span
@@ -61,8 +59,7 @@ export function Methodology() {
                 viewport={{ margin: "0px 0px -35% 0px", once: true }}
                 transition={{ duration: 0.9, delay: i === 0 ? 0 : 0.05, ease: EASE }}
               >
-                <p className="cue">Etapa {step.number}</p>
-                <h3 className="display mt-4 text-[clamp(2.2rem,4.6vw,3.75rem)]">{step.title}</h3>
+                <h3 className="display text-[clamp(2rem,5vw,4.25rem)] hyphens-auto">{step.title}</h3>
                 <p className="mt-5 max-w-md leading-relaxed text-mute md:text-lg">{step.text}</p>
               </motion.div>
             </li>

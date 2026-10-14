@@ -1,7 +1,6 @@
 import { LineReveal, Reveal } from "./motion";
 
 type Props = {
-  index: string;
   label: string;
   /** Título já quebrado em linhas para a animação. */
   titleLines: string[];
@@ -11,20 +10,19 @@ type Props = {
   size?: "lg" | "md";
 };
 
-export function SectionIntro({ index, label, titleLines, text, className = "", size = "lg" }: Props) {
+export function SectionIntro({ label, titleLines, text, className = "", size = "lg" }: Props) {
   return (
     <div className={className}>
       <Reveal>
         <p className="cue flex items-center gap-3">
-          <span>{index}</span>
-          <span aria-hidden className="h-px w-8 bg-gold/60" />
+          <span aria-hidden className="h-px w-8 bg-gold" />
           <span>{label}</span>
         </p>
       </Reveal>
       <LineReveal
         as="h2"
         lines={titleLines}
-        className={`display mt-6 ${size === "lg" ? "text-[clamp(2.25rem,5.2vw,4.75rem)]" : "text-[clamp(2.25rem,3.7vw,3.5rem)]"}`}
+        className={`display mt-6 ${size === "lg" ? "text-[clamp(2.6rem,6vw,5.5rem)]" : "text-[clamp(2.4rem,4.2vw,4rem)]"}`}
       />
       {text && (
         <Reveal delay={0.15}>

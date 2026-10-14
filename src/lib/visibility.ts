@@ -20,18 +20,3 @@ export const visibleNavigation = navigation.filter(
 export function projectTitle(p: Project): string {
   return p.disclosure.clientNameAuthorized ? p.clientName : p.anonymousTitle;
 }
-
-/** Numeração das seções visíveis, sem saltos quando alguma é ocultada. */
-const order = [
-  "desafios",
-  "solucoes",
-  ...(showProjects ? ["projetos"] : []),
-  "metodo",
-  ...(publishableProofs.length > 0 ? ["resultados"] : []),
-  "sobre",
-  "contato",
-];
-export function sectionNumber(id: string): string {
-  // +2: o hero é o capítulo 01
-  return String(order.indexOf(id) + 2).padStart(2, "0");
-}
