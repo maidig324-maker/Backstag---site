@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { founder } from "@/content/founder";
 import { site } from "@/content/site";
 import { motion } from "motion/react";
 import { EASE, ImageReveal, LineReveal, Reveal } from "@/components/ui/motion";
+import { FounderVisual } from "./FounderVisual";
 
 export function Founder() {
   const showPhotoSlot = founder.photo || site.showPlaceholders;
@@ -13,29 +13,23 @@ export function Founder() {
     <section id="sobre" aria-label={founder.label} className="relative py-28 md:py-44">
       <div className="container-x grid gap-14 md:grid-cols-12 md:gap-10">
         {showPhotoSlot && (
-          <div className="md:col-span-5">
-            <ImageReveal className="relative aspect-[4/5] w-full overflow-hidden rounded-md border border-line-strong">
-              {founder.photo ? (
-                <Image
-                  src={founder.photo.src}
-                  alt={founder.photo.alt}
-                  fill
-                  sizes="(min-width: 768px) 40vw, 100vw"
-                  className="object-cover grayscale-[15%]"
-                />
-              ) : (
+          <div className="md:col-span-6">
+            {founder.photo ? (
+              <FounderVisual photo={founder.photo} />
+            ) : (
+              <ImageReveal className="relative aspect-[4/5] w-full overflow-hidden rounded-md border border-line-strong">
                 <div className="placeholder-surface flex h-full w-full flex-col justify-end p-6">
                   <p className="cue text-paper/50">Placeholder</p>
                   <p className="mt-2 text-sm text-mute">
                     Fotografia real de {founder.name} — a ser enviada pelo cliente.
                   </p>
                 </div>
-              )}
-            </ImageReveal>
+              </ImageReveal>
+            )}
           </div>
         )}
 
-        <div className={showPhotoSlot ? "md:col-span-6 md:col-start-7 md:self-center" : "md:col-span-8"}>
+        <div className={showPhotoSlot ? "md:col-span-6 md:self-center" : "md:col-span-8"}>
           <Reveal>
             <p className="cue flex items-center gap-3">
               <span aria-hidden className="h-px w-8 bg-gold" />

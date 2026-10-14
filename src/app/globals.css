@@ -445,3 +445,94 @@ ol > .rv-line {
 .c3-open {
   opacity: calc(1 - var(--ao, 0) * 3);
 }
+
+/* ---------- Fundador em cena ---------- */
+.fv-halo {
+  background: radial-gradient(circle, rgb(215 168 62 / 0.22) 0%, rgb(215 168 62 / 0.08) 38%, transparent 66%);
+}
+.fv-ring {
+  border: 1px solid rgb(215 168 62 / 0.28);
+  -webkit-mask-image: conic-gradient(#000 0 70%, transparent 70% 100%);
+  mask-image: conic-gradient(#000 0 70%, transparent 70% 100%);
+  animation: fv-spin 22s linear infinite;
+}
+.fv-ring-2 {
+  border-style: dashed;
+  border-color: rgb(245 245 242 / 0.12);
+  animation-duration: 40s;
+  animation-direction: reverse;
+}
+@keyframes fv-spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+.fv-ring { transform: translate(-50%, -50%); }
+.fv-deck { perspective: 700px; perspective-origin: 50% 0%; }
+.fv-deck-plane {
+  transform: rotateX(64deg);
+  transform-origin: 50% 100%;
+  border-radius: 10px;
+  border: 1px solid rgb(240 199 102 / 0.55);
+  background: linear-gradient(180deg, rgb(215 168 62 / 0.18), rgb(215 168 62 / 0.04));
+  box-shadow: 0 0 40px 6px rgb(215 168 62 / 0.25), inset 0 0 30px rgb(240 199 102 / 0.18);
+}
+.fv-keys {
+  background-image: linear-gradient(rgb(240 199 102 / 0.45) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(240 199 102 / 0.4) 1px, transparent 1px);
+  background-size: 7.5% 22%;
+  animation: fv-keys 3.2s ease-in-out infinite;
+}
+@keyframes fv-keys { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+.fv-photo {
+  /* suaviza os cortes retos da foto nas laterais */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 9%, #000 91%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 9%, #000 91%, transparent 100%);
+  filter: drop-shadow(-3px -2px 10px rgb(240 199 102 / 0.28)) drop-shadow(4px 0 14px rgb(92 118 160 / 0.22));
+}
+.fv-handlight {
+  background: radial-gradient(ellipse 70% 80% at 45% 100%, rgb(240 199 102 / 0.28), transparent 70%);
+  mix-blend-mode: screen;
+}
+.fv-beam {
+  left: 4%;
+  top: 60%;
+  width: 30%;
+  height: 32%;
+  background: linear-gradient(to top, rgb(240 199 102 / 0.22), transparent 85%);
+  clip-path: polygon(30% 100%, 70% 100%, 100% 0%, 0% 12%);
+}
+.fv-screen {
+  transform-style: preserve-3d;
+  border: 1px solid rgb(240 199 102 / 0.65);
+  background: linear-gradient(160deg, rgb(28 24 14 / 0.82), rgb(14 14 16 / 0.72));
+  box-shadow: 0 0 30px 2px rgb(215 168 62 / 0.28), inset 0 0 24px rgb(240 199 102 / 0.12);
+  animation: fv-float 6s ease-in-out infinite;
+}
+@keyframes fv-float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -6px; } }
+.fv-scan {
+  background: linear-gradient(180deg, transparent, rgb(240 199 102 / 0.14), transparent);
+  animation: fv-scan 3.4s linear infinite;
+}
+@keyframes fv-scan { from { top: -35%; } to { top: 100%; } }
+/* o site se formando no fundo da cena do fundador */
+.fv-draw {
+  stroke: rgb(240 199 102 / 0.55);
+  stroke-width: 1;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.fv-link { stroke: rgb(240 199 102 / 0.7); }
+.fv-on .fv-draw { animation: fv-draw 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+@keyframes fv-draw { to { stroke-dashoffset: 0; } }
+.fv-flow {
+  stroke: rgb(255 226 150);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-dasharray: 6 220;
+  stroke-dashoffset: 0;
+  opacity: 0;
+  filter: drop-shadow(0 0 3px rgb(240 199 102));
+}
+.fv-on .fv-flow { animation: fv-flow 2.6s linear infinite; }
+@keyframes fv-flow { 0% { stroke-dashoffset: 226; opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 1; } }
+.fv-node { fill: rgb(240 199 102); opacity: 0; transform-box: fill-box; transform-origin: center; }
+.fv-on .fv-node { animation: fv-node 0.5s ease forwards, fv-pulse 2.4s ease-in-out 2s infinite; }
+@keyframes fv-node { from { opacity: 0; transform: scale(0); } to { opacity: 0.9; transform: scale(1); } }
+@keyframes fv-pulse { 0%, 100% { opacity: 0.9; } 50% { opacity: 0.35; } }
