@@ -14,11 +14,10 @@ import { ButtonLink } from "@/components/ui/ButtonLink";
  * A tela fica fixa enquanto o visitante rola (rolagem nativa, sem bloqueio).
  * Cada desafio se abre do centro como um portal sobre o anterior, que
  * avança em direção ao visitante e se dissolve, como mergulhar na visão
- * que a Backstag tem da empresa. Pontos de encaixe (snap) fazem cada
- * passada de dedo terminar numa cena completa.
+ * que a Backstag tem da empresa. Rolagem 100% livre: sem encaixe forçado.
  */
 /** Distância de rolagem por cena (em svh): curta, para a troca ser imediata. */
-const STEP = 55;
+const STEP = 48;
 
 export function Problem() {
   const main = primaryContact();
@@ -99,11 +98,6 @@ export function Problem() {
 
       {/* Trilho: uma tela de rolagem por cena */}
       <div ref={trackRef} data-pin className="relative" style={{ height: `${(n - 1) * STEP + 100}svh` }}>
-        {/* pontos de encaixe: cada passada de dedo para numa cena inteira */}
-        {items.map((_, i) => (
-          <span key={i} aria-hidden className="absolute left-0 h-px w-px snap-start" style={{ top: `${i * STEP}svh` }} />
-        ))}
-
         <div className="sticky top-0 h-[100svh] overflow-hidden">
           {items.map((item, i) => {
             const Symbol = discoverySymbols[i];
@@ -145,7 +139,7 @@ export function Problem() {
 
       {/* Fecho da Descoberta: convite direto, no momento em que o visitante se reconheceu */}
       <div className="container-x pb-6 pt-16 md:pb-10 md:pt-24">
-        <Reveal className="flex flex-col gap-6 border-t border-gold/40 pt-10 md:flex-row md:items-end md:justify-between md:pt-14">
+        <Reveal className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <p className="display max-w-2xl text-[clamp(2rem,5vw,3.75rem)]">
             Viu a sua empresa em <span className="accent">algum desses desafios?</span>
           </p>

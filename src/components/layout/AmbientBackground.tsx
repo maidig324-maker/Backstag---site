@@ -1,5 +1,7 @@
+import { AmbientParticles } from "./AmbientParticles";
+
 /**
- * Cenário de fundo do site: luzes difusas em movimento lento, piso em
+ * Cenário de fundo do site: rede de partículas, luzes difusas em movimento lento, piso em
  * grade em perspectiva e granulação fina. Fixo atrás do conteúdo, sem
  * filtros pesados (só transform), e parado com redução de movimento.
  */
@@ -11,6 +13,7 @@ export function AmbientBackground() {
       <div className="amb-floor">
         <span className="amb-grid" />
       </div>
+      <AmbientParticles />
       <span className="amb-grain" />
     </div>
   );

@@ -9,15 +9,6 @@ export function Contact() {
 
   return (
     <section id="contato" aria-label={contactSection.label} className="relative isolate overflow-hidden py-28 md:py-44">
-      {/* Fechamento: a luz de palco volta, agora em cima do visitante */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-[90%]"
-        style={{
-          background:
-            "radial-gradient(ellipse 50% 60% at 30% 100%, rgb(215 168 62 / 0.10), transparent 70%)",
-        }}
-      />
       <div className="container-x">
         <Reveal>
           <p className="cue flex items-center gap-3">

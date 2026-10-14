@@ -12,7 +12,7 @@ export function Methodology() {
   const fill = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.4 });
 
   return (
-    <section id="metodo" aria-label={methodologyIntro.label} className="relative border-y border-line bg-ink-2/40 py-28 md:py-44">
+    <section id="metodo" aria-label={methodologyIntro.label} className="relative py-28 md:py-44">
       <div className="container-x grid gap-16 md:grid-cols-12 md:gap-10">
         <div className="md:col-span-5">
           <div className="md:sticky md:top-32">
@@ -59,7 +59,7 @@ export function Methodology() {
                 viewport={{ margin: "0px 0px -35% 0px", once: true }}
                 transition={{ duration: 0.9, delay: i === 0 ? 0 : 0.05, ease: EASE }}
               >
-                <h3 className="display text-[clamp(2rem,5vw,4.25rem)] hyphens-auto">{step.title}</h3>
+                <h3 className="display text-[clamp(1.85rem,5vw,4.25rem)] hyphens-auto">{step.title}</h3>
                 <p className="mt-5 max-w-md leading-relaxed text-mute md:text-lg">{step.text}</p>
               </motion.div>
             </li>
