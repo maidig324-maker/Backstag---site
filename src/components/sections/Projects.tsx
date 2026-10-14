@@ -48,8 +48,29 @@ export function Projects() {
     };
     update();
     track.addEventListener("scroll", onScroll, { passive: true });
+
+    // convite: na primeira vez que a galeria aparece, desliza um pouco e volta
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let nudgeTimer = 0;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) return;
+        io.disconnect();
+        if (reduced || track.scrollLeft > 4) return;
+        track.style.scrollSnapType = "none";
+        track.scrollTo({ left: 70, behavior: "smooth" });
+        nudgeTimer = window.setTimeout(() => {
+          track.scrollTo({ left: 0, behavior: "smooth" });
+          nudgeTimer = window.setTimeout(() => (track.style.scrollSnapType = ""), 600);
+        }, 650);
+      },
+      { threshold: 0.6 },
+    );
+    io.observe(track);
     window.addEventListener("resize", onScroll);
     return () => {
+      io.disconnect();
+      window.clearTimeout(nudgeTimer);
       track.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
       cancelAnimationFrame(raf);
@@ -126,7 +147,7 @@ export function Projects() {
             className="pg-item w-[84vw] shrink-0 snap-center md:w-[min(62vw,56rem)]"
             style={{ ["--d" as string]: i === 0 ? 0 : 1, ["--ad" as string]: i === 0 ? 0 : 1 }}
           >
-            <ProjectFrame project={p} onOpen={() => setActive(p)} />
+            <ProjectFrame project={p} onOpen={() => setActive(p)} hasNext={i < visibleProjects.length - 1} />
           </li>
         ))}
       </ul>
@@ -138,12 +159,20 @@ export function Projects() {
   );
 }
 
-function ProjectFrame({ project: p, onOpen }: { project: Project; onOpen: () => void }) {
+function ProjectFrame({ project: p, onOpen, hasNext }: { project: Project; onOpen: () => void; hasNext: boolean }) {
   const cover = p.disclosure.imagesAuthorized ? p.images[0] : undefined;
   const isPlaceholder = p.status === "em-documentacao";
 
   return (
     <article className="pg-card group relative cursor-pointer" onClick={onOpen}>
+      <div className="relative">
+      {/* camadas menores atrás: sinal de que há mais projetos para deslizar */}
+      {hasNext && (
+        <>
+          <span aria-hidden className="pg-deck pg-deck-2 absolute inset-0 rounded-md border border-line-strong" />
+          <span aria-hidden className="pg-deck pg-deck-1 absolute inset-0 rounded-md border border-line-strong" />
+        </>
+      )}
       <div className="pg-frame relative aspect-[4/5] w-full overflow-hidden rounded-md border border-line-strong sm:aspect-[16/10]">
         {cover ? (
           <Image
@@ -167,6 +196,7 @@ function ProjectFrame({ project: p, onOpen }: { project: Project; onOpen: () => 
         >
           <ArrowUpRight className="size-4" strokeWidth={1.75} />
         </span>
+      </div>
       </div>
 
       <div className="mt-5 flex flex-col gap-2">

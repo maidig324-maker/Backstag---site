@@ -423,8 +423,18 @@ ol > .rv-line {
 .pg-item {
   perspective: 1200px;
   overflow: hidden;
-  padding: 0.25rem 0.5rem 0.5rem;
+  padding: 0.25rem 2.6rem 0.5rem 0.5rem;
 }
+/* camadas do baralho atrás do quadro em foco */
+.pg-deck {
+  background: linear-gradient(160deg, #232326, #141416);
+  border-color: rgb(215 168 62 / 0.35);
+  box-shadow: 0 20px 40px -20px rgb(0 0 0 / 0.8);
+  opacity: calc(1 - var(--ad, 0) * 2.2);
+  pointer-events: none;
+}
+.pg-deck-1 { transform: translateX(20px) scale(0.93); }
+.pg-deck-2 { transform: translateX(38px) scale(0.85); opacity: calc((1 - var(--ad, 0) * 2.2) * 0.55); }
 .pg-card {
   transform: rotateY(calc(var(--d, 0) * -24deg)) scale(calc(1 - var(--ad, 0) * 0.1));
   opacity: calc(1 - var(--ad, 0) * 0.5);

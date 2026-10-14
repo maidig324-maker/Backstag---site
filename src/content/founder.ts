@@ -11,7 +11,7 @@ export const founder = {
    * SUBSTITUIR: salve a fotografia real em /public/founder/ e preencha.
    * Proporção recomendada: retrato 4:5 (ex.: 1200×1500).
    */
-  photo: null as null | { src: string; alt: string; width: number; height: number },
+  photo: { src: "/founder/douglas-nascimento.jpg", alt: "Douglas Nascimento, fundador da Backstag, trabalhando no notebook", width: 1121, height: 1402 } as null | { src: string; alt: string; width: number; height: number },
   // ex.: { src: "/founder/douglas-nascimento.webp", alt: "Douglas Nascimento, fundador da Backstag", width: 1200, height: 1500 }
 
   paragraphs: [
