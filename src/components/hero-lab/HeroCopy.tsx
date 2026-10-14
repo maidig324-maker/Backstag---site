@@ -54,7 +54,7 @@ export function HeadlineTech({ className = "" }: { className?: string }) {
   );
 }
 
-export function SubAndCtas({ className = "", stacked = false }: { className?: string; stacked?: boolean }) {
+export function SubAndCtas({ className = "", stacked = false, hideSubMobile = false }: { className?: string; stacked?: boolean; hideSubMobile?: boolean }) {
   const main = primaryContact();
   return (
     <motion.div
@@ -64,8 +64,8 @@ export function SubAndCtas({ className = "", stacked = false }: { className?: st
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1, delay: 0.95, ease: EASE }}
     >
-      <p className="max-w-sm text-base leading-relaxed text-paper/75 md:text-[1.05rem]">{hero2026.sub}</p>
-      <div className={`mt-7 flex flex-col gap-3 ${stacked ? "" : "sm:flex-row sm:items-center"}`}>
+      <p className={`max-w-sm text-base leading-relaxed text-paper/75 md:text-[1.05rem] ${hideSubMobile ? "hidden md:block" : ""}`}>{hero2026.sub}</p>
+      <div className={`${hideSubMobile ? "md:mt-7" : "mt-7"} flex flex-col gap-3 ${stacked ? "" : "sm:flex-row sm:items-center"}`}>
         <ButtonLink
           href={main.href}
           external

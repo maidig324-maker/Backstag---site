@@ -45,6 +45,7 @@ export function Problem() {
       const k = Math.floor(raw);
       const f = Math.min(1, Math.max(0, (raw - k - HOLD) / (1 - HOLD * 2)));
       const seg = Math.min(n - 1, k + f);
+      track.style.setProperty("--sp", raw.toFixed(3)); // símbolos giram com a rolagem
       const R = Math.sqrt((w * w + vh * vh) / 2) * 1.5; // raio que cobre a tela
       let ring = { r: 0, o: 0 };
       for (let i = 0; i < n; i++) {
@@ -85,6 +86,22 @@ export function Problem() {
       cancelAnimationFrame(raf);
     };
   }, [n]);
+
+  // cada símbolo se ajusta ao espaço que sobra na tela (nunca cobre o texto)
+  useEffect(() => {
+    const boxes = Array.from(trackRef.current!.querySelectorAll<HTMLElement>("[data-sym-box]"));
+    const fit = () => {
+      const max = window.innerWidth < 768 ? 1.2 : 2.3;
+      for (const b of boxes) {
+        const k = Math.max(0.35, Math.min(max, (b.clientHeight * 1.05) / 200, (b.clientWidth * 0.8) / 200));
+        b.style.setProperty("--k", k.toFixed(3));
+      }
+    };
+    fit();
+    const ro = new ResizeObserver(fit);
+    boxes.forEach((b) => ro.observe(b));
+    return () => ro.disconnect();
+  }, []);
 
   // a primeira cena ganha vida quando o trilho entra na tela
   const [entered, setEntered] = useState(false);
@@ -170,19 +187,19 @@ function Scene({ item, Symbol }: { item: Item; Symbol: () => ReactElement }) {
       </div>
 
       {/* símbolo 3D: o problema se transforma diante do visitante */}
-      <div className="relative min-h-0 [--k:1.2] md:col-span-6 md:h-[62vh] md:[--k:2.3]">
+      <div data-sym-box className="relative min-h-0 md:col-span-6 md:h-[62vh]">
         <Symbol />
       </div>
 
       {/* narrativa */}
       <div className="md:col-span-6">
         <p className="rv label-tech text-paper/45" style={{ ["--d" as string]: "0.15s" }}>
-          Hoje
+          Na sua empresa hoje
         </p>
         <h3 className="rv display mt-2 text-[clamp(1.6rem,4.2vw,3.4rem)]" style={{ ["--d" as string]: "0.22s" }}>
           {item.title}
         </h3>
-        <p className="rv mt-2 max-w-lg text-sm leading-relaxed text-mute [@media(max-height:720px)]:hidden md:mt-4 md:text-base" style={{ ["--d" as string]: "0.3s" }}>
+        <p className="rv mt-2 max-w-lg text-[0.84rem] leading-relaxed text-mute [@media(max-height:740px)]:hidden md:mt-4 md:text-base" style={{ ["--d" as string]: "0.3s" }}>
           {item.text}
         </p>
 
@@ -191,15 +208,15 @@ function Scene({ item, Symbol }: { item: Item; Symbol: () => ReactElement }) {
         <p className="rv label-tech mt-4 text-gold md:mt-8" style={{ ["--d" as string]: "0.8s" }}>
           O que enxergamos
         </p>
-        <p className="rv mt-2 max-w-xl text-[1.05rem] leading-snug text-paper md:text-2xl md:leading-snug" style={{ ["--d" as string]: "0.9s" }}>
+        <p className="rv mt-2 max-w-xl text-[0.98rem] leading-snug text-paper md:text-xl md:leading-snug" style={{ ["--d" as string]: "0.9s" }}>
           {item.approach}
         </p>
 
-        <p className="rv label-tech mt-4 text-paper/45 md:mt-8" style={{ ["--d" as string]: "1.05s" }}>
+        <p className="rv label-tech mt-4 text-paper/45 [@media(max-height:700px)]:hidden md:mt-8" style={{ ["--d" as string]: "1.05s" }}>
           Como chegamos lá
         </p>
         {/* etapas livres, ligadas por uma linha — sem caixas nem números */}
-        <ol className="relative mt-3 flex flex-col gap-2.5 md:mt-4 md:flex-row md:gap-8">
+        <ol className="relative mt-3 flex flex-col gap-2.5 [@media(max-height:700px)]:hidden md:mt-4 md:flex-row md:gap-8">
           <span aria-hidden className="rv-line absolute bottom-1.5 left-[3px] top-1.5 w-px origin-top bg-gold/50 md:bottom-auto md:left-0 md:right-0 md:top-[3px] md:h-px md:w-auto md:origin-left" style={{ ["--d" as string]: "1.1s" }} />
           {item.steps.map((s, k) => (
             <li key={s} className="rv relative flex items-center gap-3 md:flex-1 md:flex-col md:items-start md:gap-3" style={{ ["--d" as string]: `${1.2 + k * 0.14}s` }}>

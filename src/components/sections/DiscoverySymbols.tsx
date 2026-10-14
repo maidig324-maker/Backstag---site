@@ -34,7 +34,11 @@ function Stage({ children, tilt = true }: { children: ReactNode; tilt?: boolean 
   return (
     <div className="sym" aria-hidden>
       <div className="sym-scale">
-        <div className={tilt ? "sym-stage sym-sway" : "sym-stage"}>{children}</div>
+        <div className="sym-scroll">
+          <div className="sym-float">
+            <div className={tilt ? "sym-stage sym-sway" : "sym-stage"}>{children}</div>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -58,11 +62,14 @@ function SymOrganize() {
             w={c}
             h={c}
             d={c}
-            className="sym-move"
+            className="sym-move sym-breathe"
             style={v({
               "--off": `translate3d(${x}px, ${y}px, ${z}px) rotateX(${r}deg) rotateY(${r * 1.3}deg)`,
               "--on": `translate3d(${tx}px, ${ty}px, ${tz}px) rotateX(0deg) rotateY(0deg)`,
               "--d": `${0.15 + i * 0.07}s`,
+              "--bx": `${Math.sign(tx) * 7}px`,
+              "--by": `${Math.sign(ty) * 7}px`,
+              "--bz": `${Math.sign(tz) * 7}px`,
             })}
           />
         );
@@ -108,11 +115,12 @@ function SymSite() {
         {layers.map((l, i) => (
           <span
             key={i}
-            className="sym-layer sym-move"
+            className="sym-layer sym-move sym-hover"
             style={v({
               "--off": `translate3d(${l.x}px, ${l.y}px, ${i * 3}px) rotateZ(${l.r}deg)`,
               "--on": `translate3d(0px, 0px, ${i * 30}px) rotateZ(0deg)`,
               "--d": `${0.15 + i * 0.12}s`,
+              "--p": `${i * 0.25}s`,
             })}
           >
             {i === 1 && <span className="sym-ui" style={{ inset: "8% 8% auto 8%", height: "10%" }} />}
@@ -174,7 +182,7 @@ function SymConnect() {
           w={18}
           h={18}
           d={18}
-          className="sym-move"
+          className="sym-move sym-core"
           faceClass="sym-face-gold"
           style={v({ left: 100, top: 100, "--off": "translate3d(0px, 0px, -40px) scale(0.2)", "--on": "translate3d(0px, 0px, 34px) scale(1)", "--d": "1.2s" })}
         />
@@ -206,6 +214,7 @@ function SymGrowth() {
             "--off": `translateZ(${(i - 2) * -6}px) scaleY(${k})`,
             "--on": `translateZ(${(i - 2) * -6}px) scaleY(${on[i]})`,
             "--d": `${0.2 + i * 0.1}s`,
+            "--p": `${i * 0.3}s`,
           })}
         />
       ))}

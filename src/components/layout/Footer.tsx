@@ -67,7 +67,7 @@ export function Footer() {
                     rel="noopener noreferrer"
                     className="inline-flex min-h-10 items-center text-sm text-mute hover:text-paper"
                   >
-                    WhatsApp {contact.whatsappDisplay}
+                    WhatsApp
                   </a>
                 </li>
               )}

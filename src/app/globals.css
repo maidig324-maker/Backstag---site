@@ -293,11 +293,7 @@
   opacity: 1;
 }
 .sym-orbit {
-  animation: sym-orbit 26s linear infinite;
-  animation-play-state: paused;
-}
-.sym-on .sym-orbit {
-  animation-play-state: running;
+  animation: sym-orbit 16s linear infinite;
 }
 @keyframes sym-orbit {
   from { transform: rotateX(62deg) rotateZ(0deg); }
@@ -315,17 +311,71 @@
     linear-gradient(90deg, rgb(245 245 242 / 0.08) 1px, transparent 1px);
   background-size: 30px 28px;
 }
-/* movimento ocioso do palco (só na tela ativa) */
-.sym-sway {
-  animation: sym-sway 9s ease-in-out infinite;
-  animation-play-state: paused;
+/* movimento contínuo: o símbolo nunca para
+   .sym-scroll gira com a rolagem (--sp vem do trilho), .sym-float flutua,
+   .sym-sway balança o palco e cada símbolo ganha a sua "respiração". */
+.sym-scroll,
+.sym-float {
+  width: 200px;
+  height: 200px;
+  transform-style: preserve-3d;
 }
-.sym-on .sym-sway {
-  animation-play-state: running;
+.sym-scroll {
+  transform: rotateY(calc(var(--sp, 0) * 70deg));
+}
+.sym-float {
+  animation: sym-float 5.5s ease-in-out infinite;
+}
+@keyframes sym-float {
+  0%, 100% { transform: translateY(-6px); }
+  50% { transform: translateY(8px); }
+}
+.sym-sway {
+  animation: sym-sway 11s ease-in-out infinite;
 }
 @keyframes sym-sway {
-  0%, 100% { transform: rotateX(-22deg) rotateY(-28deg); }
-  50% { transform: rotateX(-14deg) rotateY(22deg); }
+  0%, 100% { transform: rotateX(-22deg) rotateY(-38deg); }
+  50% { transform: rotateX(-10deg) rotateY(30deg); }
+}
+/* 01 — o bloco montado respira: as peças se afastam e voltam */
+.sym-on .sym-breathe {
+  animation: sym-breathe 3.6s ease-in-out calc(2.4s + var(--p, 0s)) infinite;
+}
+@keyframes sym-breathe {
+  0%, 100% { translate: 0 0 0; }
+  50% { translate: var(--bx) var(--by) var(--bz); }
+}
+/* 02 — a seta do fluxo empurra para frente */
+.sym-on .sym-arrow {
+  animation: sym-nudge 1.6s ease-in-out 2.2s infinite;
+}
+@keyframes sym-nudge {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 8px 0; }
+}
+/* 03 — as camadas do site sobem e descem em onda */
+.sym-on .sym-hover {
+  animation: sym-hover 3.4s ease-in-out calc(2.2s + var(--p, 0s)) infinite;
+}
+@keyframes sym-hover {
+  0%, 100% { translate: 0 0 0; }
+  50% { translate: 0 0 14px; }
+}
+/* 04 — núcleo pulsando no centro da órbita */
+.sym-on .sym-core {
+  animation: sym-core 2.4s ease-in-out 2.2s infinite;
+}
+@keyframes sym-core {
+  0%, 100% { scale: 1; }
+  50% { scale: 1.35; }
+}
+/* 05 — as barras continuam crescendo e se ajustando */
+.sym-on .sym-bar {
+  animation: sym-bar 3s ease-in-out calc(2.2s + var(--p, 0s)) infinite;
+}
+@keyframes sym-bar {
+  0%, 100% { scale: 1 1; }
+  50% { scale: 1 1.12; }
 }
 
 /* ---------- Descoberta — entrada dos textos de cada tela ---------- */

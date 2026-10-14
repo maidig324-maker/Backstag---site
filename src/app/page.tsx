@@ -30,8 +30,8 @@ export default function Home() {
         {/* Provas sociais só entram com material real e verificado */}
         {publishableProofs.length > 0 && <Proofs />}
         <Founder />
-        {/* zona dourada: conversão */}
-        <div className="zone tone-gold">
+        {/* zona clara: conversão */}
+        <div className="zone tone-light">
           <Contact />
         </div>
       </main>

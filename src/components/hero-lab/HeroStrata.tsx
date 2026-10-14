@@ -36,6 +36,12 @@ export function HeroStrata() {
   const shown = active ?? (interacted ? null : auto);
   const shownRef = useRef<number | null>(shown);
   shownRef.current = shown;
+  // a mensagem explicativa fica no último pilar destacado
+  const [lastShown, setLastShown] = useState(0);
+  useEffect(() => {
+    if (shown != null) setLastShown(shown);
+  }, [shown]);
+  const blurb = layers[lastShown];
 
   useEffect(() => {
     if (prefersReducedMotion() || interacted) return;
@@ -205,11 +211,14 @@ export function HeroStrata() {
             </button>
           ))}
         </div>
+        <PillarBlurb pillar={blurb} className="mt-4 min-h-[3.4rem] md:hidden" />
 
         <div className="mt-auto grid gap-10 pt-6 md:grid-cols-12 md:items-end md:pt-10">
-          <SubAndCtas className="md:col-span-5" />
+          <SubAndCtas className="md:col-span-5" hideSubMobile />
           {/* Legenda dos pilares — interage com os painéis */}
-          <ol className="hidden md:col-span-5 md:col-start-8 md:grid md:grid-cols-2 md:gap-x-6">
+          <div className="hidden md:col-span-5 md:col-start-8 md:block">
+          <PillarBlurb pillar={blurb} className="mb-6 min-h-[3.4rem]" />
+          <ol className="grid grid-cols-2 gap-x-6">
             {layers.map((l, i) => (
               <li key={l.code}>
                 <a
@@ -234,8 +243,25 @@ export function HeroStrata() {
               </li>
             ))}
           </ol>
+          </div>
         </div>
       </motion.div>
     </section>
+  );
+}
+
+/** Mensagem explicativa do pilar em destaque (troca junto com o painel). */
+function PillarBlurb({ pillar, className = "" }: { pillar: (typeof layers)[number]; className?: string }) {
+  return (
+    <div className={className}>
+      <motion.div
+        key={pillar.code}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <p className="max-w-md border-l border-gold/60 pl-3 text-sm leading-relaxed text-paper/80 md:text-[0.95rem]">{pillar.blurb}</p>
+      </motion.div>
+    </div>
   );
 }
