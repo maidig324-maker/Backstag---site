@@ -12,7 +12,7 @@ export function Methodology() {
   const fill = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.4 });
 
   return (
-    <section id="metodo" aria-label={methodologyIntro.label} className="relative bg-ink-2 py-28 md:py-44">
+    <section id="metodo" aria-label={methodologyIntro.label} className="relative border-y border-line bg-ink-2/40 py-28 md:py-44">
       <div className="container-x grid gap-16 md:grid-cols-12 md:gap-10">
         <div className="md:col-span-5">
           <div className="md:sticky md:top-32">

@@ -1,14 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { Anton, Archivo } from "next/font/google";
+import { Archivo, Oswald } from "next/font/google";
+import { AmbientBackground } from "@/components/layout/AmbientBackground";
 import { contact, site } from "@/content/site";
 import { MotionProvider } from "@/components/providers/MotionProvider";
 import "./globals.css";
 
-// Títulos: condensada e pesada, em caixa alta — a voz visual do Instagram da Backstag
-const display = Anton({
+// Títulos: condensada em caixa alta (estilo do Instagram da Backstag), com peso médio
+const display = Oswald({
   subsets: ["latin"],
-  weight: "400",
-  variable: "--font-anton",
+  variable: "--font-oswald",
   display: "swap",
 });
 
@@ -72,7 +72,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${display.variable} ${sans.variable}`}
       suppressHydrationWarning
     >
-      <body className="bg-ink text-paper antialiased">
+      <body className="text-paper antialiased">
         <noscript>
           <style>{`[data-reveal],.rv{opacity:1!important;transform:none!important;clip-path:none!important}`}</style>
         </noscript>
@@ -82,6 +82,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Pular para o conteúdo
         </a>
+        <AmbientBackground />
         <MotionProvider>{children}</MotionProvider>
         <script
           type="application/ld+json"

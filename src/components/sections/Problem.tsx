@@ -115,7 +115,7 @@ export function Problem() {
                   slideRefs.current[i] = el;
                 }}
                 aria-hidden={i !== active}
-                className="absolute inset-0 bg-ink"
+                className="absolute inset-0 bg-[#0b0b0e]"
                 style={{ zIndex: i + 1 }}
               >
                 <div className={`h-full w-full will-change-transform ${on ? "slide-on sym-on" : ""}`}>
@@ -125,7 +125,7 @@ export function Problem() {
                     className="pointer-events-none absolute inset-0"
                     style={{
                       background:
-                        "radial-gradient(ellipse 60% 45% at 50% 40%, rgb(215 168 62 / 0.09), transparent 70%), linear-gradient(rgb(245 245 242 / 0.035) 1px, transparent 1px) 0 0 / 100% 56px",
+                        "radial-gradient(ellipse 60% 45% at 50% 38%, rgb(215 168 62 / 0.11), transparent 70%), radial-gradient(ellipse 70% 50% at 100% 100%, rgb(92 118 160 / 0.12), transparent 70%), radial-gradient(ellipse 50% 40% at 0% 0%, rgb(215 168 62 / 0.05), transparent 70%)",
                     }}
                   />
                   <Scene item={item} Symbol={Symbol} />
