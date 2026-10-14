@@ -167,8 +167,8 @@ export function Projects() {
   return (
     <section id="projetos" aria-label={projectsIntro.label} className="relative overflow-hidden pb-28 pt-16 md:pb-40 md:pt-24">
       <div className="container-x">
-        <div className="grid gap-10 md:grid-cols-12">
-          <SectionIntro className="md:col-span-7" label={projectsIntro.label} titleLines={splitSentences(projectsIntro.title)} />
+        <div>
+          <SectionIntro label={projectsIntro.label} titleLines={splitSentences(projectsIntro.title)} />
         </div>
       </div>
 
@@ -207,10 +207,10 @@ export function Projects() {
       {/* Legenda do projeto da frente, em camadas */}
       <div className="container-x mt-8 md:mt-12">
         {/* altura fixa: trocar de projeto não empurra o resto da página */}
-        <div key={front.id} className="min-h-[16rem] max-w-2xl md:min-h-[12.5rem]">
+        <div key={front.id} className="mx-auto min-h-[16rem] max-w-2xl text-center md:min-h-[12.5rem]">
           <motion.p
             data-reveal
-            className="label-tech flex flex-wrap items-center gap-x-3 gap-y-1 text-paper/55"
+            className="label-tech flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-paper/55"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: EASE }}
@@ -226,14 +226,14 @@ export function Projects() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.08, ease: EASE }}
           >
-            <button type="button" onClick={() => setActive(front)} aria-haspopup="dialog" className="text-left [text-transform:inherit] hover:text-gold-light">
+            <button type="button" onClick={() => setActive(front)} aria-haspopup="dialog" className="[text-transform:inherit] hover:text-gold-light">
               {projectTitle(front)}
               <span className="sr-only"> — ver estudo de caso</span>
             </button>
           </motion.h3>
           <motion.p
             data-reveal
-            className="mt-3 max-w-xl text-sm leading-relaxed text-mute md:text-base"
+            className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-mute md:text-base"
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.16, ease: EASE }}
@@ -243,7 +243,7 @@ export function Projects() {
           {front.tags && (
             <motion.ul
               data-reveal
-              className="mt-5 flex flex-wrap gap-2"
+              className="mt-5 flex flex-wrap justify-center gap-2"
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.24, ease: EASE }}
@@ -257,7 +257,7 @@ export function Projects() {
           )}
         </div>
         {/* setas só no computador */}
-        <div className="mt-6 hidden gap-2 md:flex">
+        <div className="mt-6 hidden justify-center gap-2 md:flex">
           <button
             type="button"
             onClick={() => step(-1)}

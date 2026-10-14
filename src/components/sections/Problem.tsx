@@ -163,11 +163,11 @@ export function Problem() {
 
       {/* Fecho da Descoberta: convite direto, no momento em que o visitante se reconheceu */}
       <div className="container-x pb-6 pt-16 md:pb-10 md:pt-24">
-        <Reveal className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <p className="display t-h2 max-w-2xl">
+        <Reveal className="flex flex-col items-center gap-7 text-center">
+          <p className="display t-h2 max-w-3xl">
             Viu a sua empresa em <span className="accent">algum desses desafios?</span>
           </p>
-          <ButtonLink href={main.href} external icon={<MessageCircle className="size-4" strokeWidth={1.75} />} className="shrink-0 self-start md:self-auto">
+          <ButtonLink href={main.href} external icon={<MessageCircle className="size-4" strokeWidth={1.75} />} className="shrink-0">
             {main.channel === "whatsapp" ? "Conversar pelo WhatsApp" : "Fale com a Backstag"}
           </ButtonLink>
         </Reveal>

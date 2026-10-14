@@ -8,15 +8,23 @@ type Props = {
   className?: string;
   /** "md" para colunas estreitas (títulos laterais fixos). */
   size?: "lg" | "md";
+  /** "center" (padrão) ou "left"; "center-mobile" centraliza só no celular. */
+  align?: "center" | "left" | "center-mobile";
 };
 
-export function SectionIntro({ titleLines, text, className = "" }: Props) {
+const alignClass = {
+  center: "mx-auto text-center [&_p]:mx-auto",
+  left: "",
+  "center-mobile": "mx-auto text-center [&_p]:mx-auto md:mx-0 md:text-left md:[&_p]:mx-0",
+};
+
+export function SectionIntro({ titleLines, text, className = "", align = "center" }: Props) {
   return (
-    <div className={className}>
+    <div className={`${alignClass[align]} ${className}`}>
       <LineReveal
         as="h2"
         lines={titleLines}
-        className="display t-h2 max-w-4xl"
+        className={`display t-h2 max-w-4xl ${align === "center" ? "mx-auto" : align === "center-mobile" ? "mx-auto md:mx-0" : ""}`}
       />
       {text && (
         <Reveal delay={0.15}>

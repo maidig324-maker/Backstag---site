@@ -19,6 +19,7 @@ export function Methodology() {
             <SectionIntro
               label={methodologyIntro.label}
               titleLines={splitSentences(methodologyIntro.title)}
+              align="center-mobile"
               size="md"
             />
           </div>
@@ -59,7 +60,7 @@ export function Methodology() {
                 viewport={{ margin: "0px 0px -35% 0px", once: true }}
                 transition={{ duration: 0.9, delay: i === 0 ? 0 : 0.05, ease: EASE }}
               >
-                <h3 className="display t-h3 hyphens-auto">{step.title}</h3>
+                <h3 className="display t-h3">{step.title}</h3>
                 <p className="mt-3 max-w-xl leading-relaxed text-mute md:text-lg">{step.text}</p>
               </motion.div>
             </li>

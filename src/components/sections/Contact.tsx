@@ -17,15 +17,15 @@ export function Contact() {
           lines={contactSection.title
             .split(/(?<=\.)\s+/)
             .map((l, i) => (i === 0 ? l : <span key={i} className="accent">{l}</span>))}
-          className="display t-h2 max-w-4xl"
+          className="display t-h2 mx-auto max-w-4xl text-center"
         />
 
         <div className="mt-14 grid gap-16 md:mt-20 md:grid-cols-12 md:gap-10">
           <div className="md:col-span-5">
             <Reveal>
-              <p className="max-w-md text-lg leading-relaxed text-paper/80">{contactSection.text}</p>
+              <p className="mx-auto max-w-md text-center text-lg leading-relaxed text-paper/80 md:mx-0 md:text-left">{contactSection.text}</p>
             </Reveal>
-            <Reveal delay={0.1} className="mt-10 flex flex-col items-start gap-3">
+            <Reveal delay={0.1} className="mt-10 flex flex-col items-center gap-3 md:items-start">
               <ButtonLink href={main.href} external icon={<MessageCircle className="size-4" strokeWidth={1.75} />}>
                 {main.channel === "whatsapp" ? contactSection.whatsappCta : "Conversar pelo Instagram"}
               </ButtonLink>
