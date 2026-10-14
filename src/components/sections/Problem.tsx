@@ -92,7 +92,6 @@ export function Problem() {
         <SectionIntro
           label={problem.label}
           titleLines={splitLines(problem.vision.title, 22)}
-          text={problem.vision.text}
         />
       </div>
 
@@ -158,10 +157,7 @@ function Scene({ item, Symbol }: { item: Item; Symbol: () => ReactElement }) {
   return (
     <div className="container-x relative grid h-full grid-rows-[auto_minmax(0,1fr)_auto] gap-3 pb-16 pt-[4.75rem] md:grid-cols-12 md:grid-rows-1 md:items-center md:gap-10 md:pb-20 md:pt-24">
       {/* cabeçalho da cena */}
-      <div className="rv flex items-center justify-between gap-4 md:absolute md:inset-x-10 md:top-24" style={{ ["--d" as string]: "0.05s" }}>
-        <span className="label-tech text-gold">
-          Visão Backstag
-        </span>
+      <div className="rv flex items-center justify-end gap-4 md:absolute md:inset-x-10 md:top-24" style={{ ["--d" as string]: "0.05s" }}>
         <span className="label-tech rounded-full border border-gold/40 px-3 py-1.5 text-gold-light">{item.front}</span>
       </div>
 

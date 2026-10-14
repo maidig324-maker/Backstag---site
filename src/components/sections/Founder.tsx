@@ -10,7 +10,7 @@ export function Founder() {
   const showPhotoSlot = founder.photo || site.showPlaceholders;
 
   return (
-    <section id="sobre" aria-label={founder.label} className="relative py-28 md:py-44">
+    <section id="sobre" aria-label={founder.label} className="relative overflow-x-clip py-28 md:py-44">
       <div className="container-x grid gap-14 md:grid-cols-12 md:gap-10">
         {showPhotoSlot && (
           <div className="md:col-span-6">
@@ -30,16 +30,10 @@ export function Founder() {
         )}
 
         <div className={showPhotoSlot ? "md:col-span-6 md:self-center" : "md:col-span-8"}>
-          <Reveal>
-            <p className="cue flex items-center gap-3">
-              <span aria-hidden className="h-px w-8 bg-gold" />
-              <span>{founder.label}</span>
-            </p>
-          </Reveal>
           <LineReveal
             as="h2"
             lines={[founder.name]}
-            className="display mt-6 text-[clamp(2.75rem,6vw,5.25rem)]"
+            className="display text-[clamp(2.75rem,6vw,5.25rem)]"
           />
           <Reveal delay={0.1}>
             <p className="mt-3 text-sm uppercase tracking-[0.16em] text-mute">{founder.role}</p>

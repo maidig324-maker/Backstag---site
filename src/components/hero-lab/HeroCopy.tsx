@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import { ArrowDown, MessageCircle } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import { primaryContact } from "@/lib/contact";
 import { hero2026 } from "@/content/hero-2026";
 import { ButtonLink } from "@/components/ui/ButtonLink";
@@ -76,7 +76,6 @@ export function SubAndCtas({ className = "", stacked = false }: { className?: st
         <ButtonLink
           href={hero2026.secondaryCta.href}
           variant="ghost"
-          icon={<ArrowDown className="size-4" strokeWidth={1.75} />}
         >
           {hero2026.secondaryCta.label}
         </ButtonLink>

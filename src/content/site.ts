@@ -86,7 +86,7 @@ export const hero = {
 } as const;
 
 export const problem = {
-  label: "Descoberta",
+  label: "Desafios",
   // Abertura da experiência "entre na nossa visão"
   vision: {
     title: "Veja a sua empresa pelos nossos olhos.",
@@ -137,7 +137,7 @@ export const problem = {
 } as const;
 
 export const contactSection = {
-  label: "Conversão",
+  label: "Contato",
   title: "Sua empresa tem desafios. Vamos construir as soluções.",
   text: "Conte o que sua empresa precisa melhorar e descubra como podemos ajudar a estruturar os próximos passos.",
   whatsappCta: "Conversar pelo WhatsApp",

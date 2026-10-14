@@ -168,9 +168,6 @@ export function Projects() {
       <div className="container-x">
         <div className="grid gap-10 md:grid-cols-12">
           <SectionIntro className="md:col-span-7" label={projectsIntro.label} titleLines={splitLines(projectsIntro.title, 24)} />
-          <Reveal className="md:col-span-4 md:col-start-9 md:self-end" delay={0.15}>
-            <p className="leading-relaxed text-mute">{projectsIntro.text}</p>
-          </Reveal>
         </div>
       </div>
 
@@ -283,12 +280,6 @@ function CardFace({ project: p }: { project: Project }) {
         </div>
       )}
       <span aria-hidden className="c3-shine pointer-events-none absolute inset-0" />
-      <span
-        aria-hidden
-        className="c3-open absolute right-3 top-3 inline-flex size-10 items-center justify-center rounded-full bg-gold text-ink"
-      >
-        <ArrowUpRight className="size-4" strokeWidth={1.75} />
-      </span>
     </div>
   );
 }

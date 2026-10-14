@@ -1,4 +1,3 @@
-import { ArrowUpRight } from "lucide-react";
 import type { ReactNode } from "react";
 
 type Variant = "primary" | "ghost" | "text";
@@ -39,12 +38,11 @@ export function ButtonLink({
       className={`${base} ${variants[variant]} ${className}`}
     >
       <span className="relative">{children}</span>
-      <span
-        aria-hidden
-        className="relative inline-flex transition-transform duration-500 ease-[var(--ease-stage)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-      >
-        {icon ?? <ArrowUpRight className="size-4" strokeWidth={1.75} />}
-      </span>
+      {icon && (
+        <span aria-hidden className="relative inline-flex">
+          {icon}
+        </span>
+      )}
       {external && <span className="sr-only"> (abre em nova aba)</span>}
     </a>
   );

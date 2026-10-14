@@ -4,7 +4,7 @@
  * resultados não informados. Revise e complemente apenas com fatos.
  */
 export const founder = {
-  label: "Conexão humana",
+  label: "Fundador",
   name: "Douglas Nascimento",
   role: "Fundador da Backstag",
   /**

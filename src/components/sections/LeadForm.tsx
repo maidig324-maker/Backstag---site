@@ -251,7 +251,6 @@ export function LeadForm() {
           className="group inline-flex min-h-12 items-center justify-center gap-3 self-start rounded-full bg-gold px-7 font-medium text-ink transition-colors hover:bg-gold-light"
         >
           {hasWhatsapp ? "Enviar pelo WhatsApp" : "Copiar e abrir o Instagram"}
-          <ArrowUpRight className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" strokeWidth={1.75} aria-hidden />
         </button>
       </div>
     </form>
