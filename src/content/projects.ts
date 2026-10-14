@@ -22,6 +22,8 @@ export type ProjectImage = {
   alt: string;
   width: number;
   height: number;
+  /** Ponto de foco no recorte do card (object-position), ex.: "30% 50%". */
+  focus?: string;
 };
 
 export type ProjectStatus = "publicado" | "em-operacao" | "em-andamento" | "em-documentacao";
@@ -110,65 +112,71 @@ export const projects: Project[] = [
     clientName: "Petshop Palmares", // exibido somente após autorização
     anonymousTitle: "Projeto em varejo pet",
     sector: "Varejo pet",
-    status: "em-documentacao",
-    headline: null, // SUBSTITUIR
+    status: "publicado",
+    headline: "Comunicação para redes sociais: produtos em destaque, campanhas e posts do feed com a identidade da marca.",
     initialSituation: null,
     challenge: null,
     solution: null,
     backstagRole: null,
     provenResult: null,
-    images: [],
+    images: [
+      {
+        src: "/projects/petshop-palmares/capa.webp",
+        alt: "Posts de redes sociais de uma loja pet: produto da semana, acessórios e petiscos",
+        width: 808,
+        height: 632,
+        focus: "26% 50%",
+      },
+    ],
     link: null,
-    disclosure: { clientNameAuthorized: false, linkAuthorized: false, imagesAuthorized: false },
-    featured: true,
+    disclosure: { clientNameAuthorized: false, linkAuthorized: false, imagesAuthorized: true },
   },
   {
     id: "casa-prates",
     clientName: "Casa Prates Alimentos",
-    anonymousTitle: "Projeto no setor de alimentos",
-    sector: "Alimentos",
-    status: "em-documentacao",
-    headline: null,
+    anonymousTitle: "Projeto na indústria alimentícia",
+    sector: "Indústria alimentícia",
+    status: "publicado",
+    headline: "Imagem de produto e apresentação da embalagem para a indústria alimentícia.",
     initialSituation: null,
     challenge: null,
     solution: null,
     backstagRole: null,
     provenResult: null,
-    images: [],
+    images: [
+      {
+        src: "/projects/casa-prates/capa.webp",
+        alt: "Embalagem de pão de queijo tradicional sobre mesa de madeira com café e queijo",
+        width: 1248,
+        height: 832,
+        focus: "52% 50%",
+      },
+    ],
     link: null,
-    disclosure: { clientNameAuthorized: false, linkAuthorized: false, imagesAuthorized: false },
+    disclosure: { clientNameAuthorized: false, linkAuthorized: false, imagesAuthorized: true },
   },
   {
-    id: "sistemas-portais",
-    clientName: "Sistemas e portais comerciais",
-    anonymousTitle: "Sistemas e portais comerciais",
-    sector: "Soluções digitais",
-    status: "em-documentacao",
-    headline: null,
+    id: "delivery-street-food",
+    clientName: "Delivery de street food",
+    anonymousTitle: "Projeto em delivery e street food",
+    sector: "Soluções digitais e presença",
+    status: "publicado",
+    headline: "Presença digital para delivery: identidade aplicada ao feed do Instagram, campanhas e promoções.",
     initialSituation: null,
     challenge: null,
     solution: null,
     backstagRole: null,
     provenResult: null,
-    images: [],
+    images: [
+      {
+        src: "/projects/delivery-street-food/capa.webp",
+        alt: "Celular com o feed do Instagram de uma hamburgueria ao lado de um hambúrguer",
+        width: 1400,
+        height: 1789,
+      },
+    ],
     link: null,
-    disclosure: { clientNameAuthorized: true, linkAuthorized: false, imagesAuthorized: false },
-  },
-  {
-    id: "sites-materiais",
-    clientName: "Sites e materiais desenvolvidos",
-    anonymousTitle: "Sites e materiais desenvolvidos",
-    sector: "Presença digital",
-    status: "em-documentacao",
-    headline: null,
-    initialSituation: null,
-    challenge: null,
-    solution: null,
-    backstagRole: null,
-    provenResult: null,
-    images: [],
-    link: null,
-    disclosure: { clientNameAuthorized: true, linkAuthorized: false, imagesAuthorized: false },
+    disclosure: { clientNameAuthorized: false, linkAuthorized: false, imagesAuthorized: true },
   },
 ];
 

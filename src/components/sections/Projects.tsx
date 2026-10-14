@@ -10,7 +10,7 @@ import { EASE, Reveal } from "@/components/ui/motion";
 import { SectionIntro, splitLines } from "@/components/ui/SectionIntro";
 
 const statusLabel: Record<ProjectStatus, string> = {
-  publicado: "Publicado",
+  publicado: "Projeto realizado",
   "em-operacao": "Em operação",
   "em-andamento": "Em andamento",
   "em-documentacao": "Estudo de caso em documentação",
@@ -323,7 +323,15 @@ function CardFace({ project: p }: { project: Project }) {
           <span aria-hidden className="pointer-events-none absolute inset-0 rounded-lg ring-1 ring-inset ring-gold/40" />
         </>
       ) : cover ? (
-        <Image src={cover.src} alt={cover.alt} fill sizes="(min-width: 768px) 30vw, 62vw" className="object-cover" draggable={false} />
+        <Image
+          src={cover.src}
+          alt={cover.alt}
+          fill
+          sizes="(min-width: 768px) 30vw, 62vw"
+          className="pointer-events-none object-cover"
+          style={{ objectPosition: cover.focus ?? "50% 50%" }}
+          draggable={false}
+        />
       ) : (
         <div className="placeholder-surface flex h-full w-full flex-col justify-between p-5 md:p-6">
           <span className="label-tech text-paper/50">Imagens reais pendentes</span>
