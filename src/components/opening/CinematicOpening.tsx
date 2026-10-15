@@ -24,6 +24,8 @@ import { ButtonLink } from "@/components/ui/ButtonLink";
  * a composição final aparece parada, sem palco fixo.
  */
 
+const LOGO = site.logo.src ?? "/brand/backstag-logo.png";
+
 /** Distância de rolagem do palco, em svh (além da própria tela). */
 const RUN = 440;
 
@@ -180,7 +182,7 @@ export function CinematicOpening() {
         {/* ---------- 1–2 · a logo e o reflexo no piso ---------- */}
         <div className="op-logo pointer-events-none absolute left-1/2 top-[44%] w-[min(76vw,34rem)]">
           <Image
-            src={site.logo.src}
+            src={LOGO}
             alt={site.fullName}
             width={2033}
             height={570}
@@ -188,7 +190,7 @@ export function CinematicOpening() {
             sizes="(min-width: 640px) 34rem, 76vw"
             className="h-auto w-full"
           />
-          <Image src={site.logo.src} alt="" aria-hidden width={2033} height={570} sizes="(min-width: 640px) 34rem, 76vw" className="op-reflex h-auto w-full" />
+          <Image src={LOGO} alt="" aria-hidden width={2033} height={570} sizes="(min-width: 640px) 34rem, 76vw" className="op-reflex h-auto w-full" />
         </div>
 
         {/* ---------- 3–5 · hero ---------- */}
