@@ -44,8 +44,9 @@ export function Problem() {
     let lastActive = -1;
     let lastSeen = -1;
     const measure = () => {
-      vh = window.innerHeight;
-      const w = window.innerWidth;
+      // o palco é o bloco preto (com margem): mede o próprio palco, não a janela
+      vh = stage.clientHeight;
+      const w = stage.clientWidth;
       top = track.getBoundingClientRect().top + window.scrollY;
       // raio que cobre a tela a partir do centro do portal (50% · 46%)
       const R = Math.ceil(Math.hypot(w / 2, vh * 0.54)) + 2;
@@ -135,9 +136,9 @@ export function Problem() {
   }, []);
 
   return (
-    <section id="desafios" aria-label={problem.label} className="relative">
+    <section id="desafios" aria-label={problem.label} data-surface="dark" data-rgb="20 20 20" className="tone-night relative overflow-clip rounded-[1.75rem] bg-ink md:rounded-[2.5rem]">
       {/* o fundo escurece até a cor exata das cenas: nenhuma divisão visível */}
-      <div className="bg-gradient-to-b from-transparent from-30% to-[#0b0b0e]">
+      <div>
       <div className="container-x pb-2 pt-24 md:pb-4 md:pt-32">
         <SectionIntro
           label={problem.label}
@@ -164,7 +165,7 @@ export function Problem() {
                 style={{ zIndex: i + 1 }}
               >
                 <div className="pt-clip">
-                <div className="pt-counter bg-[#0b0b0e]">
+                <div className="pt-counter bg-ink">
                 <div className={`h-full w-full ${live ? "will-change-transform" : "sym-paused"} ${on ? "slide-on sym-on" : ""}`}>
                   {/* fundo da cena: grade técnica + brilho no centro */}
                   <div
@@ -172,7 +173,7 @@ export function Problem() {
                     className="pointer-events-none absolute inset-0"
                     style={{
                       background:
-                        "radial-gradient(ellipse 60% 45% at 50% 38%, rgb(215 168 62 / 0.08), transparent 70%), radial-gradient(ellipse 70% 50% at 100% 100%, rgb(150 112 60 / 0.07), transparent 70%), radial-gradient(120% 90% at 50% 40%, transparent 55%, rgb(0 0 0 / 0.45) 100%)",
+                        "radial-gradient(ellipse 60% 45% at 50% 38%, rgb(244 196 0 / 0.07), transparent 70%)",
                     }}
                   />
                   <Scene item={item} index={i} />
@@ -193,7 +194,7 @@ export function Problem() {
       </div>
 
       {/* Fecho da Descoberta: convite direto, no momento em que o visitante se reconheceu */}
-      <div className="bg-gradient-to-b from-[#0b0b0e] to-transparent to-70%">
+      <div>
       <div className="container-x pb-6 pt-16 md:pb-10 md:pt-24">
         <Reveal className="flex flex-col items-center gap-7 text-center">
           <p className="display t-h2 max-w-3xl">

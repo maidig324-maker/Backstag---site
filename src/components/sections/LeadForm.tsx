@@ -225,7 +225,7 @@ export function LeadForm() {
             }}
             aria-invalid={!!errors.consent}
             aria-describedby={errors.consent ? `${uid}-consent-err` : undefined}
-            className="mt-0.5 size-5 shrink-0 accent-[#D7A83E]"
+            className="mt-0.5 size-5 shrink-0 accent-[#141414]"
           />
           <span>
             Concordo em enviar estes dados à Backstag para ser contatado sobre minha solicitação, conforme a{" "}
@@ -236,7 +236,7 @@ export function LeadForm() {
           </span>
         </label>
         {errors.consent && (
-          <p id={`${uid}-consent-err`} className="mt-2 text-sm text-[#ff9b8a]">
+          <p id={`${uid}-consent-err`} className="mt-2 text-sm text-[#b3261e]">
             {errors.consent}
           </p>
         )}
@@ -261,7 +261,7 @@ export function LeadForm() {
 }
 
 const inputCls =
-  "w-full border-0 border-b border-line-strong bg-transparent px-0 py-3 text-base text-paper placeholder:text-paper/55 transition-colors focus:border-gold focus:shadow-[0_2px_0_0_var(--color-gold-light)] focus:outline-none focus-visible:outline-none aria-[invalid=true]:border-[#ff9b8a]";
+  "w-full border-0 border-b border-line-strong bg-transparent px-0 py-3 text-base text-paper placeholder:text-paper/55 transition-colors focus:border-gold focus:shadow-[0_2px_0_0_var(--color-gold-light)] focus:outline-none focus-visible:outline-none aria-[invalid=true]:border-[#b3261e]";
 
 function Field({
   id,
@@ -283,7 +283,7 @@ function Field({
       </label>
       {children}
       {error && (
-        <p id={`${id}-err`} className="mt-2 text-sm text-[#ff9b8a]">
+        <p id={`${id}-err`} className="mt-2 text-sm text-[#b3261e]">
           {error}
         </p>
       )}

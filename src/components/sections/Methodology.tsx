@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { motion, useScroll, useSpring } from "motion/react";
 import { methodologyIntro, methodologySteps } from "@/content/methodology";
 import { EASE } from "@/components/ui/motion";
+import { NodeConnector } from "@/components/ui/NodeConnector";
 import { SectionIntro, splitSentences } from "@/components/ui/SectionIntro";
 
 export function Methodology() {
@@ -16,6 +17,7 @@ export function Methodology() {
       <div className="container-x grid gap-16 md:grid-cols-12 md:gap-10">
         <div className="md:col-span-6">
           <div className="md:sticky md:top-32 md:[&_h2]:text-[clamp(2rem,3.2vw,3.1rem)]">
+            <NodeConnector className="mb-6 md:mx-0 md:mb-8" />
             <SectionIntro
               label={methodologyIntro.label}
               titleLines={splitSentences(methodologyIntro.title)}
@@ -40,12 +42,12 @@ export function Methodology() {
                 aria-hidden
                 className="absolute left-0 top-2 flex size-6 items-center justify-center rounded-full border bg-ink-2"
                 initial={{ borderColor: "rgb(128 128 128 / 0.4)" }}
-                whileInView={{ borderColor: "rgb(190 140 40 / 1)" }}
+                whileInView={{ borderColor: "rgb(20 20 20 / 1)" }}
                 viewport={{ margin: "0px 0px -45% 0px", once: true }}
                 transition={{ duration: 0.5 }}
               >
                 <motion.span
-                  className="size-2 rounded-full bg-gold"
+                  className="size-2 rounded-full bg-sun"
                   initial={{ scale: 0 }}
                   whileInView={{ scale: 1 }}
                   viewport={{ margin: "0px 0px -45% 0px", once: true }}

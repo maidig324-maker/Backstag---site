@@ -87,7 +87,7 @@ export function Founder() {
           {/* a foto fica parada enquanto as informações sobem */}
           <div ref={photoRef} className="fd-photo absolute z-0 inset-x-5 top-[4.75rem] md:relative md:inset-auto md:top-auto md:col-span-6 md:self-center md:pt-16">
             {founder.photo && <FounderVisual photo={founder.photo} />}
-            <span ref={dimRef} aria-hidden className="pointer-events-none absolute -inset-x-5 -bottom-[14%] -top-6 z-40 bg-gradient-to-b from-[#09090b] from-80% to-transparent opacity-0 md:hidden" />
+            <span ref={dimRef} aria-hidden className="pointer-events-none absolute -inset-x-5 -bottom-[14%] -top-6 z-40 bg-gradient-to-b from-ink from-80% to-transparent opacity-0 md:hidden" />
           </div>
 
           <div className="relative z-10 md:col-span-6 md:col-start-7">

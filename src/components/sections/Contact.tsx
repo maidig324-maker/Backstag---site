@@ -1,3 +1,4 @@
+import { NodeConnector } from "@/components/ui/NodeConnector";
 import { contact, contactSection } from "@/content/site";
 import { hasWhatsapp, primaryContact } from "@/lib/contact";
 import { MessageCircle } from "lucide-react";
@@ -11,7 +12,7 @@ export function Contact() {
   return (
     <section id="contato" aria-label={contactSection.label} className="relative isolate overflow-hidden py-28 md:py-44">
       <div className="container-x">
-
+        <NodeConnector className="mb-6 md:mb-8" />
         <LineReveal
           as="h2"
           lines={contactSection.title
@@ -44,7 +45,7 @@ export function Contact() {
           <Reveal delay={0.15} className="mx-auto w-full max-w-xl lg:col-span-6 lg:col-start-7 lg:max-w-none">
             {/* moldura dupla: aro claro por fora, núcleo escuro com brilho por dentro */}
             <div className="rounded-[2rem] bg-[linear-gradient(160deg,rgb(20_18_14/0.08),rgb(20_18_14/0.03))] p-2 shadow-[0_0_0_1px_rgb(20_18_14/0.08),0_60px_100px_-50px_rgb(20_18_14/0.55)]">
-              <div className="tone-dark rounded-[calc(2rem-0.5rem)] bg-ink p-6 shadow-[inset_0_1px_0_rgb(255_255_255/0.1)] md:p-10">
+              <div className="tone-day tone-white rounded-[calc(2rem-0.5rem)] bg-ink p-6 shadow-[inset_0_1px_0_rgb(255_255_255/0.9)] md:p-10">
                 <LeadForm />
               </div>
             </div>

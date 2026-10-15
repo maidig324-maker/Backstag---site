@@ -48,7 +48,7 @@ export function Header({ linkPrefix = "" }: { linkPrefix?: string } = {}) {
       window.removeEventListener("resize", onScroll);
     };
   }, []);
-  const light = surface === "light" && !open;
+  const light = open || surface === "light";
 
   // Menu mobile: trava a rolagem, fecha com Esc e mantém o foco dentro do painel.
   useEffect(() => {
@@ -175,7 +175,8 @@ export function Header({ linkPrefix = "" }: { linkPrefix?: string } = {}) {
             role="dialog"
             aria-modal="true"
             aria-label="Menu"
-            className="fixed inset-0 z-40 flex flex-col overscroll-contain bg-ink/95 px-5 pb-10 pt-24 backdrop-blur-2xl lg:hidden"
+            data-surface="light"
+            className="tone-day tone-white fixed inset-0 z-40 flex flex-col overscroll-contain bg-ink/95 px-5 pb-10 pt-24 backdrop-blur-2xl lg:hidden"
             initial={{ clipPath: "inset(0% 0% 100% 0%)" }}
             animate={{ clipPath: "inset(0% 0% 0% 0%)" }}
             exit={{ clipPath: "inset(0% 0% 100% 0%)" }}

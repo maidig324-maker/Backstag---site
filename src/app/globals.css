@@ -690,6 +690,37 @@ ol > .rv-line {
 .tone-snow { --zone-rgb: 247 247 245; --color-ink: #f7f7f5; --color-ink-2: #efefeb; --color-ink-3: #e7e6e1; --color-mute: #55524a; }
 .tone-butter { --zone-rgb: 255 241 184; --color-ink: #fff1b8; --color-ink-2: #fbe8a0; --color-ink-3: #f5dc85; --color-mute: #57502f; }
 .tone-sun { --zone-rgb: 244 196 0; --color-ink: #f4c400; --color-ink-2: #e8ba00; --color-ink-3: #d9ae00; --color-mute: #3b3210; --color-mark: #ffffff; }
+/* a única seção escura: Desafio — preto da marca, texto branco, detalhes amarelos */
+.tone-night {
+  --zone-rgb: 20 20 20;
+  --color-ink: #141414;
+  --color-ink-2: #1d1d1d;
+  --color-ink-3: #262626;
+  --color-line: rgb(255 255 255 / 0.12);
+  --color-line-strong: rgb(255 255 255 / 0.24);
+  --color-gold: #f4c400;
+  --color-gold-light: #f4c400;
+  --color-paper: #ffffff;
+  --color-mute: #b4b1a8;
+  --color-on-gold: #141414;
+  color: var(--color-paper);
+}
+/* faixas de fundo limpas: cada seção tem a sua cor cheia; no topo, uma
+   passagem curta e suave vinda da cor da seção anterior (--prev) */
+.band {
+  position: relative;
+  isolation: isolate;
+  background: rgb(var(--zone-rgb));
+}
+.band::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: -1;
+  height: 7rem;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgb(var(--prev, var(--zone-rgb))), rgb(var(--prev, var(--zone-rgb)) / 0));
+}
 /* destaque do título: palavra em preto com marca-texto amarelo */
 .tone-day .accent {
   color: var(--color-paper);
@@ -1296,7 +1327,7 @@ html[data-opening] .op-progress {
 .ab-ids { z-index: 10; }
 .ab-glow { fill: rgb(215 168 62 / 0.05); transition: fill 1s ease 1.6s; }
 .ab-complete.ab .ab-glow { fill: rgb(215 168 62 / 0.05); }
-.sym-on .ab-complete .ab-glow { fill: rgb(240 199 102 / 0.14); }
+.sym-on .ab-complete .ab-glow { fill: rgb(244 196 0 / 0.12); }
 .ab-plan { fill: rgb(245 245 242 / 0.012); stroke: rgb(215 168 62 / 0.28); stroke-width: 1; stroke-dasharray: 3 5; vector-effect: non-scaling-stroke; }
 .ab-layer {
   position: absolute;
@@ -1315,15 +1346,15 @@ html[data-opening] .op-progress {
 /* identificação: o ponto surge, a linha se estende e o nome aparece */
 .ab-line {
   fill: none;
-  stroke: rgb(215 168 62 / 0.85);
+  stroke: rgb(244 196 0 / 0.85);
   stroke-width: 1;
   vector-effect: non-scaling-stroke;
   stroke-dasharray: 1;
 }
-.ab-dot { fill: #f0c766; }
-.ab-end { fill: rgb(240 199 102 / 0.9); }
+.ab-dot { fill: #f4c400; }
+.ab-end { fill: rgb(244 196 0 / 0.9); }
 .ab-halo {
-  fill: rgb(240 199 102 / 0.22);
+  fill: rgb(244 196 0 / 0.22);
   transform-box: fill-box;
   transform-origin: center;
   animation: ab-pulse 2.6s ease-in-out infinite;
@@ -1338,7 +1369,7 @@ html[data-opening] .op-progress {
   font-size: 30px; /* unidades do desenho: ~11px no celular */
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  fill: #f0c766;
+  fill: #f4c400;
 }
 @media (min-width: 768px) { .ab-name { font-size: 22px; letter-spacing: 0.1em; } }
 .ab-id-now .ab-dot,
@@ -1407,4 +1438,10 @@ html[data-opening] .op-progress {
 .tone-day .c3-card[aria-hidden="false"] .c3-shell {
   background: #f4c400;
   box-shadow: 0 60px 90px -45px rgb(20 20 20 / 0.45), 0 18px 30px -24px rgb(20 20 20 / 0.25);
+}
+/* no bloco preto do Desafio o destaque é a palavra em amarelo */
+.tone-day .tone-night .accent,
+.tone-night .accent {
+  color: #f4c400;
+  background: none;
 }
