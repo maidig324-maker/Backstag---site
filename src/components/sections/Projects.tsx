@@ -198,14 +198,14 @@ export function Projects() {
             ref={(el) => {
               cardRefs.current[i] = el;
             }}
-            className="c3-card absolute left-1/2 top-1/2 block w-[var(--cw)] cursor-[inherit] rounded-lg text-left"
+            className="c3-card absolute left-1/2 top-1/2 block w-[var(--cw)] cursor-[inherit] rounded-[1.5rem] text-left"
             aria-hidden={i !== current}
             tabIndex={i === current ? 0 : -1}
             aria-label={`Ver estudo de caso: ${projectTitle(p)}`}
             aria-haspopup="dialog"
             onClick={() => onCardClick(i)}
           >
-            <CardFace project={p} />
+            <CardFace project={p} active={i === current} />
           </button>
         ))}
         {/* reflexo/chão do palco */}
@@ -293,43 +293,65 @@ export function Projects() {
 }
 
 /** Vídeo real que toca sozinho (mudo) só enquanto está na tela. */
-function LoopVideo({ video, className = "", controls = false }: { video: ProjectVideo; className?: string; controls?: boolean }) {
+/**
+ * Vídeo real, mudo, em loop. Só baixa e toca quando está ativo (card da
+ * frente ou estudo de caso aberto) e visível; os outros mostram o poster.
+ */
+function LoopVideo({
+  video,
+  className = "",
+  controls = false,
+  active = true,
+}: {
+  video: ProjectVideo;
+  className?: string;
+  controls?: boolean;
+  active?: boolean;
+}) {
   const ref = useRef<HTMLVideoElement>(null);
+  const [visible, setVisible] = useState(false);
+  const [armed, setArmed] = useState(false); // já pode baixar o arquivo
   useEffect(() => {
-    const v = ref.current!;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const io = new IntersectionObserver(([e]) => (e.isIntersecting ? v.play().catch(() => {}) : v.pause()), { threshold: 0.3 });
-    io.observe(v);
+    const io = new IntersectionObserver(([e]) => setVisible(e.isIntersecting), { threshold: 0.3 });
+    io.observe(ref.current!);
     return () => io.disconnect();
   }, []);
+  useEffect(() => {
+    const v = ref.current!;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (active && visible) {
+      setArmed(true);
+      if (!reduced) v.play().catch(() => {});
+    } else v.pause();
+  }, [active, visible]);
   return (
     <video
       ref={ref}
       className={className}
-      src={video.src}
+      src={armed ? video.src : undefined}
       poster={video.poster}
       width={video.width}
       height={video.height}
       muted
       loop
       playsInline
-      preload="metadata"
+      preload={armed ? "auto" : "none"}
       controls={controls}
       aria-label={video.alt}
     />
   );
 }
 
-function CardFace({ project: p }: { project: Project }) {
+function CardFace({ project: p, active }: { project: Project; active: boolean }) {
   const cover = p.disclosure.imagesAuthorized ? p.images[0] : undefined;
   const video = p.disclosure.imagesAuthorized ? p.video : undefined;
   return (
-    <div className="c3-face tone-dark relative aspect-[4/5] w-full overflow-hidden rounded-lg border border-line-strong">
+    <div className="c3-shell">
+    <div className="c3-face tone-dark relative aspect-[4/5] w-full overflow-hidden">
       {video ? (
         <>
-          <LoopVideo video={video} className="pointer-events-none absolute inset-0 h-full w-full object-cover" />
+          <LoopVideo video={video} active={active} className="pointer-events-none absolute inset-0 h-full w-full object-cover" />
           <span aria-hidden className="fp-scan pointer-events-none absolute inset-x-0 h-1/4" />
-          <span aria-hidden className="pointer-events-none absolute inset-0 rounded-lg ring-1 ring-inset ring-gold/40" />
         </>
       ) : cover ? (
         <Image
@@ -337,7 +359,7 @@ function CardFace({ project: p }: { project: Project }) {
           alt={cover.alt}
           fill
           sizes="(min-width: 768px) 30vw, 62vw"
-          className={`pointer-events-none object-cover ${cover.pan ? "c3-pan" : ""}`}
+          className="pointer-events-none object-cover"
           style={{ objectPosition: cover.focus ?? "50% 50%" }}
           draggable={false}
         />
@@ -348,6 +370,8 @@ function CardFace({ project: p }: { project: Project }) {
         </div>
       )}
       <span aria-hidden className="c3-shine pointer-events-none absolute inset-0" />
+      <span aria-hidden className="c3-dim pointer-events-none absolute inset-0" />
+    </div>
     </div>
   );
 }
@@ -454,7 +478,9 @@ function CaseStudy({ project: p, onClose }: { project: Project; onClose: () => v
 
           {video && (
             <figure className="mt-10">
-              <LoopVideo video={video} controls className="mx-auto block max-h-[70svh] w-auto max-w-full rounded-lg" />
+              <div className="c3-shell mx-auto w-fit max-w-full">
+                <LoopVideo video={video} controls className="block max-h-[70svh] w-auto max-w-full rounded-[calc(1.5rem-6px)]" />
+              </div>
               {video.note && <figcaption className="mt-3 text-center text-xs text-mute">{video.note}</figcaption>}
             </figure>
           )}

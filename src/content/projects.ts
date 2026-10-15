@@ -24,8 +24,6 @@ export type ProjectImage = {
   height: number;
   /** Ponto de foco no recorte do card (object-position), ex.: "30% 50%". */
   focus?: string;
-  /** Card animado: câmera passeia pela imagem (zoom e deslocamento). */
-  pan?: boolean;
 };
 
 export type ProjectStatus = "publicado" | "em-operacao" | "em-andamento" | "em-documentacao";
