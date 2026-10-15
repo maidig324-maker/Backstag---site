@@ -6,7 +6,7 @@ import { methodologyIntro, methodologySteps } from "@/content/methodology";
 import { EASE } from "@/components/ui/motion";
 import { NodeConnector } from "@/components/ui/NodeConnector";
 import { NetCorner } from "@/components/ui/NetCorner";
-import { SectionIntro, splitSentences } from "@/components/ui/SectionIntro";
+import { SectionIntro } from "@/components/ui/SectionIntro";
 
 export function Methodology() {
   const listRef = useRef<HTMLOListElement>(null);
@@ -22,7 +22,8 @@ export function Methodology() {
             <NodeConnector className="mb-6 md:mx-0 md:mb-8" />
             <SectionIntro
               label={methodologyIntro.label}
-              titleLines={splitSentences(methodologyIntro.title)}
+              titleLines={[methodologyIntro.title]}
+              text={methodologyIntro.text}
               align="center-mobile"
               size="md"
             />
@@ -70,6 +71,20 @@ export function Methodology() {
             </li>
           ))}
         </ol>
+      </div>
+
+      {/* fechamento do método */}
+      <div className="container-x relative mt-20 md:mt-28">
+        <motion.p
+          data-reveal
+          className="display mx-auto max-w-4xl text-center text-[clamp(1.6rem,3.4vw,2.9rem)] leading-[1.02]"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "0px 0px -15% 0px" }}
+          transition={{ duration: 0.9, ease: EASE }}
+        >
+          {methodologyIntro.closing[0]} <span className="accent">{methodologyIntro.closing[1]}</span>
+        </motion.p>
       </div>
     </section>
   );

@@ -15,18 +15,26 @@ export function Contact() {
       <NetCorner corner="tl" className="top-4" />
       <div className="container-x relative">
         <NodeConnector className="mb-6 md:mb-8" />
+        <Reveal className="mb-5 flex justify-center md:mb-6" y={10}>
+          <span className="sec-chip">
+            <i aria-hidden />
+            {contactSection.label}
+          </span>
+        </Reveal>
         <LineReveal
           as="h2"
-          lines={contactSection.title
-            .split(/(?<=\.)\s+/)
-            .map((l, i) => (i === 0 ? l : <span key={i} className="accent">{l}</span>))}
+          lines={[contactSection.title[0], <span key="a" className="accent">{contactSection.title[1]}</span>]}
           className="display t-h2 mx-auto max-w-4xl text-center"
         />
 
         <div className="mt-12 grid gap-14 md:mt-16 lg:mt-20 lg:grid-cols-12 lg:gap-10">
           <div className="lg:col-span-5">
-            <Reveal>
-              <p className="mx-auto max-w-md text-center text-lg leading-relaxed text-paper/80 lg:mx-0 lg:text-left">{contactSection.text}</p>
+            <Reveal className="space-y-4">
+              {contactSection.text.map((t, i) => (
+                <p key={i} className={`mx-auto max-w-md text-center leading-relaxed lg:mx-0 lg:text-left ${i === 0 ? "text-lg text-paper" : "text-base text-paper/80 md:text-lg"}`}>
+                  {t}
+                </p>
+              ))}
             </Reveal>
             <Reveal delay={0.1} className="mt-10 flex flex-col items-center gap-3 lg:items-start">
               <ButtonLink href={main.href} external icon={<MessageCircle className="size-4" strokeWidth={1.5} />}>
@@ -35,6 +43,7 @@ export function Contact() {
               <ButtonLink href={contact.instagramUrl} variant="ghost" external>
                 {contactSection.instagramCta}
               </ButtonLink>
+              <p className="mt-3 max-w-sm text-center text-sm font-medium text-paper/80 lg:text-left">{contactSection.support}</p>
               {!hasWhatsapp && (
                 <p className="mt-2 max-w-sm text-xs leading-relaxed text-mute">
                   O atendimento por WhatsApp será disponibilizado em breve. Enquanto isso, fale com a Backstag

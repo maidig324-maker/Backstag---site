@@ -37,6 +37,8 @@ export type ProjectVideo = {
   height: number;
   /** Observação exibida junto ao vídeo (ex.: dados desfocados). */
   note?: string;
+  /** Vídeo ilustrativo (não é gravação do cliente): nunca vale como prova de resultado. */
+  illustrative?: boolean;
 };
 
 export type Project = {
@@ -72,9 +74,10 @@ export type Project = {
 };
 
 export const projectsIntro = {
-  label: "Projetos e realizações",
-  title: "Trabalho de bastidor, documentado com cuidado.",
-  text: "Cada estudo de caso descreve a situação, o desafio, o que foi feito e qual foi exatamente o papel da Backstag. Só publicamos nomes, imagens e resultados com autorização e comprovação.",
+  label: "BACKSTAG em ação",
+  title: "Não mostramos apenas ideias. Mostramos o trabalho colocado em prática.",
+  text: "Cada negócio tem seus desafios. Conheça algumas das soluções e atividades que desenvolvemos em diferentes operações empresariais.",
+  cta: "Conhecer o trabalho",
 };
 
 export const projects: Project[] = [
@@ -83,11 +86,11 @@ export const projects: Project[] = [
     // plano desfocado para proteger nome e endereço dos compradores.
     id: "ecommerce-marketplaces",
     clientName: "Operação de e-commerce", // nome do cliente não informado
-    anonymousTitle: "Estrutura para vender nos marketplaces",
+    anonymousTitle: "Por trás de cada pedido existe uma operação que precisa funcionar.",
     sector: "E-commerce",
     status: "em-operacao",
     headline:
-      "Montamos toda a estrutura para a empresa vender no e-commerce. O resultado aparece na operação: pedidos virando etiquetas de envio, uma atrás da outra.",
+      "Estruturação de canais de venda online e processos comerciais. O registro da expedição demonstra uma das etapas reais dessa operação.",
     initialSituation: null,
     challenge: null,
     solution: "Estrutura completa para a empresa vender nos marketplaces: Mercado Livre, Shopee, Amazon e outros canais.",
@@ -110,11 +113,11 @@ export const projects: Project[] = [
   {
     id: "petshop-palmares",
     clientName: "Petshop Palmares", // exibido somente após autorização
-    anonymousTitle: "Projeto em varejo e atacado pet",
-    sector: "Varejo e atacado pet",
+    anonymousTitle: "Muito além das redes sociais. Uma operação comercial conectada.",
+    sector: "Varejo pet",
     status: "publicado",
     headline:
-      "Posicionamento, vendas e operação de uma empresa de varejo e atacado pet: do site que vende todos os meses à gestão comercial, às cotações e à logística.",
+      "Desenvolvimento digital, posicionamento de mercado, apoio à gestão comercial, cotações e logística. Uma atuação que conecta a presença online aos desafios do dia a dia.",
     initialSituation: null,
     challenge: null,
     solution:
@@ -130,6 +133,7 @@ export const projects: Project[] = [
       width: 540,
       height: 960,
       note: "Vídeo ilustrativo da operação de varejo e atacado pet.",
+      illustrative: true,
     },
     tags: ["Posicionamento", "E-commerce", "Site de vendas", "Gestão comercial", "Cotações e logística"],
     link: null,
@@ -138,11 +142,11 @@ export const projects: Project[] = [
   {
     id: "casa-prates",
     clientName: "Casa Prates Alimentos",
-    anonymousTitle: "Projeto na indústria alimentícia",
-    sector: "Gestão de indústrias e empresas",
+    anonymousTitle: "Da produção ao mercado: organização, estratégia e presença de marca.",
+    sector: "Indústria alimentícia",
     status: "publicado",
     headline:
-      "Da negociação com fornecedores à força da marca: logística, cotações que ganham margem, portfólio forte e autoridade no digital para uma indústria alimentícia.",
+      "Apoio à logística, fornecedores, cotações, portfólio comercial e comunicação digital de uma indústria de alimentos congelados.",
     initialSituation: null,
     challenge: null,
     solution:
@@ -166,10 +170,11 @@ export const projects: Project[] = [
   {
     id: "delivery-street-food",
     clientName: "Delivery de street food",
-    anonymousTitle: "Projeto em delivery e fast food",
-    sector: "Soluções digitais e presença",
+    anonymousTitle: "Produtos bem apresentados. Comunicação pensada para despertar interesse.",
+    sector: "Gastronomia e delivery",
     status: "publicado",
-    headline: "Presença digital para delivery e fast food: identidade aplicada ao feed do Instagram, campanhas e promoções.",
+    headline:
+      "Desenvolvimento de conteúdos, identidade visual aplicada às campanhas e apresentação comercial de produtos para redes sociais.",
     initialSituation: null,
     challenge: null,
     solution: null,
@@ -182,7 +187,8 @@ export const projects: Project[] = [
       alt: "Cozinha de hamburgueria: carne na chapa, pães, ingredientes frescos, clientes no salão e o hambúrguer pronto",
       width: 540,
       height: 960,
-      note: "Vídeo ilustrativo de uma operação de delivery e fast food.",
+      note: "Vídeo ilustrativo de uma operação de gastronomia e delivery.",
+      illustrative: true,
     },
     link: null,
     disclosure: { clientNameAuthorized: false, linkAuthorized: false, imagesAuthorized: true },

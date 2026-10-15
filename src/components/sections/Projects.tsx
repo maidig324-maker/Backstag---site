@@ -181,7 +181,7 @@ export function Projects() {
       <div className="container-x relative">
         <div>
           <NodeConnector className="mb-6 md:mb-8" />
-          <SectionIntro label={projectsIntro.label} titleLines={splitSentences(projectsIntro.title)} />
+          <SectionIntro label={projectsIntro.label} titleLines={splitSentences(projectsIntro.title)} text={projectsIntro.text} />
         </div>
       </div>
 
@@ -222,7 +222,7 @@ export function Projects() {
       {/* Legenda do projeto da frente, em camadas */}
       <div className="container-x mt-6 md:mt-10">
         {/* altura fixa: trocar de projeto não empurra o resto da página */}
-        <div key={front.id} className="mx-auto min-h-[16rem] max-w-2xl text-center md:min-h-[12.5rem]">
+        <div key={front.id} className="mx-auto min-h-[22rem] max-w-2xl text-center md:min-h-[17rem]">
           <motion.p
             data-reveal
             className="label-tech flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-paper/70"
@@ -233,6 +233,13 @@ export function Projects() {
             <span>{front.sector}</span>
             <span aria-hidden className="h-px w-4 bg-line-strong" />
             <span className={front.status === "em-documentacao" ? "text-gold" : ""}>{statusLabel[front.status]}</span>
+            {/* vídeo ilustrativo nunca é apresentado como prova de resultado */}
+            {front.video?.illustrative && (
+              <>
+                <span aria-hidden className="h-px w-4 bg-line-strong" />
+                <span>Vídeo ilustrativo</span>
+              </>
+            )}
           </motion.p>
           <motion.h3
             data-reveal
@@ -270,6 +277,25 @@ export function Projects() {
               ))}
             </motion.ul>
           )}
+          <motion.div
+            data-reveal
+            className="mt-6 flex justify-center"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3, ease: EASE }}
+          >
+            <button
+              type="button"
+              onClick={() => setActive(front)}
+              aria-haspopup="dialog"
+              className="group inline-flex min-h-12 items-center gap-3 rounded-full bg-gold pl-6 pr-1.5 text-[0.95rem] font-medium text-on-gold transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] active:scale-[0.98]"
+            >
+              {projectsIntro.cta}
+              <span aria-hidden className="btn-ic btn-ic-primary inline-flex size-9 items-center justify-center rounded-full">
+                <ArrowUpRight className="size-4" strokeWidth={1.5} />
+              </span>
+            </button>
+          </motion.div>
         </div>
         {/* setas só no computador */}
         <div className="mt-6 hidden justify-center gap-2 md:flex">

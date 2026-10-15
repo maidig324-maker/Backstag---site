@@ -2,9 +2,8 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { motion } from "motion/react";
 import { founder } from "@/content/founder";
-import { EASE, Reveal } from "@/components/ui/motion";
+import { Reveal } from "@/components/ui/motion";
 import { NetCorner } from "@/components/ui/NetCorner";
 
 /**
@@ -82,47 +81,25 @@ export function Founder() {
 
         {/* história: revelada ao continuar a rolagem */}
         <div className="fd2-story mt-14 grid gap-10 md:mt-20 md:grid-cols-12 md:gap-x-10">
-          <div className="md:col-span-7">
+          <div className="min-w-0 md:col-span-7">
             <Reveal>
               <p className="label-tech text-mute">História</p>
             </Reveal>
             <div className="mt-4 space-y-5">
-              {founder.paragraphs.slice(0, 2).map((t, i) => (
+              {founder.paragraphs.map((t, i) => (
                 <Reveal key={i} delay={0.06 * i}>
                   <p className={i === 0 ? "text-lg leading-relaxed text-paper md:text-xl" : "leading-relaxed text-mute md:text-lg"}>{t}</p>
                 </Reveal>
               ))}
             </div>
           </div>
-          <div className="md:col-span-5">
+          <div className="min-w-0 md:col-span-5">
             <Reveal delay={0.1}>
               <blockquote className="fd-vision">
-                <p className="label-tech">Visão</p>
-                <p className="mt-2">{founder.paragraphs[2]}</p>
+                <p className="label-tech">Nossa visão</p>
+                <p className="mt-2">{founder.vision}</p>
               </blockquote>
             </Reveal>
-
-            {/* da visão à execução: os princípios como um fluxo conectado */}
-            <ol className="relative mt-10 grid gap-6 sm:grid-cols-3 sm:gap-4">
-              <motion.span
-                aria-hidden
-                data-reveal
-                className="absolute left-[5px] top-2 h-[calc(100%-1rem)] w-px origin-top bg-sun sm:left-0 sm:right-0 sm:top-[5px] sm:h-[2px] sm:w-full sm:origin-left"
-                initial={{ scaleX: 0, scaleY: 0 }}
-                whileInView={{ scaleX: 1, scaleY: 1 }}
-                viewport={{ once: true, margin: "0px 0px -10% 0px" }}
-                transition={{ duration: 1.4, ease: EASE }}
-              />
-              {founder.principles.map((p, i) => (
-                <li key={p} className="relative pl-7 sm:pl-0 sm:pt-7">
-                  <span aria-hidden className="absolute left-0 top-1 size-[11px] rounded-full border border-coal bg-sun sm:top-0" />
-                  <Reveal delay={0.2 + i * 0.15} y={10}>
-                    <p className="label-tech text-paper">{["Visão", "Execução", "Evolução"][i]}</p>
-                    <p className="mt-2 text-sm text-paper/80">{p}</p>
-                  </Reveal>
-                </li>
-              ))}
-            </ol>
           </div>
         </div>
       </div>
@@ -136,6 +113,7 @@ function Identity() {
     <>
       <p className="display fd2-name">{founder.name}</p>
       <p className="fd2-role">{founder.role}</p>
+      <p className="fd2-company">{founder.company}</p>
       <p className="fd2-pillars">
         {founder.pillars.map((p, i) => (
           <span key={p}>

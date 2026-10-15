@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { problem } from "@/content/site";
 import { Reveal } from "@/components/ui/motion";
-import { SectionIntro, splitSentences } from "@/components/ui/SectionIntro";
+import { SectionIntro } from "@/components/ui/SectionIntro";
 import { ArchitectureBuild } from "./ArchitectureBuild";
 import { NetCorner } from "@/components/ui/NetCorner";
 import { MessageCircle } from "lucide-react";
@@ -141,10 +141,10 @@ export function Problem() {
       <div className="relative">
         <NetCorner corner="tl" />
       <div className="container-x pb-2 pt-24 md:pb-4 md:pt-32">
-        <SectionIntro
-          label={problem.label}
-          titleLines={splitSentences(problem.vision.title)}
-        />
+        <SectionIntro label={problem.label} titleLines={[problem.vision.title]} text={problem.vision.text} />
+        <Reveal delay={0.25}>
+          <p className="mx-auto mt-5 max-w-xl text-center text-base font-semibold text-gold md:text-lg">{problem.vision.emphasis}</p>
+        </Reveal>
       </div>
       </div>
 
@@ -198,8 +198,8 @@ export function Problem() {
       <div>
       <div className="container-x pb-6 pt-16 md:pb-10 md:pt-24">
         <Reveal className="flex flex-col items-center gap-7 text-center">
-          <p className="display t-h2 max-w-3xl">
-            Viu a sua empresa em <span className="accent">algum desses desafios?</span>
+          <p className="display t-h2 max-w-4xl">
+            {problem.closing[0]} <span className="accent">{problem.closing[1]}</span>
           </p>
           <ButtonLink href={main.href} external icon={<MessageCircle className="size-4" strokeWidth={1.5} />} className="shrink-0">
             {main.channel === "whatsapp" ? "Conversar pelo WhatsApp" : "Fale com a Backstag"}
@@ -233,37 +233,24 @@ function Scene({ item, index }: { item: Item; index: number }) {
           {item.front}
         </span>
         <p className="rv label-tech text-paper/70" style={{ ["--d" as string]: "0.15s" }}>
-          Na sua empresa hoje
+          {problem.sceneLabels.now}
         </p>
         <h3 className="rv display t-h3 mt-2" style={{ ["--d" as string]: "0.22s" }}>
           {item.title}
         </h3>
-        <p className="rv mt-2 max-w-lg text-[0.8rem] leading-relaxed text-mute [@media(max-height:740px)]:hidden md:mt-4 md:text-base" style={{ ["--d" as string]: "0.3s" }}>
+        <p className="rv mt-2 max-w-lg text-[0.88rem] leading-relaxed text-mute [@media(max-height:640px)]:hidden md:mt-4 md:text-base" style={{ ["--d" as string]: "0.3s" }}>
           {item.text}
         </p>
 
         <span aria-hidden className="rv-line mt-4 block h-px w-full bg-gradient-to-r from-gold to-transparent md:mt-8" style={{ ["--d" as string]: "0.55s" }} />
 
         <p className="rv label-tech mt-4 text-gold md:mt-8" style={{ ["--d" as string]: "0.8s" }}>
-          O que enxergamos
+          {problem.sceneLabels.action}
         </p>
         <p className="rv mt-2 max-w-xl text-[0.92rem] leading-snug text-paper [@media(max-height:700px)]:text-[0.86rem] md:text-xl md:leading-snug" style={{ ["--d" as string]: "0.9s" }}>
           {item.approach}
         </p>
 
-        <p className="rv label-tech mt-4 text-paper/70 [@media(max-height:700px)]:hidden md:mt-8" style={{ ["--d" as string]: "1.05s" }}>
-          Como chegamos lá
-        </p>
-        {/* etapas livres, ligadas por uma linha — sem caixas nem números */}
-        <ol className="relative mt-3 flex flex-col gap-2.5 [@media(max-height:700px)]:hidden md:mt-4 md:flex-row md:gap-8">
-          <span aria-hidden className="rv-line absolute bottom-1.5 left-[3px] top-1.5 w-px origin-top bg-gold/50 md:bottom-auto md:left-0 md:right-0 md:top-[3px] md:h-px md:w-auto md:origin-left" style={{ ["--d" as string]: "1.1s" }} />
-          {item.steps.map((s, k) => (
-            <li key={s} className="rv relative flex items-center gap-3 md:flex-1 md:flex-col md:items-start md:gap-3" style={{ ["--d" as string]: `${1.2 + k * 0.14}s` }}>
-              <span aria-hidden className="relative size-[7px] shrink-0 rounded-full bg-gold shadow-[0_0_10px_rgb(240_199_102/0.7)]" />
-              <span className="text-sm font-medium leading-snug text-paper md:text-base">{s}</span>
-            </li>
-          ))}
-        </ol>
       </div>
     </div>
   );

@@ -55,7 +55,7 @@ export const contact = {
   whatsappNumber: (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "5521986084118").replace(/\D/g, ""),
   whatsappDisplay: "(21) 98608-4118",
   whatsappGreeting:
-    "Olá! Conheci a Backstag pelo site e gostaria de conversar sobre soluções para minha empresa.",
+    "Olá! Conheci a Backstag pelo site e gostaria de conversar sobre os desafios da minha empresa e entender como vocês podem ajudar.",
 
   instagramHandle: "@backstagmarketing",
   instagramUrl: "https://www.instagram.com/backstagmarketing/",
@@ -86,53 +86,48 @@ export const hero = {
 } as const;
 
 export const problem = {
-  label: "Desafios",
-  // Abertura da experiência "entre na nossa visão"
+  label: "O que acontece nos bastidores",
+  // Abertura da seção: o título e a explicação antes das cenas
   vision: {
-    title: "Veja a sua empresa pelos nossos olhos.",
-    text: "Role a tela e entre na nossa visão: para cada desafio de hoje, mostramos a transformação que enxergamos e como chegamos lá.",
+    title: "Sua empresa pode estar perdendo dinheiro sem perceber onde.",
+    text: "Vender mais é importante. Mas, quando atendimento, processos e operação não funcionam juntos, parte do esforço pode se transformar em atrasos, retrabalho e desperdício.",
+    emphasis: "É aqui que começamos a enxergar o que precisa mudar.",
   },
-  title: "O crescimento começa quando a estrutura acompanha a ambição.",
-  intro:
-    "Muitas empresas crescem mais rápido do que a própria organização. O cliente vê o palco — mas, muitas vezes, o que trava o negócio está nos bastidores.",
+  /** Rótulos dentro de cada cena */
+  sceneLabels: { now: "Na sua empresa hoje", action: "Nossa atuação" },
   items: [
     {
-      title: "Gestão e desenvolvimento da sua operação",
-      text: "As rotinas dependem da memória de poucas pessoas e a informação fica espalhada entre conversas, planilhas e cadernos. Quando alguém falta, a operação trava.",
-      approach: "Desenhamos a sua operação de ponta a ponta: processos mapeados, responsáveis definidos e padrões de execução, com a informação centralizada num só lugar. Sua empresa passa a funcionar pelo processo, não pelo improviso.",
-      front: "Gestão Empresarial",
-      steps: ["Mapeamento de processos e responsáveis", "Padronização de rotinas", "Informação centralizada"],
+      front: "Gestão",
+      title: "Sua empresa funciona por processos ou depende de você para tudo?",
+      text: "Quando as informações ficam espalhadas e as responsabilidades não estão claras, pequenos problemas passam a consumir tempo todos os dias.",
+      approach: "Mapeamos processos, organizamos rotinas, definimos responsabilidades e criamos controles para facilitar a gestão.",
     },
     {
-      title: "Automação inteligente de processos",
-      text: "Sua equipe repete tarefas à mão, copia dados de uma planilha para outra e perde horas corrigindo erros que nem precisariam existir.",
-      approach: "Encontramos os gargalos repetitivos e conectamos as suas ferramentas com automações e inteligência artificial. Os dados passam de um sistema para o outro sozinhos, e o seu time fica livre para o que realmente exige pessoas.",
-      front: "IA e Automação",
-      steps: ["Diagnóstico das tarefas repetitivas", "Integração entre sistemas", "Automação com IA e treinamento"],
+      front: "Automação",
+      title: "Quantas horas sua equipe perde fazendo tarefas que poderiam ser automatizadas?",
+      text: "Copiar informações, conferir planilhas e repetir atividades manuais ocupa tempo que poderia ser dedicado aos clientes e à operação.",
+      approach: "Identificamos tarefas repetitivas e implementamos automações viáveis para simplificar o trabalho.",
     },
     {
-      title: "Presença digital que vende",
-      text: "Sua empresa está na internet, mas o site, as redes e os marketplaces não mostram com clareza o que você faz nem levam o cliente até a compra.",
-      approach: "Estruturamos o seu ecossistema digital: site, redes e lojas nos marketplaces com posicionamento claro, navegação pensada para converter e um caminho direto até o seu atendimento.",
-      front: "Desenvolvimento Digital",
-      steps: ["Posicionamento e arquitetura dos canais", "Site, e-commerce e marketplaces", "Caminho direto até a venda"],
+      front: "Presença digital",
+      title: "Seu negócio está na internet. Mas o cliente consegue chegar até a compra?",
+      text: "Estar nas redes sociais não é suficiente quando a comunicação não apresenta a oferta com clareza e dificulta o contato comercial.",
+      approach: "Desenvolvemos sites, páginas comerciais, estratégias digitais e jornadas que facilitam o caminho entre interesse e atendimento.",
     },
     {
-      title: "Automação de atendimento e marketing",
-      text: "O marketing atrai, mas o atendimento demora a responder e a operação nem fica sabendo. Cada área trabalha com a sua própria versão dos fatos, e o seu cliente sente essa distância.",
-      approach: "Conectamos marketing, atendimento e operação numa só jornada: cada contato é registrado, respondido no tempo certo e acompanhado até a venda, com todas as áreas olhando a mesma informação.",
-      front: "Estratégia e Marketing",
-      steps: ["Mapeamento da jornada do cliente", "Atendimento integrado e automatizado", "Mesma informação em todas as áreas"],
+      front: "Marketing e atendimento",
+      title: "Sua empresa atrai clientes, mas consegue acompanhar cada oportunidade?",
+      text: "Mensagens sem resposta, falta de acompanhamento e informações desconectadas podem fazer oportunidades comerciais desaparecerem.",
+      approach: "Estruturamos a comunicação e os processos de atendimento, conectando marketing, vendas e operação.",
     },
     {
-      title: "Indicadores e evolução contínua",
-      text: "Sem números organizados, as decisões são tomadas no escuro. Fica difícil saber o que está funcionando e por onde começar a mudar.",
-      approach: "Definimos os indicadores que importam para o seu negócio e criamos uma rotina de acompanhamento. Você passa a enxergar a sua empresa com dados e decide a próxima melhoria com segurança.",
-      front: "Gestão Empresarial",
-      steps: ["Indicadores-chave do negócio", "Painel e rotina de acompanhamento", "Ciclos de melhoria contínua"],
+      front: "Indicadores",
+      title: "Você sabe quais números realmente mostram se sua empresa está evoluindo?",
+      text: "Sem acompanhar custos, vendas, prazos e produtividade, fica difícil reconhecer problemas e decidir onde investir.",
+      approach: "Organizamos indicadores e rotinas de acompanhamento para apoiar decisões mais seguras.",
     },
   ],
-  /** Peças do quebra-cabeça da operação: cada encaixe vira esta informação. */
+  /** Peças da empresa em construção: cada encaixe vira esta informação. */
   pieces: [
     "Processos organizados",
     "Tarefas automatizadas",
@@ -141,14 +136,18 @@ export const problem = {
     "Indicadores no painel",
     "Operação funcionando",
   ],
-  bridge:
-    "A Backstag entra nos bastidores: avalia como a sua empresa funciona hoje, entende as necessidades reais do negócio e implementa as soluções adequadas a cada caso — da organização interna à presença digital.",
+  /** Mensagem de transição ao fim da seção */
+  closing: ["O crescimento não depende apenas de fazer mais.", "Depende de fazer cada parte funcionar melhor."],
 } as const;
 
 export const contactSection = {
-  label: "Contato",
-  title: "Sua empresa tem desafios. Vamos construir as soluções.",
-  text: "Conte o que sua empresa precisa melhorar e descubra como podemos ajudar a estruturar os próximos passos.",
-  whatsappCta: "Conversar pelo WhatsApp",
+  label: "Vamos conversar sobre sua empresa",
+  title: ["Qual parte do seu negócio", "precisa funcionar melhor?"],
+  text: [
+    "Talvez seja o atendimento. A gestão. A presença digital. Ou processos que consomem mais tempo do que deveriam.",
+    "Conte qual é o seu principal desafio. Vamos entender sua necessidade e avaliar por onde começar.",
+  ],
+  whatsappCta: "Quero conversar sobre minha empresa",
   instagramCta: "Conhecer a Backstag no Instagram",
+  support: "Uma boa solução começa com as perguntas certas.",
 } as const;

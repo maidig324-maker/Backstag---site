@@ -57,8 +57,10 @@ export type Comparison = Base & {
 export type Proof = Testimonial | Metric | Screenshot | Video | Comparison;
 
 export const proofsIntro = {
-  label: "Resultados e provas",
-  title: "O que os clientes e os números mostram.",
+  label: "Credibilidade na prática",
+  title: "Projetos reais. Entregas que podem ser demonstradas.",
+  text: "Por trás de cada projeto existe um desafio específico, decisões tomadas e um trabalho desenvolvido. Aqui apresentamos evidências verificáveis das soluções implantadas, dos processos organizados e dos projetos realizados.",
+  // Esta seção só aparece quando houver materiais reais e autorizados (verified + authorized).
 };
 
 export const proofs: Proof[] = [

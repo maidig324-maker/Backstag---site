@@ -173,6 +173,10 @@ export function HeroBrain() {
         {/* mensagem */}
         <div className="container-x relative z-10 flex h-full flex-col justify-end pb-16 lg:grid lg:grid-cols-12 lg:items-center lg:pb-0">
           <div className="hb-copy text-center lg:col-span-5 lg:text-left">
+            <span className="hs-in sec-chip mb-4 lg:mb-6" style={{ ["--d" as string]: "0s" } as CSSProperties}>
+              <i aria-hidden />
+              {opening.label}
+            </span>
             <h1 className="hs-in display hb-title" style={{ ["--d" as string]: "0.1s" } as CSSProperties}>
               {opening.headline[0]} <span className="accent">{opening.headline[1]}</span>
             </h1>
