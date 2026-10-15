@@ -75,8 +75,8 @@ export function Header({ linkPrefix = "" }: { linkPrefix?: string } = {}) {
         id="site-header"
         className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-500 lg:!border-transparent lg:!bg-transparent lg:!backdrop-blur-none ${
           scrolled && !open
-            ? "border-b border-line bg-ink/80 backdrop-blur-xl"
-            : "border-b border-transparent"
+            ? "bg-gradient-to-b from-ink from-35% via-ink/80 to-ink/0 pb-3 lg:!bg-none lg:pb-0"
+            : ""
         }`}
       >
         {/* no computador: menu flutuante em pílula de vidro */}

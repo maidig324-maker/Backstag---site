@@ -695,14 +695,15 @@ ol > .rv-line {
   color: var(--color-paper);
 }
 .zone {
-  --fade: 8rem;
+  --fade: 12rem;
   position: relative;
   isolation: isolate;
   padding-block: var(--fade);
 }
 @media (min-width: 768px) {
-  .zone { --fade: 12rem; }
+  .zone { --fade: 18rem; }
 }
+/* a zona clara nasce e termina numa curva suave (sem faixa nem linha) */
 .zone::before {
   content: "";
   position: absolute;
@@ -712,12 +713,20 @@ ol > .rv-line {
   background: linear-gradient(
     180deg,
     rgb(var(--zone-rgb) / 0) 0,
-    rgb(var(--zone-rgb) / 0.35) calc(var(--fade) * 0.4),
-    rgb(var(--zone-rgb) / 0.85) calc(var(--fade) * 0.75),
+    rgb(var(--zone-rgb) / 0.03) calc(var(--fade) * 0.15),
+    rgb(var(--zone-rgb) / 0.1) calc(var(--fade) * 0.3),
+    rgb(var(--zone-rgb) / 0.22) calc(var(--fade) * 0.45),
+    rgb(var(--zone-rgb) / 0.4) calc(var(--fade) * 0.6),
+    rgb(var(--zone-rgb) / 0.62) calc(var(--fade) * 0.75),
+    rgb(var(--zone-rgb) / 0.85) calc(var(--fade) * 0.88),
     rgb(var(--zone-rgb)) var(--fade),
     rgb(var(--zone-rgb)) calc(100% - var(--fade)),
-    rgb(var(--zone-rgb) / 0.85) calc(100% - var(--fade) * 0.75),
-    rgb(var(--zone-rgb) / 0.35) calc(100% - var(--fade) * 0.4),
+    rgb(var(--zone-rgb) / 0.85) calc(100% - var(--fade) * 0.88),
+    rgb(var(--zone-rgb) / 0.62) calc(100% - var(--fade) * 0.75),
+    rgb(var(--zone-rgb) / 0.4) calc(100% - var(--fade) * 0.6),
+    rgb(var(--zone-rgb) / 0.22) calc(100% - var(--fade) * 0.45),
+    rgb(var(--zone-rgb) / 0.1) calc(100% - var(--fade) * 0.3),
+    rgb(var(--zone-rgb) / 0.03) calc(100% - var(--fade) * 0.15),
     rgb(var(--zone-rgb) / 0) 100%
   );
 }
@@ -1044,7 +1053,12 @@ html[data-opening] .op-progress {
   translate: 0 -10px;
   pointer-events: none;
 }
-.hs { background: #09090b; }
+.hs { background: transparent; }
+/* o fundo do topo se dissolve no fundo do site: sem linha de divisão */
+.hs-scene {
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 72%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 72%, transparent 100%);
+}
 .hs-depth {
   background:
     radial-gradient(46% 38% at 70% 46%, rgb(215 168 62 / 0.1), transparent 72%),
@@ -1296,4 +1310,12 @@ html[data-opening] .op-progress {
   height: calc(var(--R, 100vmax) * 2);
   transform: translate(-50%, -50%) scale(0);
   will-change: transform, opacity;
+}
+
+/* Fundador: foto parada, informações sobem pela lateral */
+.fd-text { will-change: transform; }
+@media (prefers-reduced-motion: reduce) {
+  .fd-stage { position: relative; height: auto; overflow: visible; padding-block: 6rem; }
+  .fd-photo { position: relative; inset: auto; margin-bottom: 2rem; }
+  .fd-text { position: relative; }
 }

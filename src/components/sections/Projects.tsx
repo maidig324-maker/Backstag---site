@@ -479,7 +479,7 @@ function CaseStudy({ project: p, onClose }: { project: Project; onClose: () => v
         exit={{ x: "100%" }}
         transition={{ duration: 0.7, ease: EASE }}
       >
-        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-line bg-ink-2/90 px-5 py-3 backdrop-blur md:px-10">
+        <div className="sticky top-0 z-10 flex items-center justify-between bg-ink-2/90 px-5 py-3 backdrop-blur md:px-10">
           <p className="cue">{statusLabel[p.status]}</p>
           <button
             ref={closeRef}

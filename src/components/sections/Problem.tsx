@@ -136,11 +136,14 @@ export function Problem() {
 
   return (
     <section id="desafios" aria-label={problem.label} className="relative">
+      {/* o fundo escurece até a cor exata das cenas: nenhuma divisão visível */}
+      <div className="bg-gradient-to-b from-transparent from-30% to-[#0b0b0e]">
       <div className="container-x pb-2 pt-24 md:pb-4 md:pt-32">
         <SectionIntro
           label={problem.label}
           titleLines={splitSentences(problem.vision.title)}
         />
+      </div>
       </div>
 
       {/* Trilho: uma tela de rolagem por cena */}
@@ -190,6 +193,7 @@ export function Problem() {
       </div>
 
       {/* Fecho da Descoberta: convite direto, no momento em que o visitante se reconheceu */}
+      <div className="bg-gradient-to-b from-[#0b0b0e] to-transparent to-70%">
       <div className="container-x pb-6 pt-16 md:pb-10 md:pt-24">
         <Reveal className="flex flex-col items-center gap-7 text-center">
           <p className="display t-h2 max-w-3xl">
@@ -199,6 +203,7 @@ export function Problem() {
             {main.channel === "whatsapp" ? "Conversar pelo WhatsApp" : "Fale com a Backstag"}
           </ButtonLink>
         </Reveal>
+      </div>
       </div>
     </section>
   );
