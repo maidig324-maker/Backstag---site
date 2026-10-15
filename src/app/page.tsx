@@ -1,7 +1,7 @@
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { FloatingWhatsApp } from "@/components/layout/FloatingWhatsApp";
-import { HeroStages } from "@/components/hero/HeroStages";
+import { HeroBrain } from "@/components/hero/HeroBrain";
 import { Problem } from "@/components/sections/Problem";
 import { Projects } from "@/components/sections/Projects";
 import { Methodology } from "@/components/sections/Methodology";
@@ -12,7 +12,7 @@ import { publishableProofs } from "@/lib/visibility";
 
 /**
  * BACKSTAG 2026 — Behind Business Evolution
- * Topo · Projetos · Desafios (empresa em construção) ·
+ * Topo (o cérebro por trás do negócio) · Projetos · Desafios (empresa em construção) ·
  * Metodologia · Provas · Fundador · Conversão
  */
 export default function Home() {
@@ -20,8 +20,8 @@ export default function Home() {
     <>
       <Header />
       <main id="conteudo" className="relative">
-        {/* abertura com a logo + mensagem e as cinco áreas */}
-        <HeroStages />
+        {/* abertura com a logo + rede viva de inteligência empresarial */}
+        <HeroBrain />
         {/* zona clara: carrossel de projetos logo após a construção (degradê, sem divisão) */}
         <div className="zone tone-light">
           <Projects />
