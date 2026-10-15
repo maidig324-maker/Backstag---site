@@ -61,6 +61,16 @@ export const contact = {
   instagramUrl: "https://www.instagram.com/backstagmarketing/",
   /** Link oficial do Instagram para abrir o Direct da conta. */
   instagramDirectUrl: "https://ig.me/m/backstagmarketing",
+  /**
+   * E-mail comercial. SUBSTITUIR quando o fundador informar — enquanto for
+   * null, o rodapé não mostra o campo (nunca um endereço inventado).
+   */
+  email: null as string | null,
+  /**
+   * Outras redes sociais oficiais (LinkedIn, Facebook, TikTok, YouTube…).
+   * Só entram links reais informados pelo fundador.
+   */
+  socials: [] as { label: string; url: string }[],
 } as const;
 
 export const navigation = [
