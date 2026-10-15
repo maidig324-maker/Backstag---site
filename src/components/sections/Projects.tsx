@@ -272,7 +272,7 @@ export function Projects() {
             aria-label="Projeto anterior"
             className="inline-flex size-12 items-center justify-center rounded-full border border-line-strong text-paper transition-colors hover:border-gold"
           >
-            <ArrowLeft className="size-4" strokeWidth={1.75} aria-hidden />
+            <ArrowLeft className="size-4" strokeWidth={1.5} aria-hidden />
           </button>
           <button
             type="button"
@@ -280,7 +280,7 @@ export function Projects() {
             aria-label="Próximo projeto"
             className="inline-flex size-12 items-center justify-center rounded-full border border-line-strong text-paper transition-colors hover:border-gold"
           >
-            <ArrowRight className="size-4" strokeWidth={1.75} aria-hidden />
+            <ArrowRight className="size-4" strokeWidth={1.5} aria-hidden />
           </button>
         </div>
       </div>
@@ -524,7 +524,7 @@ function CaseStudy({ project: p, onClose }: { project: Project; onClose: () => v
               rel="noopener noreferrer"
               className="mt-10 inline-flex min-h-12 items-center gap-3 rounded-full border border-line-strong px-6 text-sm hover:border-gold hover:text-gold-light"
             >
-              Visitar projeto <ArrowUpRight className="size-4" strokeWidth={1.75} aria-hidden />
+              Visitar projeto <ArrowUpRight className="size-4" strokeWidth={1.5} aria-hidden />
               <span className="sr-only"> (abre em nova aba)</span>
             </a>
           )}

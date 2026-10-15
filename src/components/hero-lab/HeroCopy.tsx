@@ -69,7 +69,7 @@ export function SubAndCtas({ className = "", stacked = false, hideSubMobile = fa
         <ButtonLink
           href={main.href}
           external
-          icon={<MessageCircle className="size-4" strokeWidth={1.75} />}
+          icon={<MessageCircle className="size-4" strokeWidth={1.5} />}
         >
           {main.channel === "whatsapp" ? "Conversar pelo WhatsApp" : hero2026.primaryCta.label}
         </ButtonLink>

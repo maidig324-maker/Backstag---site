@@ -248,9 +248,12 @@ export function LeadForm() {
         </p>
         <button
           type="submit"
-          className="group inline-flex min-h-12 items-center justify-center gap-3 self-start rounded-full bg-gold px-7 font-medium text-ink transition-colors hover:bg-gold-light"
+          className="group inline-flex min-h-12 items-center justify-center gap-3 self-start rounded-full bg-gold py-1.5 pl-7 pr-1.5 font-medium text-ink transition-[background-color,transform] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-gold-light active:scale-[0.98]"
         >
           {hasWhatsapp ? "Enviar pelo WhatsApp" : "Copiar e abrir o Instagram"}
+          <span aria-hidden className="inline-flex size-9 items-center justify-center rounded-full bg-ink/10 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-translate-y-px group-hover:translate-x-0.5 group-hover:scale-105">
+            <ArrowUpRight className="size-4" strokeWidth={1.5} />
+          </span>
         </button>
       </div>
     </form>

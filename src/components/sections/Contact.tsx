@@ -26,7 +26,7 @@ export function Contact() {
               <p className="mx-auto max-w-md text-center text-lg leading-relaxed text-paper/80 md:mx-0 md:text-left">{contactSection.text}</p>
             </Reveal>
             <Reveal delay={0.1} className="mt-10 flex flex-col items-center gap-3 md:items-start">
-              <ButtonLink href={main.href} external icon={<MessageCircle className="size-4" strokeWidth={1.75} />}>
+              <ButtonLink href={main.href} external icon={<MessageCircle className="size-4" strokeWidth={1.5} />}>
                 {main.channel === "whatsapp" ? contactSection.whatsappCta : "Conversar pelo Instagram"}
               </ButtonLink>
               <ButtonLink href={contact.instagramUrl} variant="ghost" external>
@@ -42,8 +42,11 @@ export function Contact() {
           </div>
 
           <Reveal delay={0.15} className="md:col-span-6 md:col-start-7">
-            <div className="tone-dark rounded-xl bg-ink p-6 shadow-[0_40px_90px_-40px_rgb(11_11_12/0.7)] md:p-10">
-              <LeadForm />
+            {/* moldura dupla: aro claro por fora, núcleo escuro com brilho por dentro */}
+            <div className="rounded-[2rem] bg-[linear-gradient(160deg,rgb(20_18_14/0.08),rgb(20_18_14/0.03))] p-2 shadow-[0_0_0_1px_rgb(20_18_14/0.08),0_60px_100px_-50px_rgb(20_18_14/0.55)]">
+              <div className="tone-dark rounded-[calc(2rem-0.5rem)] bg-ink p-6 shadow-[inset_0_1px_0_rgb(255_255_255/0.1)] md:p-10">
+                <LeadForm />
+              </div>
             </div>
           </Reveal>
         </div>

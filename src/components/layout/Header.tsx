@@ -105,7 +105,7 @@ export function Header({ linkPrefix = "" }: { linkPrefix?: string } = {}) {
               rel="noopener noreferrer"
               className="hidden min-h-11 items-center gap-2 rounded-full border border-gold/50 px-5 text-sm text-gold-light transition-colors hover:bg-gold hover:text-ink md:inline-flex"
             >
-              <MessageCircle className="size-4" strokeWidth={1.75} aria-hidden />
+              <MessageCircle className="size-4" strokeWidth={1.5} aria-hidden />
               {main.channel === "whatsapp" ? "WhatsApp" : hero.primaryCta.label}
               <span className="sr-only"> (abre em nova aba)</span>
             </a>
@@ -165,7 +165,7 @@ export function Header({ linkPrefix = "" }: { linkPrefix?: string } = {}) {
                 onClick={() => setOpen(false)}
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-gold font-medium text-ink"
               >
-                <MessageCircle className="size-4" strokeWidth={1.75} aria-hidden />
+                <MessageCircle className="size-4" strokeWidth={1.5} aria-hidden />
                 {main.channel === "whatsapp" ? "Conversar pelo WhatsApp" : hero.primaryCta.label}
               </a>
               <a

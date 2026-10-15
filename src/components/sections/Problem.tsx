@@ -176,7 +176,7 @@ export function Problem() {
           <p className="display t-h2 max-w-3xl">
             Viu a sua empresa em <span className="accent">algum desses desafios?</span>
           </p>
-          <ButtonLink href={main.href} external icon={<MessageCircle className="size-4" strokeWidth={1.75} />} className="shrink-0">
+          <ButtonLink href={main.href} external icon={<MessageCircle className="size-4" strokeWidth={1.5} />} className="shrink-0">
             {main.channel === "whatsapp" ? "Conversar pelo WhatsApp" : "Fale com a Backstag"}
           </ButtonLink>
         </Reveal>
