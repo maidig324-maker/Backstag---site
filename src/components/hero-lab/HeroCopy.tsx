@@ -64,8 +64,8 @@ export function SubAndCtas({ className = "", stacked = false, hideSubMobile = fa
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1, delay: 0.95, ease: EASE }}
     >
-      <p className={`max-w-sm text-base leading-relaxed text-paper/75 md:text-[1.05rem] ${hideSubMobile ? "hidden md:block" : ""}`}>{hero2026.sub}</p>
-      <div className={`${hideSubMobile ? "md:mt-7" : "mt-7"} flex flex-col gap-3 ${stacked ? "" : "sm:flex-row sm:items-center"}`}>
+      <p className={`max-w-md text-base leading-relaxed text-paper/75 lg:text-[1.05rem] ${hideSubMobile ? "hidden lg:block" : ""}`}>{hero2026.sub}</p>
+      <div className={`${hideSubMobile ? "lg:mt-7" : "mt-7"} flex flex-col gap-3 ${stacked ? "" : "sm:flex-row sm:items-center"}`}>
         <ButtonLink
           href={main.href}
           external

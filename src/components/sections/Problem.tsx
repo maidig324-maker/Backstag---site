@@ -189,7 +189,7 @@ type Item = (typeof problem.items)[number];
 
 function Scene({ item, index }: { item: Item; index: number }) {
   return (
-    <div className="container-x relative grid h-full grid-rows-[auto_minmax(0,1fr)_auto] gap-3 pb-16 pt-[4.75rem] md:grid-cols-12 md:grid-rows-1 md:items-center md:gap-10 md:pb-20 md:pt-24">
+    <div className="container-x relative grid h-full grid-rows-[auto_minmax(0,1fr)_auto] gap-3 pb-16 pt-[4.75rem] md:grid-cols-12 md:grid-rows-1 md:items-center md:gap-10 md:pb-16 md:pt-20">
       {/* cabeçalho da cena */}
       <div className="rv flex items-center md:hidden" style={{ ["--d" as string]: "0.05s" }}>
         <span className="label-tech rounded-full border border-gold/40 px-3 py-1.5 text-gold-light">{item.front}</span>
