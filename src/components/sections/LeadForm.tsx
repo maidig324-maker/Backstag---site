@@ -261,7 +261,7 @@ export function LeadForm() {
 }
 
 const inputCls =
-  "w-full border-0 border-b border-line-strong bg-transparent px-0 py-3 text-base text-paper placeholder:text-paper/45 transition-colors focus:border-gold focus:shadow-[0_2px_0_0_var(--color-gold-light)] focus:outline-none focus-visible:outline-none aria-[invalid=true]:border-[#ff9b8a]";
+  "w-full border-0 border-b border-line-strong bg-transparent px-0 py-3 text-base text-paper placeholder:text-paper/55 transition-colors focus:border-gold focus:shadow-[0_2px_0_0_var(--color-gold-light)] focus:outline-none focus-visible:outline-none aria-[invalid=true]:border-[#ff9b8a]";
 
 function Field({
   id,

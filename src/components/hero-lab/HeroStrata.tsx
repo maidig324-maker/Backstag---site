@@ -106,7 +106,7 @@ export function HeroStrata() {
                   setInteracted(true);
                   setActive(active === i ? null : i);
                 }}
-                className={`label-tech inline-flex min-h-10 shrink-0 items-center gap-2 whitespace-nowrap rounded-full border px-3 text-[0.6rem] leading-tight transition-colors ${
+                className={`label-tech inline-flex min-h-11 shrink-0 items-center gap-2 whitespace-nowrap rounded-full border px-3 text-[0.6rem] leading-tight transition-colors ${
                   shown === i ? "border-gold bg-gold/10 text-gold-light" : "border-line-strong text-paper/70"
                 }`}
               >

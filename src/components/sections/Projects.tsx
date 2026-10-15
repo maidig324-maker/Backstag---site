@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowLeft, ArrowRight, ArrowUpRight, X } from "lucide-react";
 import { projectsIntro, type Project, type ProjectStatus, type ProjectVideo } from "@/content/projects";
@@ -26,6 +27,8 @@ const statusLabel: Record<ProjectStatus, string> = {
  */
 export function Projects() {
   const [active, setActive] = useState<Project | null>(null);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
   const items = visibleProjects;
   const n = items.length;
   const stageRef = useRef<HTMLDivElement>(null);
@@ -234,7 +237,7 @@ export function Projects() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.08, ease: EASE }}
           >
-            <button type="button" onClick={() => setActive(front)} aria-haspopup="dialog" className="[text-transform:inherit] hover:text-gold-light">
+            <button type="button" tabIndex={-1} onClick={() => setActive(front)} aria-haspopup="dialog" className="[text-transform:inherit] hover:text-gold-light">
               {projectTitle(front)}
               <span className="sr-only"> — ver estudo de caso</span>
             </button>
@@ -285,9 +288,12 @@ export function Projects() {
         </div>
       </div>
 
-      <AnimatePresence>
-        {active && <CaseStudy project={active} onClose={() => setActive(null)} />}
-      </AnimatePresence>
+      {/* portal no <body>: o estudo de caso fica acima do menu e do botão flutuante */}
+      {mounted &&
+        createPortal(
+          <AnimatePresence>{active && <CaseStudy project={active} onClose={() => setActive(null)} />}</AnimatePresence>,
+          document.body,
+        )}
     </section>
   );
 }

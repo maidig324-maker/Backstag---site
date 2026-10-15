@@ -1,6 +1,6 @@
 /**
  * Conteúdo do hero da direção "BACKSTAG — BEHIND BUSINESS EVOLUTION".
- * Compartilhado pelas duas alternativas em avaliação (A: Rede, B: Camadas).
+ * Usado pelo topo do site.
  */
 export const hero2026 = {
   concept: "Behind Business Evolution",
@@ -32,6 +32,4 @@ export const hero2026 = {
       blurb: "Atendimento, tarefas repetitivas e integrações rodando sozinhos, para a sua equipe focar no que gera resultado.",
     },
   ],
-  /** Rótulos da rede (alternativa A): áreas que a Backstag conecta. */
-  networkLabels: ["Processos", "Atendimento", "Marketing", "Operação", "Dados", "Automação"],
 } as const;

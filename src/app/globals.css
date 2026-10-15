@@ -26,6 +26,8 @@
 @layer base {
   html {
     -webkit-tap-highlight-color: transparent;
+    /* barra de rolagem no tom do site, não a padrão do navegador */
+    scrollbar-color: #3a3a40 #09090b;
     scroll-behavior: smooth;
     scroll-padding-top: 5rem;
     -webkit-text-size-adjust: 100%;
@@ -53,6 +55,11 @@
   a:active,
   button:active {
     opacity: 0.85;
+  }
+  input,
+  textarea,
+  select {
+    caret-color: var(--color-gold-light);
   }
   ::selection {
     background: var(--color-gold);
@@ -535,9 +542,7 @@ ol > .rv-line {
   transform: translateX(calc(var(--o, 0) * 60%));
   opacity: calc(1 - var(--ao, 0));
 }
-.c3-open {
-  opacity: calc(1 - var(--ao, 0) * 3);
-}
+
 
 /* ---------- Fundador em cena ---------- */
 .fv-halo {
