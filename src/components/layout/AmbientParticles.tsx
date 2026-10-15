@@ -29,7 +29,7 @@ export function AmbientParticles() {
       canvas.style.width = `${W}px`;
       canvas.style.height = `${H}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const count = W < 768 ? 28 : 54;
+      const count = W < 768 ? 16 : 40;
       pts = Array.from({ length: count }, () => ({
         x: Math.random() * W,
         y: Math.random() * H,

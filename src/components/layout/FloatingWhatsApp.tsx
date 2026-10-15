@@ -38,7 +38,7 @@ export function FloatingWhatsApp() {
       rel="noopener noreferrer"
       aria-label="Conversar pelo WhatsApp (abre em nova aba)"
       tabIndex={show ? 0 : -1}
-      className={`fixed right-4 z-[58] inline-flex min-h-12 items-center gap-2 rounded-full bg-gold px-5 text-sm font-medium text-ink shadow-[0_12px_40px_-10px_rgb(215_168_62/0.6)] transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] active:scale-[0.97] md:right-6 ${
+      className={`fixed right-4 z-[35] inline-flex min-h-12 items-center gap-2 rounded-full bg-gold px-5 text-sm font-medium text-ink shadow-[0_12px_40px_-10px_rgb(215_168_62/0.6)] transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] active:scale-[0.97] md:right-6 ${
         show ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-4 opacity-0"
       }`}
       style={{ bottom: "calc(1rem + env(safe-area-inset-bottom, 0px))" }}

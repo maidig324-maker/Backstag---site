@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useScroll, useSpring } from "motion/react";
-import { Menu, MessageCircle, X } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import { primaryContact } from "@/lib/contact";
 import { contact, hero } from "@/content/site";
 import { visibleNavigation } from "@/lib/visibility";
@@ -30,8 +30,11 @@ export function Header({ linkPrefix = "" }: { linkPrefix?: string } = {}) {
   // Menu mobile: trava a rolagem, fecha com Esc e mantém o foco dentro do painel.
   useEffect(() => {
     if (!open) return;
+    // iOS: travar html e body, senão a página rola por trás do menu
     const prev = document.body.style.overflow;
+    const prevHtml = document.documentElement.style.overflow;
     document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
     const first = panel.current?.querySelector<HTMLElement>("a,button");
     first?.focus();
 
@@ -53,6 +56,7 @@ export function Header({ linkPrefix = "" }: { linkPrefix?: string } = {}) {
     window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = prev;
+      document.documentElement.style.overflow = prevHtml;
       window.removeEventListener("keydown", onKey);
       menuButton.current?.focus();
     };
@@ -68,14 +72,21 @@ export function Header({ linkPrefix = "" }: { linkPrefix?: string } = {}) {
       />
 
       <header
-        className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-500 ${
+        className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-500 lg:!border-transparent lg:!bg-transparent lg:!backdrop-blur-none ${
           scrolled && !open
             ? "border-b border-line bg-ink/80 backdrop-blur-xl"
             : "border-b border-transparent"
         }`}
       >
-        <div className="container-x flex h-16 items-center justify-between md:h-20">
-          <a href={linkPrefix ? "/" : "#topo"} className="relative z-[70] -m-2 p-2" aria-label="Backstag — voltar ao início">
+        {/* no computador: menu flutuante em pílula de vidro */}
+        <div
+          className={`container-x flex h-16 items-center justify-between transition-[background-color,box-shadow,margin] duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] md:h-20 lg:mx-auto lg:h-16 lg:w-[min(72rem,calc(100%-3rem))] lg:rounded-full lg:!pl-5 lg:!pr-2 ${
+            scrolled
+              ? "lg:mt-4 lg:bg-[rgb(12_12_14/0.72)] lg:shadow-[0_0_0_1px_rgb(255_255_255/0.08),0_20px_50px_-20px_rgb(0_0_0/0.6)] lg:backdrop-blur-xl"
+              : "lg:mt-6"
+          }`}
+        >
+          <a href={linkPrefix ? "/" : "#topo"} className="relative z-[70] -m-2 p-2 lg:ml-1" aria-label="Backstag — voltar ao início">
             <Logo priority />
           </a>
 
@@ -118,7 +129,11 @@ export function Header({ linkPrefix = "" }: { linkPrefix?: string } = {}) {
               aria-label={open ? "Fechar menu" : "Abrir menu"}
               className="relative z-[70] -mr-2 inline-flex size-12 items-center justify-center text-paper lg:hidden"
             >
-              {open ? <X className="size-6" strokeWidth={1.5} /> : <Menu className="size-6" strokeWidth={1.5} />}
+              {/* duas linhas que giram e viram um X */}
+              <span aria-hidden className="relative block h-3 w-6">
+                <span className={`absolute left-0 h-px w-6 bg-current transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${open ? "top-1.5 rotate-45" : "top-0"}`} />
+                <span className={`absolute left-0 h-px w-6 bg-current transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${open ? "top-1.5 -rotate-45" : "top-3"}`} />
+              </span>
             </button>
           </div>
         </div>
@@ -132,26 +147,25 @@ export function Header({ linkPrefix = "" }: { linkPrefix?: string } = {}) {
             role="dialog"
             aria-modal="true"
             aria-label="Menu"
-            className="fixed inset-0 z-[55] flex flex-col bg-ink px-5 pb-10 pt-24 lg:hidden"
+            className="fixed inset-0 z-40 flex flex-col overscroll-contain bg-ink/95 px-5 pb-10 pt-24 backdrop-blur-2xl lg:hidden"
             initial={{ clipPath: "inset(0% 0% 100% 0%)" }}
             animate={{ clipPath: "inset(0% 0% 0% 0%)" }}
             exit={{ clipPath: "inset(0% 0% 100% 0%)" }}
             transition={{ duration: 0.6, ease: EASE }}
           >
             <nav aria-label="Menu mobile" className="flex-1">
-              <ul className="border-t border-line">
+              <ul>
                 {visibleNavigation.map((item, i) => (
-                  <li key={item.href} className="overflow-hidden border-b border-line">
+                  <li key={item.href} className="overflow-hidden">
                     <motion.a
                       href={linkPrefix + item.href}
                       onClick={() => setOpen(false)}
-                      className="flex items-baseline justify-between py-5"
+                      className="flex py-4"
                       initial={{ y: "100%" }}
                       animate={{ y: 0 }}
                       transition={{ duration: 0.7, delay: 0.15 + i * 0.06, ease: EASE }}
                     >
                       <span className="display text-4xl">{item.label}</span>
-                      <span className="cue">0{i + 1}</span>
                     </motion.a>
                   </li>
                 ))}

@@ -43,11 +43,18 @@ export function HeroStrata() {
   }, [shown]);
   const blurb = layers[lastShown];
 
+  // a troca automática só acontece com o topo na tela
+  const [heroVisible, setHeroVisible] = useState(true);
   useEffect(() => {
-    if (prefersReducedMotion() || interacted) return;
+    const io = new IntersectionObserver(([e]) => setHeroVisible(e.isIntersecting));
+    io.observe(sectionRef.current!);
+    return () => io.disconnect();
+  }, []);
+  useEffect(() => {
+    if (prefersReducedMotion() || interacted || !heroVisible) return;
     const id = window.setInterval(() => setAuto((a) => (a + 1) % layers.length), 3200);
     return () => window.clearInterval(id);
-  }, [interacted]);
+  }, [interacted, heroVisible]);
 
   useEffect(() => {
     const section = sectionRef.current!;
