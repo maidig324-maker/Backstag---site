@@ -23,7 +23,7 @@ export default function Home() {
         {/* abertura com a logo + rede viva de inteligência empresarial */}
         <HeroBrain />
         {/* zona clara: carrossel de projetos logo após a construção (degradê, sem divisão) */}
-        <div className="zone tone-light">
+        <div className="zone zone-from-butter tone-day tone-white" data-surface="light" data-rgb="255 255 255">
           <Projects />
         </div>
         <Problem />

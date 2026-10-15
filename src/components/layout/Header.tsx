@@ -13,6 +13,9 @@ import { EASE } from "@/components/ui/motion";
 export function Header({ linkPrefix = "" }: { linkPrefix?: string } = {}) {
   const main = primaryContact();
   const [scrolled, setScrolled] = useState(false);
+  // fundo sob o cabeçalho: claro (branco/amarelo) ou escuro — o cabeçalho acompanha
+  const [surface, setSurface] = useState<"light" | "dark">("dark");
+  const [surfaceRgb, setSurfaceRgb] = useState("9 9 11");
   const [open, setOpen] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
   const panel = useRef<HTMLDivElement>(null);
@@ -21,11 +24,31 @@ export function Header({ linkPrefix = "" }: { linkPrefix?: string } = {}) {
   const progress = useSpring(scrollYProgress, { stiffness: 140, damping: 30, mass: 0.3 });
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
+    let raf = 0;
+    const read = () => {
+      raf = 0;
+      setScrolled(window.scrollY > 24);
+      // a seção que está logo abaixo do cabeçalho decide o tom
+      const hit = document.elementsFromPoint(window.innerWidth / 2, 34).find((el) => !el.closest("#site-header") && el.closest("[data-surface]"));
+      const host = hit?.closest<HTMLElement>("[data-surface]");
+      const tone = host?.dataset.surface === "light" ? "light" : "dark";
+      const rgb = host?.dataset.rgb ?? "9 9 11";
+      setSurface((v) => (v === tone ? v : tone));
+      setSurfaceRgb((v) => (v === rgb ? v : rgb));
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(read);
+    };
+    read();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
+  const light = surface === "light" && !open;
 
   // Menu mobile: trava a rolagem, fecha com Esc e mantém o foco dentro do painel.
   useEffect(() => {
@@ -73,9 +96,11 @@ export function Header({ linkPrefix = "" }: { linkPrefix?: string } = {}) {
 
       <header
         id="site-header"
-        className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-500 lg:!border-transparent lg:!bg-transparent lg:!backdrop-blur-none ${
+        data-surface={light ? "light" : "dark"}
+        style={{ ["--hbg" as string]: surfaceRgb }}
+        className={`${light ? "tone-day tone-white" : ""} fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-500 lg:!border-transparent lg:!bg-transparent lg:!backdrop-blur-none ${
           scrolled && !open
-            ? "bg-gradient-to-b from-ink from-35% via-ink/80 to-ink/0 pb-3 lg:!bg-none lg:pb-0"
+            ? "bg-[linear-gradient(180deg,rgb(var(--hbg))_35%,rgb(var(--hbg)/0.8)_70%,rgb(var(--hbg)/0))] pb-3 lg:!bg-none lg:pb-0"
             : ""
         }`}
       >
@@ -83,7 +108,9 @@ export function Header({ linkPrefix = "" }: { linkPrefix?: string } = {}) {
         <div
           className={`container-x flex h-16 items-center justify-between transition-[background-color,box-shadow,margin] duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] md:h-20 lg:mx-auto lg:h-16 lg:w-[min(72rem,calc(100%-3rem))] lg:rounded-full lg:!pl-5 lg:!pr-2 ${
             scrolled
-              ? "lg:mt-4 lg:bg-[rgb(12_12_14/0.72)] lg:shadow-[0_0_0_1px_rgb(255_255_255/0.08),0_20px_50px_-20px_rgb(0_0_0/0.6)] lg:backdrop-blur-xl"
+              ? light
+                ? "lg:mt-4 lg:bg-[rgb(255_255_255/0.78)] lg:shadow-[0_0_0_1px_rgb(20_20_20/0.06),0_20px_50px_-24px_rgb(20_20_20/0.35)] lg:backdrop-blur-xl"
+                : "lg:mt-4 lg:bg-[rgb(12_12_14/0.72)] lg:shadow-[0_0_0_1px_rgb(255_255_255/0.08),0_20px_50px_-20px_rgb(0_0_0/0.6)] lg:backdrop-blur-xl"
               : "lg:mt-6"
           }`}
         >
@@ -115,7 +142,7 @@ export function Header({ linkPrefix = "" }: { linkPrefix?: string } = {}) {
               href={main.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden min-h-11 items-center gap-2 rounded-full border border-gold/50 px-5 text-sm text-gold-light transition-colors hover:bg-gold hover:text-ink md:inline-flex"
+              className="hidden min-h-11 items-center gap-2 rounded-full border border-gold/50 px-5 text-sm text-gold-light transition-colors hover:bg-gold hover:text-on-gold md:inline-flex"
             >
               <MessageCircle className="size-4" strokeWidth={1.5} aria-hidden />
               {main.channel === "whatsapp" ? "WhatsApp" : hero.primaryCta.label}

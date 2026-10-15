@@ -10,11 +10,13 @@ import { whatsappLink, primaryContact } from "@/lib/contact";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { HUBS, buildNetwork, drawNetwork, type Frame } from "./brainNetwork";
 
-const LOGO = site.logo.src ?? "/brand/backstag-logo.png";
+/** variante preta da logo oficial, para o fundo amarelo suave */
+const LOGO = "/brand/backstag-logo-preta.png";
 
 /**
  * TOPO — "o cérebro por trás do negócio".
- * Ao abrir: a logo original, que se aproxima e some (≈2 s; tocar ou rolar
+ * Fundo amarelo suave, rede em preto com pontos amarelos (BACKSTAG 2026).
+ * Ao abrir: a logo oficial (variante preta), que se aproxima e some (≈2 s; tocar ou rolar
  * pula). Depois, a mensagem e uma rede viva de inteligência empresarial.
  * Com a rolagem (o palco fica preso por pouco mais de uma tela):
  * os centros acendem, as conexões se formam, fluxos percorrem a rede,
@@ -141,13 +143,9 @@ export function HeroBrain() {
 
   return (
     <section ref={trackRef} id="topo" aria-label="Apresentação" data-pin className="hb-track relative">
-      <div ref={stageRef} className="hb-stage sticky top-0 h-[100svh] overflow-hidden">
-        {/* fundo escuro com profundidade e luz que atravessa devagar */}
-        <div aria-hidden className="hb-scene absolute inset-0">
-          <span className="hs-depth absolute inset-0" />
-          <span className="hs-beam hs-beam-a" />
-          <span className="hs-veil absolute inset-0" />
-        </div>
+      <div ref={stageRef} data-surface="light" data-rgb="255 241 184" className="hb-stage tone-day tone-butter sticky top-0 h-[100svh] overflow-hidden">
+        {/* amarelo suave com profundidade discreta (luz no centro da rede) */}
+        <div aria-hidden className="hb-bg absolute inset-0" />
 
         {/* a rede viva de inteligência */}
         <div aria-hidden className="hs-in absolute inset-0" style={{ ["--d" as string]: "0s" } as CSSProperties}>

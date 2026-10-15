@@ -122,10 +122,10 @@ function glowSprite() {
   glow.width = glow.height = 128;
   const g = glow.getContext("2d")!;
   const grd = g.createRadialGradient(64, 64, 0, 64, 64, 64);
-  grd.addColorStop(0, "rgba(255,236,190,1)");
-  grd.addColorStop(0.18, "rgba(240,199,102,0.55)");
-  grd.addColorStop(0.5, "rgba(215,168,62,0.12)");
-  grd.addColorStop(1, "rgba(215,168,62,0)");
+  grd.addColorStop(0, "rgba(244,196,0,0.95)");
+  grd.addColorStop(0.22, "rgba(244,196,0,0.5)");
+  grd.addColorStop(0.55, "rgba(244,196,0,0.12)");
+  grd.addColorStop(1, "rgba(244,196,0,0)");
   g.fillStyle = grd;
   g.fillRect(0, 0, 128, 128);
   return glow;
@@ -167,10 +167,10 @@ export function drawNetwork(ctx: CanvasRenderingContext2D, net: Network, f: Fram
     const d = (A.depth + B.depth) / 2;
     if (e.main) {
       const k = e.ring ? 0.45 : 1;
-      ctx.strokeStyle = `rgba(226,186,92,${(0.22 + s.core * 0.3 + s.whole * 0.1) * d * k})`;
+      ctx.strokeStyle = `rgba(20,20,20,${(0.28 + s.core * 0.32 + s.whole * 0.1) * d * k})`;
       ctx.lineWidth = e.ring ? 0.7 : 0.9 + s.core * 0.4;
     } else {
-      ctx.strokeStyle = `rgba(232,230,224,${(0.07 + s.order * 0.07 + s.whole * 0.04) * d})`;
+      ctx.strokeStyle = `rgba(20,20,20,${(0.09 + s.order * 0.08 + s.whole * 0.04) * d})`;
       ctx.lineWidth = 0.7;
     }
     ctx.beginPath();
@@ -188,7 +188,7 @@ export function drawNetwork(ctx: CanvasRenderingContext2D, net: Network, f: Fram
       // pontos menores: poeira discreta no início, nítidos quando conectados
       const on = ease(seg(p, n.delay, n.delay + 0.12));
       const a = (0.3 + on * 0.55) * P.depth;
-      ctx.fillStyle = `rgba(245,245,242,${a})`;
+      ctx.fillStyle = `rgba(20,20,20,${a})`;
       ctx.beginPath();
       ctx.arc(P.x, P.y, (0.9 + n.r * 1.4 * on) * P.k, 0, Math.PI * 2);
       ctx.fill();
@@ -201,29 +201,32 @@ export function drawNetwork(ctx: CanvasRenderingContext2D, net: Network, f: Fram
     const isCore = n.hub === -2;
     const power = isCore ? 0.6 + s.core * 1.4 + s.whole * 0.5 : 0.7 + s.core * 0.6;
     const pulse = 1 + Math.sin(t * 1.6 + n.phase) * 0.06 * on;
-    const R = (isCore ? 3.2 : 2.6) * P.k * pulse;
-    ctx.globalCompositeOperation = "lighter";
-    ctx.globalAlpha = Math.min(1, on * (isCore ? 0.35 + s.core * 0.55 : 0.5) * P.depth);
+    const grow = Math.min(1.7, Math.max(1, f.scale / 170)); // centros maiores em telas largas
+    const R = (isCore ? 3.2 : 2.6) * P.k * pulse * grow;
+    // halo amarelo, ponto amarelo com contorno preto (núcleo: preto com aro amarelo)
+    ctx.globalAlpha = Math.min(1, on * (isCore ? 0.45 + s.core * 0.5 : 0.55) * P.depth);
     const gs = R * (isCore ? 10 + s.core * 10 : 9) * power * 0.6;
     ctx.drawImage(spr, P.x - gs / 2, P.y - gs / 2, gs, gs);
     ctx.globalAlpha = 1;
-    ctx.globalCompositeOperation = "source-over";
-    ctx.fillStyle = isCore ? `rgba(255,240,205,${on})` : `rgba(240,199,102,${on})`;
+    const RR = R * 1.25;
+    ctx.fillStyle = isCore ? `rgba(20,20,20,${on})` : `rgba(244,196,0,${on})`;
     ctx.beginPath();
-    ctx.arc(P.x, P.y, R, 0, Math.PI * 2);
+    ctx.arc(P.x, P.y, RR, 0, Math.PI * 2);
     ctx.fill();
+    ctx.strokeStyle = isCore ? `rgba(244,196,0,${on})` : `rgba(20,20,20,${0.85 * on})`;
+    ctx.lineWidth = isCore ? 1.6 : 1;
+    ctx.stroke();
     // anel fino em volta dos centros
-    ctx.strokeStyle = `rgba(240,199,102,${0.35 * on})`;
-    ctx.lineWidth = 0.8;
+    ctx.strokeStyle = `rgba(20,20,20,${0.22 * on})`;
+    ctx.lineWidth = 0.7;
     ctx.beginPath();
-    ctx.arc(P.x, P.y, R * 2.6, 0, Math.PI * 2);
+    ctx.arc(P.x, P.y, R * 2.8, 0, Math.PI * 2);
     ctx.stroke();
     if (n.hub >= 0) hubPts[n.hub] = { x: P.x, y: P.y, a: lit };
   });
 
   // fluxos de luz percorrendo as conexões
   if (s.flow > 0) {
-    ctx.globalCompositeOperation = "lighter";
     net.flows.forEach((fl) => {
       const e = net.edges[fl.e];
       const g = seg(s.links, e.delay, e.delay + 0.16);
@@ -236,16 +239,20 @@ export function drawNetwork(ctx: CanvasRenderingContext2D, net: Network, f: Fram
       const size = (e.main ? 14 : 9) * ((A.k + B.k) / 2);
       ctx.globalAlpha = a;
       ctx.drawImage(spr, x - size / 2, y - size / 2, size, size);
+      // miolo preto: o fluxo aparece no fundo claro sem brilho exagerado
+      ctx.fillStyle = "rgba(20,20,20,0.85)";
+      ctx.beginPath();
+      ctx.arc(x, y, e.main ? 1.4 : 1, 0, Math.PI * 2);
+      ctx.fill();
     });
     ctx.globalAlpha = 1;
-    ctx.globalCompositeOperation = "source-over";
   }
 
   // integração final: uma onda suave sai do núcleo
   if (s.whole > 0) {
     const C = pts[net.core];
     const wave = (t * 0.35) % 1;
-    ctx.strokeStyle = `rgba(240,199,102,${0.22 * s.whole * (1 - wave)})`;
+    ctx.strokeStyle = `rgba(20,20,20,${0.18 * s.whole * (1 - wave)})`;
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.arc(C.x, C.y, f.scale * (0.15 + wave * 0.95), 0, Math.PI * 2);
