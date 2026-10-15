@@ -351,7 +351,6 @@ function CardFace({ project: p, active }: { project: Project; active: boolean })
       {video ? (
         <>
           <LoopVideo video={video} active={active} className="pointer-events-none absolute inset-0 h-full w-full object-cover" />
-          <span aria-hidden className="fp-scan pointer-events-none absolute inset-x-0 h-1/4" />
         </>
       ) : cover ? (
         <Image

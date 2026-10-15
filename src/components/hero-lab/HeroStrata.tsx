@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion, useScroll, useTransform } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import type React from "react";
@@ -143,6 +144,27 @@ export function HeroStrata() {
       className="relative isolate flex min-h-[100svh] flex-col overflow-hidden"
     >
 
+      {/* Foto real dos bastidores de uma operação, tratada em tom quente e escurecida */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-20 overflow-hidden">
+        <Image
+          src="/scenes/bastidores-mobile.webp"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="hero-photo object-cover opacity-70 md:hidden"
+        />
+        <Image
+          src="/scenes/bastidores-desktop.webp"
+          alt=""
+          fill
+          sizes="100vw"
+          className="hero-photo hidden object-cover opacity-60 md:block"
+        />
+        <span className="absolute inset-0 bg-[linear-gradient(180deg,rgb(9_9_11/0.6)_0%,rgb(9_9_11/0.3)_28%,rgb(9_9_11/0.82)_58%,#09090b_100%)] md:bg-[linear-gradient(90deg,rgb(9_9_11/0.94)_0%,rgb(9_9_11/0.7)_42%,rgb(9_9_11/0.4)_100%)]" />
+        <span className="absolute inset-x-0 bottom-0 hidden h-1/3 bg-[linear-gradient(180deg,transparent,#09090b)] md:block" />
+      </div>
+
       {/* Composição 3D */}
       <div
         aria-hidden
@@ -167,13 +189,13 @@ export function HeroStrata() {
                 key={l.code}
                 className={`absolute inset-0 flex flex-col overflow-hidden rounded-[6px] border transition-[border-color,color,box-shadow] duration-500 ${
                   on
-                    ? "bs-on border-gold/80 text-gold-light shadow-[0_0_0_1px_rgb(215_168_62/0.25),0_24px_60px_-20px_rgb(215_168_62/0.35)]"
+                    ? "bs-on border-gold/70 text-gold-light shadow-[0_0_0_1px_rgb(215_168_62/0.18),0_30px_60px_-24px_rgb(0_0_0/0.7)]"
                     : "border-line-strong text-paper/35"
                 }`}
                 style={{
                   transform: offset(i),
                   opacity: `calc((1 - var(--drop-${i}, 0)) * (1 - var(--s-${i}, ${i}) * 0.12))`,
-                  background: "linear-gradient(180deg, #1c1c1e 0%, #121214 100%)",
+                  background: "linear-gradient(180deg, rgb(28 28 30 / 0.94) 0%, rgb(18 18 20 / 0.94) 100%)",
                 }}
               >
                 {/* barra do painel */}

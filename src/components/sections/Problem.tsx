@@ -152,7 +152,7 @@ export function Problem() {
                     className="pointer-events-none absolute inset-0"
                     style={{
                       background:
-                        "radial-gradient(ellipse 60% 45% at 50% 38%, rgb(215 168 62 / 0.11), transparent 70%), radial-gradient(ellipse 70% 50% at 100% 100%, rgb(92 118 160 / 0.12), transparent 70%), radial-gradient(ellipse 50% 40% at 0% 0%, rgb(215 168 62 / 0.05), transparent 70%)",
+                        "radial-gradient(ellipse 60% 45% at 50% 38%, rgb(215 168 62 / 0.08), transparent 70%), radial-gradient(ellipse 70% 50% at 100% 100%, rgb(150 112 60 / 0.07), transparent 70%), radial-gradient(120% 90% at 50% 40%, transparent 55%, rgb(0 0 0 / 0.45) 100%)",
                     }}
                   />
                   <Scene item={item} Symbol={Symbol} />
@@ -164,7 +164,7 @@ export function Problem() {
           <span
             ref={ringRef}
             aria-hidden
-            className="pointer-events-none absolute left-1/2 top-[46%] z-[20] -translate-x-1/2 -translate-y-1/2 rounded-full border border-gold-light/80 shadow-[0_0_40px_6px_rgb(240_199_102/0.35),inset_0_0_40px_6px_rgb(240_199_102/0.2)]"
+            className="pointer-events-none absolute left-1/2 top-[46%] z-[20] -translate-x-1/2 -translate-y-1/2 rounded-full border border-gold/50 shadow-[0_0_24px_2px_rgb(0_0_0/0.5)]"
             style={{ opacity: 0 }}
           />
         </div>
