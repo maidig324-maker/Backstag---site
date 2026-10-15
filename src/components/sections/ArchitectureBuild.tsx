@@ -16,9 +16,9 @@ import { ARQ_LAYERS } from "@/components/hero/layers.generated";
 const IDS = ["gestao", "marketing", "estrutura", "tecnologia", "automacao"] as const;
 
 // enquadramento no sistema das camadas (cada arquivo tem viewBox 0 0 800 800)
-const VX = -80;
+const VX = -120;
 const VY = 200;
-const VW = 960;
+const VW = 1040;
 const VH = 580;
 const LINE_END = { left: 150, right: 650 } as const;
 

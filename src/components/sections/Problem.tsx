@@ -36,18 +36,32 @@ export function Problem() {
 
   useEffect(() => {
     const track = trackRef.current!;
+    const stage = track.firstElementChild as HTMLElement;
     let raf = 0;
+    // medidas lidas só ao abrir e quando a página muda de tamanho (nunca a cada quadro)
+    let top = 0;
+    let vh = 1;
+    let lastActive = -1;
+    let lastSeen = -1;
+    const measure = () => {
+      vh = window.innerHeight;
+      const w = window.innerWidth;
+      top = track.getBoundingClientRect().top + window.scrollY;
+      // raio que cobre a tela a partir do centro do portal (50% · 46%)
+      const R = Math.ceil(Math.hypot(w / 2, vh * 0.54)) + 2;
+      stage.style.setProperty("--R", `${R}px`);
+      stage.style.setProperty("--cx", `${w / 2}px`);
+      stage.style.setProperty("--cy", `${vh * 0.46}px`);
+      stage.style.setProperty("--vw", `${w}px`);
+      stage.style.setProperty("--vh", `${vh}px`);
+    };
     const update = () => {
       raf = 0;
-      const vh = window.innerHeight;
-      const w = window.innerWidth;
-      const raw = Math.min(n - 1, Math.max(0, -track.getBoundingClientRect().top / (vh * (STEP / 100))));
+      const raw = Math.min(n - 1, Math.max(0, (window.scrollY - top) / (vh * (STEP / 100))));
       const k = Math.floor(raw);
       const f = Math.min(1, Math.max(0, (raw - k - HOLD) / (1 - HOLD * 2)));
       const seg = Math.min(n - 1, k + f);
-      track.style.setProperty("--sp", raw.toFixed(3)); // símbolos giram com a rolagem
-      const R = Math.sqrt((w * w + vh * vh) / 2) * 1.5; // raio que cobre a tela
-      let ring = { r: 0, o: 0 };
+      let ring = { s: 0, o: 0 };
       for (let i = 0; i < n; i++) {
         const el = slideRefs.current[i];
         if (!el) continue;
@@ -55,53 +69,55 @@ export function Problem() {
         const reveal = i === 0 ? 1 : Math.min(1, Math.max(0, (seg - (i - 1)) / 0.85));
         const leave = i === n - 1 ? 0 : Math.min(1, Math.max(0, seg - i));
         const eased = 1 - Math.pow(1 - reveal, 2);
-        el.style.clipPath = i === 0 || reveal >= 1 ? "none" : `circle(${(eased * R).toFixed(1)}px at 50% 46%)`;
         el.style.visibility = reveal <= 0 || leave >= 1 ? "hidden" : "visible";
-        const inner = el.firstElementChild as HTMLElement | null;
-        if (inner) {
-          inner.style.transform = `scale(${(1 + leave * 0.35).toFixed(3)})`;
-          inner.style.opacity = (1 - leave).toFixed(3);
+        // portal: um círculo que cresce (escala) com o conteúdo em escala inversa,
+        // tudo na placa de vídeo, sem redesenhar a tela a cada quadro
+        const clip = el.firstElementChild as HTMLElement;
+        const counter = clip.firstElementChild as HTMLElement;
+        const inner = counter.firstElementChild as HTMLElement;
+        if (reveal >= 1) {
+          clip.style.transform = "";
+          counter.style.transform = "";
+        } else if (reveal > 0) {
+          const sc = Math.max(0.002, eased);
+          clip.style.transform = `scale(${sc.toFixed(4)})`;
+          counter.style.transform = `scale(${(1 / sc).toFixed(4)})`;
         }
-        if (i > 0 && reveal > 0 && reveal < 1) ring = { r: eased * R, o: Math.min(1, reveal * (1 - reveal) * 5) };
+        inner.style.transform = leave > 0 ? `scale(${(1 + leave * 0.35).toFixed(3)})` : "";
+        inner.style.opacity = leave > 0 ? (1 - leave).toFixed(3) : "";
+        if (i > 0 && reveal > 0 && reveal < 1) ring = { s: eased, o: Math.min(1, reveal * (1 - reveal) * 5) };
       }
       if (ringRef.current) {
-        ringRef.current.style.width = ringRef.current.style.height = `${(ring.r * 2).toFixed(1)}px`;
+        ringRef.current.style.transform = `translate(-50%, -50%) scale(${ring.s.toFixed(4)})`;
         ringRef.current.style.opacity = ring.o.toFixed(3);
       }
-      setActive(Math.round(seg));
+      const a = Math.round(seg);
+      if (a !== lastActive) setActive((lastActive = a));
       // a cena começa a se transformar assim que o portal se abre
       const opening = Math.min(n - 1, Math.floor(seg + 0.7));
-      setSeen((s) => Math.max(s, opening));
+      if (opening > lastSeen) setSeen((lastSeen = opening));
     };
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(update);
     };
+    const onResize = () => {
+      measure();
+      onScroll();
+    };
+    measure();
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+    window.addEventListener("resize", onResize);
+    // fotos e vídeos acima podem mudar a altura da página depois de carregar
+    const ro = new ResizeObserver(onResize);
+    ro.observe(document.body);
     return () => {
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      window.removeEventListener("resize", onResize);
+      ro.disconnect();
       cancelAnimationFrame(raf);
     };
   }, [n]);
-
-  // cada símbolo se ajusta ao espaço que sobra na tela (nunca cobre o texto)
-  useEffect(() => {
-    const boxes = Array.from(trackRef.current!.querySelectorAll<HTMLElement>("[data-sym-box]"));
-    const fit = () => {
-      // prédio base de ~200×200 (mais a torre e a planta em volta)
-      const max = window.innerWidth < 768 ? 1.3 : 2.2;
-      for (const b of boxes) {
-        const k = Math.max(0.4, Math.min(max, (b.clientHeight * 0.95) / 215, (b.clientWidth * 0.94) / 240));
-        b.style.setProperty("--k", k.toFixed(3));
-      }
-    };
-    fit();
-    const ro = new ResizeObserver(fit);
-    boxes.forEach((b) => ro.observe(b));
-    return () => ro.disconnect();
-  }, []);
 
   // a primeira cena ganha vida quando o trilho entra na tela
   const [entered, setEntered] = useState(false);
@@ -141,9 +157,11 @@ export function Problem() {
                   slideRefs.current[i] = el;
                 }}
                 aria-hidden={i !== active}
-                className="absolute inset-0 bg-[#0b0b0e]"
+                className="absolute inset-0"
                 style={{ zIndex: i + 1 }}
               >
+                <div className="pt-clip">
+                <div className="pt-counter bg-[#0b0b0e]">
                 <div className={`h-full w-full ${live ? "will-change-transform" : "sym-paused"} ${on ? "slide-on sym-on" : ""}`}>
                   {/* fundo da cena: grade técnica + brilho no centro */}
                   <div
@@ -156,6 +174,8 @@ export function Problem() {
                   />
                   <Scene item={item} index={i} />
                 </div>
+                </div>
+                </div>
               </div>
             );
           })}
@@ -163,7 +183,7 @@ export function Problem() {
           <span
             ref={ringRef}
             aria-hidden
-            className="pointer-events-none absolute left-1/2 top-[46%] z-[20] -translate-x-1/2 -translate-y-1/2 rounded-full border border-gold/50 shadow-[0_0_24px_2px_rgb(0_0_0/0.5)]"
+            className="pt-ring pointer-events-none absolute left-1/2 top-[46%] z-[20] rounded-full border border-gold/50 shadow-[0_0_24px_2px_rgb(0_0_0/0.5)]"
             style={{ opacity: 0 }}
           />
         </div>

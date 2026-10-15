@@ -1244,12 +1244,12 @@ html[data-opening] .op-progress {
 .ab-name {
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: 32px; /* unidades do desenho: ~11px no celular */
-  letter-spacing: 0.1em;
+  font-size: 30px; /* unidades do desenho: ~11px no celular */
+  letter-spacing: 0.07em;
   text-transform: uppercase;
   fill: #f0c766;
 }
-@media (min-width: 768px) { .ab-name { font-size: 22px; } }
+@media (min-width: 768px) { .ab-name { font-size: 22px; letter-spacing: 0.1em; } }
 .ab-id-now .ab-dot,
 .ab-id-now .ab-halo { opacity: 0; transition: opacity 0.4s ease 1.2s; }
 .ab-id-now .ab-line { stroke-dashoffset: 1; transition: stroke-dashoffset 0.8s cubic-bezier(0.22, 1, 0.36, 1) 1.45s; }
@@ -1270,3 +1270,30 @@ html[data-opening] .op-progress {
 .sym-on .ab-done-tag { opacity: 1; }
 .ab-ok { animation: cb-blink 1.6s ease-in-out infinite; }
 .ab-name-ok { fill: #f5f5f2; }
+
+/* Desafios: portal composto (círculo em escala + conteúdo em escala inversa) */
+.pt-clip {
+  position: absolute;
+  left: calc(var(--cx, 50vw) - var(--R, 100vmax));
+  top: calc(var(--cy, 46svh) - var(--R, 100vmax));
+  width: calc(var(--R, 100vmax) * 2);
+  height: calc(var(--R, 100vmax) * 2);
+  border-radius: 50%;
+  overflow: hidden;
+  will-change: transform;
+}
+.pt-counter {
+  position: absolute;
+  left: calc(var(--R, 100vmax) - var(--cx, 50vw));
+  top: calc(var(--R, 100vmax) - var(--cy, 46svh));
+  width: var(--vw, 100vw);
+  height: var(--vh, 100svh);
+  transform-origin: var(--cx, 50vw) var(--cy, 46svh);
+  will-change: transform;
+}
+.pt-ring {
+  width: calc(var(--R, 100vmax) * 2);
+  height: calc(var(--R, 100vmax) * 2);
+  transform: translate(-50%, -50%) scale(0);
+  will-change: transform, opacity;
+}
