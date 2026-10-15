@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { problem } from "@/content/site";
 import { Reveal } from "@/components/ui/motion";
 import { SectionIntro, splitSentences } from "@/components/ui/SectionIntro";
-import { CompanyBuild } from "./CompanyBuild";
+import { ArchitectureBuild } from "./ArchitectureBuild";
 import { MessageCircle } from "lucide-react";
 import { primaryContact } from "@/lib/contact";
 import { ButtonLink } from "@/components/ui/ButtonLink";
@@ -61,7 +61,6 @@ export function Problem() {
         if (inner) {
           inner.style.transform = `scale(${(1 + leave * 0.35).toFixed(3)})`;
           inner.style.opacity = (1 - leave).toFixed(3);
-          inner.style.filter = leave > 0.02 ? `blur(${(leave * 6).toFixed(1)}px)` : "none";
         }
         if (i > 0 && reveal > 0 && reveal < 1) ring = { r: eased * R, o: Math.min(1, reveal * (1 - reveal) * 5) };
       }
@@ -195,9 +194,9 @@ function Scene({ item, index }: { item: Item; index: number }) {
         <span className="label-tech rounded-full border border-gold/40 px-3 py-1.5 text-gold-light">{item.front}</span>
       </div>
 
-      {/* empresa em 3D: cada desafio encaixa uma parte do prédio */}
+      {/* empresa em construção: cada desafio encaixa uma camada */}
       <div data-sym-box className="relative min-h-[96px] md:col-span-6 md:h-[66vh]">
-        <CompanyBuild step={index} labels={[...problem.pieces]} done={problem.pieces[5]} />
+        <ArchitectureBuild step={index} labels={[...problem.pieces]} done={problem.pieces[5]} />
       </div>
 
       {/* narrativa */}

@@ -200,12 +200,12 @@ for i, (lid, za, zb) in enumerate(LEVELS):
     inner = L.markup()
     svg = f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" fill="none"><style>{STYLE}</style>{inner}</svg>\n'
     open(os.path.join(ROOT, f"public/hero/camada-0{i+1}-{lid}.svg"), "w").write(svg)
-    gen[lid] = {"markup": inner, "anchor": [round(anchor[0], 1), round(anchor[1], 1)], "side": side, "z": [za, zb]}
+    gen[lid] = {"src": f"/hero/camada-0{i+1}-{lid}.svg", "anchor": [round(anchor[0], 1), round(anchor[1], 1)], "side": side, "z": [za, zb]}
 
 ts = "// GERADO por scripts/architecture/build_layers.py — não edite à mão.\n"
-ts += f"export const ARQ_STYLE = {json.dumps(STYLE.strip())};\n"
 ts += f"export const ARQ_GAP_PX = {GAP * U};\n"
 ts += f"export const ARQ_U = {U};\n"
+ts += "/** Cada camada: arquivo SVG (viewBox 0 0 800 800, fundo transparente), ponto de identificação na borda e lado da linha. */\n"
 ts += "export const ARQ_LAYERS = " + json.dumps(gen, ensure_ascii=False) + " as const;\n"
 open(os.path.join(ROOT, "src/components/hero/layers.generated.ts"), "w").write(ts)
 print({k: (v["anchor"], v["side"]) for k, v in gen.items()})
