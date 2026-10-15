@@ -3,8 +3,8 @@
 import { useEffect, useRef } from "react";
 import { founder } from "@/content/founder";
 import { motion } from "motion/react";
-import { EASE, LineReveal, Reveal } from "@/components/ui/motion";
-import { FounderVisual } from "./FounderVisual";
+import { EASE, Reveal } from "@/components/ui/motion";
+import { FounderPortrait } from "./FounderPortrait";
 
 /**
  * FUNDADOR — a rolagem para na foto.
@@ -38,7 +38,7 @@ export function Founder() {
       const moved = Math.min(travel, Math.max(0, window.scrollY - top));
       text.style.transform = `translate3d(0, ${(start - moved).toFixed(1)}px, 0)`;
       // celular: a foto escurece conforme o texto passa por cima dela
-      if (dimRef.current) dimRef.current.style.opacity = wide || !travel ? "0" : (Math.min(1, moved / Math.max(1, travel * 0.45)) * 0.9).toFixed(3);
+      if (dimRef.current) dimRef.current.style.opacity = wide || !travel ? "0" : (Math.min(1, moved / Math.max(1, travel * 0.4)) * 0.97).toFixed(3);
     };
     const measure = () => {
       if (reduced.matches) {
@@ -85,25 +85,39 @@ export function Founder() {
       <div ref={stageRef} className="fd-stage sticky top-0 h-[100svh] overflow-hidden">
         <div className="container-x relative grid h-full md:grid-cols-12 md:gap-x-10">
           {/* a foto fica parada enquanto as informações sobem */}
-          <div ref={photoRef} className="fd-photo absolute z-0 inset-x-5 top-[4.75rem] md:relative md:inset-auto md:top-auto md:col-span-6 md:self-center md:pt-16">
-            {founder.photo && <FounderVisual photo={founder.photo} />}
+          <div ref={photoRef} className="fd-photo absolute z-0 inset-x-5 top-[4.75rem] md:relative md:inset-auto md:top-auto md:col-span-7 md:self-center md:pt-16">
+            {founder.photo && <FounderPortrait photo={founder.photo} name={founder.name} role={founder.role} />}
             <span ref={dimRef} aria-hidden className="pointer-events-none absolute -inset-x-5 -bottom-[14%] -top-6 z-40 bg-gradient-to-b from-ink from-80% to-transparent opacity-0 md:hidden" />
           </div>
 
-          <div className="relative z-10 md:col-span-6 md:col-start-7">
+          <div className="relative z-10 md:col-span-5 md:col-start-8">
             <div ref={textRef} className="fd-text absolute inset-x-0 top-0 text-center md:text-left">
-              <LineReveal as="h2" lines={[founder.name]} className="display t-h2" />
-              <Reveal delay={0.1}>
-                <p className="mt-3 text-sm uppercase tracking-[0.16em] text-mute">{founder.role}</p>
+              <Reveal y={10}>
+                <span className="sec-chip">
+                  <i aria-hidden />
+                  {founder.label}
+                </span>
               </Reveal>
 
-              <div className="mt-8 space-y-5 text-left md:mt-10">
-                {founder.paragraphs.map((t, i) => (
+              {/* história */}
+              <Reveal delay={0.05}>
+                <p className="label-tech mt-8 text-mute">História</p>
+              </Reveal>
+              <div className="mt-3 space-y-4 text-left">
+                {founder.paragraphs.slice(0, 2).map((t, i) => (
                   <Reveal key={i} delay={0.06 * i}>
                     <p className={i === 0 ? "text-lg leading-relaxed text-paper md:text-xl" : "leading-relaxed text-mute md:text-lg"}>{t}</p>
                   </Reveal>
                 ))}
               </div>
+
+              {/* visão da Backstag */}
+              <Reveal delay={0.1}>
+                <blockquote className="fd-vision mt-9 text-left">
+                  <p className="label-tech">Visão</p>
+                  <p className="mt-2">{founder.paragraphs[2]}</p>
+                </blockquote>
+              </Reveal>
 
               {/* Da visão à execução: os princípios como um fluxo conectado */}
               <ol className="relative mt-10 grid gap-6 text-left sm:grid-cols-3 sm:gap-4 md:mt-12">
@@ -118,9 +132,9 @@ export function Founder() {
                 />
                 {founder.principles.map((p, i) => (
                   <li key={p} className="relative pl-7 sm:pl-0 sm:pt-7">
-                    <span aria-hidden className="absolute left-0 top-1 size-[11px] rounded-full border border-gold bg-ink sm:top-0" />
+                    <span aria-hidden className="absolute left-0 top-1 size-[11px] rounded-full border border-coal bg-sun sm:top-0" />
                     <Reveal delay={0.2 + i * 0.15} y={10}>
-                      <p className="label-tech text-gold">{["Visão", "Execução", "Evolução"][i]}</p>
+                      <p className="label-tech text-paper">{["Visão", "Execução", "Evolução"][i]}</p>
                       <p className="mt-2 text-sm text-paper/85">{p}</p>
                     </Reveal>
                   </li>

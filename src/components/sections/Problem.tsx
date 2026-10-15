@@ -5,6 +5,7 @@ import { problem } from "@/content/site";
 import { Reveal } from "@/components/ui/motion";
 import { SectionIntro, splitSentences } from "@/components/ui/SectionIntro";
 import { ArchitectureBuild } from "./ArchitectureBuild";
+import { NetCorner } from "@/components/ui/NetCorner";
 import { MessageCircle } from "lucide-react";
 import { primaryContact } from "@/lib/contact";
 import { ButtonLink } from "@/components/ui/ButtonLink";
@@ -137,8 +138,8 @@ export function Problem() {
 
   return (
     <section id="desafios" aria-label={problem.label} data-surface="dark" data-rgb="20 20 20" className="tone-night relative overflow-clip rounded-[1.75rem] bg-ink md:rounded-[2.5rem]">
-      {/* o fundo escurece até a cor exata das cenas: nenhuma divisão visível */}
-      <div>
+      <div className="relative">
+        <NetCorner corner="tl" />
       <div className="container-x pb-2 pt-24 md:pb-4 md:pt-32">
         <SectionIntro
           label={problem.label}

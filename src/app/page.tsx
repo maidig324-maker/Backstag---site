@@ -1,5 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import { Header } from "@/components/layout/Header";
+import { SiteThread } from "@/components/layout/SiteThread";
 import { Footer } from "@/components/layout/Footer";
 import { FloatingWhatsApp } from "@/components/layout/FloatingWhatsApp";
 import { HeroBrain } from "@/components/hero/HeroBrain";
@@ -19,7 +20,8 @@ import { publishableProofs } from "@/lib/visibility";
 const WHITE = "255 255 255";
 const SNOW = "247 247 245";
 const BUTTER = "255 241 184";
-const RGB = { white: WHITE, snow: SNOW, butter: BUTTER } as const;
+const SUN = "244 196 0";
+const RGB = { white: WHITE, snow: SNOW, butter: BUTTER, sun: SUN } as const;
 
 /** Faixa de fundo de uma seção: cor cheia, entrada suave vinda da seção anterior. */
 function Band({ tone, prev, className = "", children }: { tone: keyof typeof RGB; prev?: string; className?: string; children: ReactNode }) {
@@ -39,6 +41,7 @@ export default function Home() {
   return (
     <>
       <Header />
+      <SiteThread />
       {/*
         Sistema de fundos BACKSTAG 2026: o topo tem o fundo conceitual (amarelo
         suave + rede); as demais seções têm cor cheia e limpa (branco, branco
@@ -68,11 +71,11 @@ export default function Home() {
           <Band tone="white" prev={publishableProofs.length > 0 ? WHITE : SNOW}>
             <Founder />
           </Band>
-          <Band tone="butter" prev={WHITE}>
+          <Band tone="sun" prev={WHITE}>
             <Contact />
           </Band>
         </main>
-        <Band tone="snow" prev={BUTTER}>
+        <Band tone="snow" prev={SUN}>
           <Footer />
         </Band>
       </div>

@@ -9,6 +9,7 @@ import { projectsIntro, type Project, type ProjectStatus, type ProjectVideo } fr
 import { projectTitle, visibleProjects } from "@/lib/visibility";
 import { EASE, Reveal } from "@/components/ui/motion";
 import { NodeConnector } from "@/components/ui/NodeConnector";
+import { NetCorner } from "@/components/ui/NetCorner";
 import { SectionIntro, splitSentences } from "@/components/ui/SectionIntro";
 
 const statusLabel: Record<ProjectStatus, string> = {
@@ -176,7 +177,8 @@ export function Projects() {
 
   return (
     <section id="projetos" aria-label={projectsIntro.label} className="relative overflow-hidden pb-28 pt-16 md:pb-40 md:pt-24">
-      <div className="container-x">
+      <NetCorner corner="tr" className="top-6 md:top-10" />
+      <div className="container-x relative">
         <div>
           <NodeConnector className="mb-6 md:mb-8" />
           <SectionIntro label={projectsIntro.label} titleLines={splitSentences(projectsIntro.title)} />

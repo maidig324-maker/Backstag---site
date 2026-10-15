@@ -49,7 +49,7 @@ export function ButtonLink({
       {icon && (
         <span
           aria-hidden
-          className={`relative inline-flex size-9 items-center justify-center rounded-full transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-translate-y-px group-hover:translate-x-0.5 group-hover:scale-105 ${iconWrap[variant]}`}
+          className={`btn-ic btn-ic-${variant} relative inline-flex size-9 items-center justify-center rounded-full transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-translate-y-px group-hover:translate-x-0.5 group-hover:scale-105 ${iconWrap[variant]}`}
         >
           {icon}
         </span>

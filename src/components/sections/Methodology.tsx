@@ -5,6 +5,7 @@ import { motion, useScroll, useSpring } from "motion/react";
 import { methodologyIntro, methodologySteps } from "@/content/methodology";
 import { EASE } from "@/components/ui/motion";
 import { NodeConnector } from "@/components/ui/NodeConnector";
+import { NetCorner } from "@/components/ui/NetCorner";
 import { SectionIntro, splitSentences } from "@/components/ui/SectionIntro";
 
 export function Methodology() {
@@ -13,7 +14,8 @@ export function Methodology() {
   const fill = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.4 });
 
   return (
-    <section id="metodo" aria-label={methodologyIntro.label} className="relative py-28 md:py-44">
+    <section id="metodo" aria-label={methodologyIntro.label} className="relative overflow-clip py-28 md:py-44">
+      <NetCorner corner="br" className="bottom-6" />
       <div className="container-x grid gap-16 md:grid-cols-12 md:gap-10">
         <div className="md:col-span-6">
           <div className="md:sticky md:top-32 md:[&_h2]:text-[clamp(2rem,3.2vw,3.1rem)]">

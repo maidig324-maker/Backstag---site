@@ -1,4 +1,5 @@
 import { NodeConnector } from "@/components/ui/NodeConnector";
+import { NetCorner } from "@/components/ui/NetCorner";
 import { contact, contactSection } from "@/content/site";
 import { hasWhatsapp, primaryContact } from "@/lib/contact";
 import { MessageCircle } from "lucide-react";
@@ -11,7 +12,8 @@ export function Contact() {
 
   return (
     <section id="contato" aria-label={contactSection.label} className="relative isolate overflow-hidden py-28 md:py-44">
-      <div className="container-x">
+      <NetCorner corner="tl" className="top-4" />
+      <div className="container-x relative">
         <NodeConnector className="mb-6 md:mb-8" />
         <LineReveal
           as="h2"

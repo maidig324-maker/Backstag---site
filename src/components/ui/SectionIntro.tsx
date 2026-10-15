@@ -18,9 +18,18 @@ const alignClass = {
   "center-mobile": "mx-auto text-center [&_p]:mx-auto md:mx-0 md:text-left md:[&_p]:mx-0",
 };
 
-export function SectionIntro({ titleLines, text, className = "", align = "center" }: Props) {
+export function SectionIntro({ label, titleLines, text, className = "", align = "center" }: Props) {
   return (
     <div className={`${alignClass[align]} ${className}`}>
+      {/* nome da seção: pílula preta com amarelo (no bloco escuro, o inverso) */}
+      {label && (
+        <Reveal className="mb-5 md:mb-6" y={10}>
+          <span className="sec-chip">
+            <i aria-hidden />
+            {label}
+          </span>
+        </Reveal>
+      )}
       <LineReveal
         as="h2"
         lines={titleLines}
