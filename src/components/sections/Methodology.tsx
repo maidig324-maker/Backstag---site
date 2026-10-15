@@ -14,8 +14,8 @@ export function Methodology() {
   return (
     <section id="metodo" aria-label={methodologyIntro.label} className="relative py-28 md:py-44">
       <div className="container-x grid gap-16 md:grid-cols-12 md:gap-10">
-        <div className="md:col-span-5">
-          <div className="md:sticky md:top-32">
+        <div className="md:col-span-6">
+          <div className="md:sticky md:top-32 md:[&_h2]:text-[clamp(2rem,3.2vw,3.1rem)]">
             <SectionIntro
               label={methodologyIntro.label}
               titleLines={splitSentences(methodologyIntro.title)}

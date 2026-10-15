@@ -91,7 +91,7 @@ export function Problem() {
   useEffect(() => {
     const boxes = Array.from(trackRef.current!.querySelectorAll<HTMLElement>("[data-sym-box]"));
     const fit = () => {
-      const max = window.innerWidth < 768 ? 1.2 : 2.3;
+      const max = window.innerWidth < 768 ? 1.2 : 3;
       for (const b of boxes) {
         const k = Math.max(0.35, Math.min(max, (b.clientHeight * 1.05) / 200, (b.clientWidth * 0.8) / 200));
         b.style.setProperty("--k", k.toFixed(3));
@@ -105,10 +105,17 @@ export function Problem() {
 
   // a primeira cena ganha vida quando o trilho entra na tela
   const [entered, setEntered] = useState(false);
+  // fora da tela, os símbolos param (economia de bateria e rolagem mais lisa)
+  const [inView, setInView] = useState(false);
   useEffect(() => {
     const io = new IntersectionObserver(([e]) => e.isIntersecting && setEntered(true), { rootMargin: "0px 0px -30% 0px" });
+    const io2 = new IntersectionObserver(([e]) => setInView(e.isIntersecting));
     io.observe(trackRef.current!);
-    return () => io.disconnect();
+    io2.observe(trackRef.current!);
+    return () => {
+      io.disconnect();
+      io2.disconnect();
+    };
   }, []);
 
   return (
@@ -126,6 +133,8 @@ export function Problem() {
           {items.map((item, i) => {
             const Symbol = discoverySymbols[i];
             const on = entered && i <= seen;
+            // só a cena atual e as vizinhas animam; as demais ficam congeladas
+            const live = inView && Math.abs(i - active) <= 1;
             return (
               <div
                 key={item.title}
@@ -136,7 +145,7 @@ export function Problem() {
                 className="absolute inset-0 bg-[#0b0b0e]"
                 style={{ zIndex: i + 1 }}
               >
-                <div className={`h-full w-full will-change-transform ${on ? "slide-on sym-on" : ""}`}>
+                <div className={`h-full w-full ${live ? "will-change-transform" : "sym-paused"} ${on ? "slide-on sym-on" : ""}`}>
                   {/* fundo da cena: grade técnica + brilho no centro */}
                   <div
                     aria-hidden
@@ -187,7 +196,7 @@ function Scene({ item, Symbol }: { item: Item; Symbol: () => ReactElement }) {
       </div>
 
       {/* símbolo 3D: o problema se transforma diante do visitante */}
-      <div data-sym-box className="relative min-h-0 md:col-span-6 md:h-[62vh]">
+      <div data-sym-box className="relative min-h-[96px] md:col-span-6 md:h-[66vh]">
         <Symbol />
       </div>
 
@@ -212,7 +221,7 @@ function Scene({ item, Symbol }: { item: Item; Symbol: () => ReactElement }) {
         <p className="rv label-tech mt-4 text-gold md:mt-8" style={{ ["--d" as string]: "0.8s" }}>
           O que enxergamos
         </p>
-        <p className="rv mt-2 max-w-xl text-[0.98rem] leading-snug text-paper md:text-xl md:leading-snug" style={{ ["--d" as string]: "0.9s" }}>
+        <p className="rv mt-2 max-w-xl text-[0.98rem] leading-snug text-paper [@media(max-height:700px)]:text-[0.9rem] md:text-xl md:leading-snug" style={{ ["--d" as string]: "0.9s" }}>
           {item.approach}
         </p>
 

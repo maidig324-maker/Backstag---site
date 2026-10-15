@@ -403,6 +403,12 @@
   50% { scale: 1 1.12; }
 }
 
+/* cenas fora de vista: animações congeladas */
+.sym-paused,
+.sym-paused * {
+  animation-play-state: paused !important;
+}
+
 /* ---------- Descoberta — entrada dos textos de cada tela ---------- */
 .rv {
   opacity: 0;
