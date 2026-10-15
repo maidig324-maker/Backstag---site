@@ -1,7 +1,7 @@
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { FloatingWhatsApp } from "@/components/layout/FloatingWhatsApp";
-import { HeroStrata } from "@/components/hero-lab/HeroStrata";
+import { CinematicOpening } from "@/components/opening/CinematicOpening";
 import { Problem } from "@/components/sections/Problem";
 import { Projects } from "@/components/sections/Projects";
 import { Methodology } from "@/components/sections/Methodology";
@@ -20,7 +20,8 @@ export default function Home() {
     <>
       <Header />
       <main id="conteudo" className="relative">
-        <HeroStrata />
+        {/* abertura cinematográfica que vira o hero */}
+        <CinematicOpening />
         <Problem />
         {/* zona clara: projetos e método (fundo nasce em degradê, sem divisão) */}
         <div className="zone tone-light">

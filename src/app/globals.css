@@ -1029,3 +1029,160 @@ ol > .rv-line {
   animation: dv-line 1s linear infinite;
 }
 @keyframes dv-line { to { background-position: 14px 0; } }
+
+/* ------------------------------------------------------------------
+   ABERTURA CINEMATOGRÁFICA → HERO
+   Variáveis de progresso (0→1) vêm do CinematicOpening:
+   --lp logo se aproxima · --lf logo some · --fp foco puxa · --hp hero entra
+   --q0..--q3 peças encaixam · --fn operação completa
+------------------------------------------------------------------- */
+/* o cabeçalho espera a logo da abertura sair de cena */
+#site-header,
+.op-progress {
+  transition: opacity 0.6s cubic-bezier(0.32, 0.72, 0, 1), translate 0.6s cubic-bezier(0.32, 0.72, 0, 1), background-color 0.5s ease, border-color 0.5s ease;
+}
+html[data-opening] #site-header,
+html[data-opening] .op-progress {
+  opacity: 0;
+  translate: 0 -10px;
+  pointer-events: none;
+}
+.op-stage {
+  --lp: 0; --lf: 0; --fp: 0; --hp: 0; --fn: 0;
+  --q0: 0; --q1: 0; --q2: 0; --q3: 0;
+  background: #09090b;
+}
+.op-scene {
+  transform: scale(calc(1.04 + var(--lp) * 0.08 + var(--fp) * 0.14));
+  transform-origin: 50% 46%;
+  will-change: transform;
+}
+.op-blur { opacity: calc(1 - var(--fp) * 0.8); }
+.op-sharp { opacity: calc(var(--fp) * 0.7); }
+/* luz atravessando o ambiente devagar */
+.op-beam {
+  position: absolute;
+  top: -30%;
+  left: 0;
+  width: 26vw;
+  height: 160%;
+  rotate: 18deg;
+  background: linear-gradient(90deg, transparent, rgb(255 224 168 / 0.07) 42%, rgb(255 236 204 / 0.13) 50%, rgb(255 224 168 / 0.07) 58%, transparent);
+  mix-blend-mode: screen;
+  opacity: calc(1 - var(--fp) * 0.55);
+  animation: op-beam 17s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+.op-beam-b {
+  width: 16vw;
+  animation-duration: 23s;
+  animation-delay: -9s;
+}
+@keyframes op-beam {
+  from { translate: -45vw 0; }
+  to { translate: 125vw 0; }
+}
+/* sombras se deslocando, como pessoas e objetos passando diante da luz */
+.op-shade {
+  position: absolute;
+  width: 70vmax;
+  height: 70vmax;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(0 0 0 / 0.55), transparent);
+  animation: op-shade 19s ease-in-out infinite alternate;
+}
+.op-shade-a { left: -24vmax; top: 4%; }
+.op-shade-b { right: -28vmax; bottom: -24%; animation-duration: 26s; animation-delay: -6s; }
+@keyframes op-shade {
+  from { translate: 0 0; }
+  to { translate: 22vmax -8vmax; }
+}
+/* leitura: vinheta de lente + escurecimento que acompanha a entrada do hero */
+.op-veil {
+  background: radial-gradient(120% 90% at 50% 44%, rgb(9 9 11 / 0.15) 0%, rgb(9 9 11 / 0.62) 70%, #09090b 100%);
+}
+.op-veil::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgb(9 9 11 / 0.82) 0%, rgb(9 9 11 / 0.35) 38%, rgb(9 9 11 / 0.55) 62%, rgb(9 9 11 / 0.92) 100%);
+  opacity: var(--hp);
+}
+@media (min-width: 1024px) {
+  .op-veil::after {
+    background: linear-gradient(90deg, rgb(9 9 11 / 0.9) 0%, rgb(9 9 11 / 0.55) 48%, rgb(9 9 11 / 0.35) 100%);
+  }
+}
+/* a logo: protagonista, cresce com a rolagem e some ao entrar na cena */
+.op-logo {
+  transform: translate(-50%, -50%) scale(calc(1 + var(--lp) * 2.6));
+  opacity: calc(1 - var(--lf));
+  will-change: transform, opacity;
+  z-index: 2;
+}
+.op-logo::before {
+  content: "";
+  position: absolute;
+  inset: -60% -30%;
+  z-index: -1;
+  background: radial-gradient(closest-side, rgb(215 168 62 / 0.12), transparent);
+}
+.op-logo > img:first-of-type {
+  filter: drop-shadow(0 18px 30px rgb(0 0 0 / 0.65));
+  animation: op-logo-in 1.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.op-reflex {
+  margin-top: 4%;
+  transform: scaleY(-1);
+  opacity: 0.16;
+  -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 55%);
+  mask-image: linear-gradient(to top, #000 0%, transparent 55%);
+  animation: op-reflex-in 2.4s ease 0.4s both;
+}
+@keyframes op-logo-in {
+  from { opacity: 0; transform: translateY(14px) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes op-reflex-in { from { opacity: 0; } }
+/* hero */
+.op-h1 { opacity: calc(var(--hp) * (1 - var(--fn))); transform: translateY(calc((1 - var(--hp)) * 28px)); }
+.op-final { opacity: var(--fn); transform: translateY(calc((1 - var(--fn)) * 24px)); }
+.op-cta { opacity: var(--fn); transform: translateY(calc((1 - var(--fn)) * 16px)); }
+.op-caption { opacity: calc(var(--hp) * (1 - var(--fn) * 0.4)); }
+.op-caption-in { animation: op-caption 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
+@keyframes op-caption { from { opacity: 0; transform: translateY(8px); } }
+/* quebra-cabeça da operação */
+.op-puzzle { --sz: min(74vw, 38svh, 30rem); width: var(--sz); height: var(--sz); }
+@media (min-width: 1024px) { .op-puzzle { --sz: min(40vw, 56svh, 34rem); } }
+.op-slots { opacity: calc(var(--hp) * (1 - var(--fn))); }
+.op-slots path {
+  fill: rgb(255 255 255 / 0.025);
+  stroke: rgb(215 168 62 / 0.4);
+  stroke-width: 0.6;
+  stroke-dasharray: 2.5 2.5;
+}
+.op-piece {
+  transform: translate(calc((1 - var(--q)) * var(--dx) * var(--sz) * 0.42), calc((1 - var(--q)) * var(--dy) * var(--sz) * 0.34)) rotate(calc((1 - var(--q)) * var(--rot)));
+  opacity: clamp(0, calc(var(--q) * 2.2), 1);
+  will-change: transform, opacity;
+}
+.op-piece svg { filter: drop-shadow(0 10px 14px rgb(0 0 0 / 0.55)); }
+.op-piece-veil { fill: #000; opacity: calc(0.42 - var(--fn) * 0.42); }
+.op-edge { fill: none; stroke: rgb(0 0 0 / 0.55); stroke-width: 1.2; }
+.op-seam { fill: none; stroke: #f0c766; stroke-width: 0.7; opacity: calc(0.35 + var(--fn) * 0.65); }
+.op-label {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  padding: 0.35em 0.85em;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(0.8rem, calc(var(--sz) * 0.055), 1.3rem);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #f5f5f2;
+  background: rgb(9 9 11 / 0.74);
+  box-shadow: 0 0 0 1px rgb(215 168 62 / 0.5), 0 8px 18px -8px rgb(0 0 0 / 0.7);
+  opacity: clamp(0, calc((var(--q) - 0.5) * 3), 1);
+  z-index: 2;
+}

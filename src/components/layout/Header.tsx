@@ -67,11 +67,12 @@ export function Header({ linkPrefix = "" }: { linkPrefix?: string } = {}) {
       {/* Barra de progresso da navegação */}
       <motion.div
         aria-hidden
-        className="fixed inset-x-0 top-0 z-[60] h-[2px] origin-left bg-gold"
+        className="op-progress fixed inset-x-0 top-0 z-[60] h-[2px] origin-left bg-gold"
         style={{ scaleX: progress }}
       />
 
       <header
+        id="site-header"
         className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-500 lg:!border-transparent lg:!bg-transparent lg:!backdrop-blur-none ${
           scrolled && !open
             ? "border-b border-line bg-ink/80 backdrop-blur-xl"
