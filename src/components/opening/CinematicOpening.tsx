@@ -11,33 +11,34 @@ import { ButtonLink } from "@/components/ui/ButtonLink";
 
 /**
  * ABERTURA CINEMATOGRÁFICA + HERO
- * Um único palco fixo que a rolagem atravessa, sem cortes:
+ * Toca sozinha ao abrir o site, como um filme de ~10 s, sem prender a rolagem:
  *  1. a logo no centro, diante de um ambiente real desfocado em movimento
  *     (luzes cruzando, sombras se deslocando, reflexo no piso);
- *  2. ao rolar, a logo cresce como se o visitante entrasse na cena e some;
+ *  2. a logo cresce como se o visitante entrasse na cena e some;
  *  3. o foco "puxa" e o mesmo ambiente vira o fundo do hero com a mensagem;
  *  4. Gestão, Marketing, Tecnologia e Automação entram como peças de um
  *     quebra-cabeça com a foto real de uma operação e se encaixam;
  *  5. a operação completa revela a mensagem final e os botões.
- * Rolagem controlada por variáveis CSS num único requestAnimationFrame
- * (sem biblioteca extra); só transform e opacity animam. Movimento reduzido:
- * a composição final aparece parada, sem palco fixo.
+ * Se o visitante rolar ou tocar antes do fim, a abertura acelera até o final.
+ * Linha do tempo em variáveis CSS num único requestAnimationFrame (sem
+ * biblioteca extra); só transform e opacity animam. Movimento reduzido:
+ * a composição final aparece parada.
  */
 
 const LOGO = site.logo.src ?? "/brand/backstag-logo.png";
 
-/** Distância de rolagem do palco, em svh (além da própria tela). */
-const RUN = 440;
-
-// fases, em frações da distância de rolagem
+// linha do tempo, em segundos
 const PH = {
-  logo: [0, 0.24],
-  fade: [0.13, 0.25],
-  focus: [0.1, 0.32],
-  hero: [0.27, 0.37],
-  piece: (i: number) => [0.41 + i * 0.1, 0.5 + i * 0.1],
-  final: [0.84, 0.93],
+  logo: [1.2, 3.6],
+  fade: [2.8, 3.8],
+  focus: [2.4, 4.4],
+  hero: [3.6, 4.6],
+  piece: (i: number) => [4.9 + i * 1.05, 5.8 + i * 1.05],
+  final: [9.1, 10.1],
 } as const;
+const END = 10.2;
+/** Velocidade ao acelerar quando o visitante rola ou toca antes do fim. */
+const SKIP = 7;
 
 const clamp = (v: number) => Math.min(1, Math.max(0, v));
 const seg = (p: number, [a, b]: readonly number[]) => clamp((p - a) / (b - a));
@@ -82,18 +83,14 @@ const PIECES = [0, 1, 2, 3].map((i) => {
 });
 
 export function CinematicOpening() {
-  const trackRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const [step, setStep] = useState(-1); // último pilar encaixado
-  const [reduced, setReduced] = useState(false);
   const main = primaryContact();
 
   useEffect(() => {
-    const track = trackRef.current!;
     const stage = stageRef.current!;
     const html = document.documentElement;
     const isReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    setReduced(isReduced);
 
     const apply = (p: number) => {
       const v = (k: string, x: number) => stage.style.setProperty(k, x.toFixed(4));
@@ -121,28 +118,46 @@ export function CinematicOpening() {
     };
 
     if (isReduced) {
-      apply(1);
+      apply(END);
       delete html.dataset.opening;
       return;
     }
 
+    // a abertura toca sozinha; rolar, tocar ou usar o teclado acelera até o fim
     let raf = 0;
-    const update = () => {
-      raf = 0;
-      const run = (window.innerHeight * RUN) / 100;
-      const p = clamp(-track.getBoundingClientRect().top / run);
-      apply(p);
+    let t = 0;
+    let rate = 1;
+    let last = performance.now();
+    const tick = (now: number) => {
+      t = Math.min(END, t + ((now - last) / 1000) * rate);
+      last = now;
+      apply(t);
+      raf = t < END ? requestAnimationFrame(tick) : 0;
+      if (!raf) stop();
     };
+    const hurry = () => {
+      rate = SKIP;
+    };
+    const events = ["wheel", "touchmove", "keydown", "pointerdown"] as const;
     const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update);
+      if (window.scrollY > 4) hurry();
     };
-    update();
+    const stop = () => {
+      events.forEach((e) => window.removeEventListener(e, hurry));
+      window.removeEventListener("scroll", onScroll);
+    };
+    events.forEach((e) => window.addEventListener(e, hurry, { passive: true }));
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+    // quem chega no meio da página (link, voltar) vê o topo já pronto
+    if (window.scrollY > window.innerHeight * 0.5) t = END;
+    apply(t);
+    raf = requestAnimationFrame((now) => {
+      last = now;
+      tick(now);
+    });
     return () => {
       cancelAnimationFrame(raf);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      stop();
       delete html.dataset.opening;
     };
   }, []);
@@ -150,15 +165,8 @@ export function CinematicOpening() {
   const caption = step >= 0 ? opening.pillars[step] : null;
 
   return (
-    <section
-      id="topo"
-      ref={trackRef}
-      data-pin
-      aria-label="Apresentação"
-      className="relative"
-      style={{ height: reduced ? "100svh" : `${RUN + 100}svh` }}
-    >
-      <div ref={stageRef} className="op-stage sticky top-0 h-[100svh] overflow-hidden">
+    <section id="topo" aria-label="Apresentação" className="relative h-[100svh] min-h-[34rem]">
+      <div ref={stageRef} className="op-stage relative h-full overflow-hidden">
         {/* ---------- cenário: ambiente real, desfocado e em movimento ---------- */}
         <div aria-hidden className="op-scene absolute inset-0">
           {/* camada desfocada (vídeo em loop, mudo; imagem parada como alternativa) */}
