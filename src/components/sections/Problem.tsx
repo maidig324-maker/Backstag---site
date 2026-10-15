@@ -197,7 +197,7 @@ function Scene({ item, Symbol }: { item: Item; Symbol: () => ReactElement }) {
         <span className="rv label-tech mb-6 hidden rounded-full border border-gold/40 px-3 py-1.5 text-gold-light md:inline-flex" style={{ ["--d" as string]: "0.05s" }}>
           {item.front}
         </span>
-        <p className="rv label-tech text-paper/45" style={{ ["--d" as string]: "0.15s" }}>
+        <p className="rv label-tech text-paper/70" style={{ ["--d" as string]: "0.15s" }}>
           Na sua empresa hoje
         </p>
         <h3 className="rv display t-h3 mt-2" style={{ ["--d" as string]: "0.22s" }}>
@@ -216,7 +216,7 @@ function Scene({ item, Symbol }: { item: Item; Symbol: () => ReactElement }) {
           {item.approach}
         </p>
 
-        <p className="rv label-tech mt-4 text-paper/45 [@media(max-height:700px)]:hidden md:mt-8" style={{ ["--d" as string]: "1.05s" }}>
+        <p className="rv label-tech mt-4 text-paper/70 [@media(max-height:700px)]:hidden md:mt-8" style={{ ["--d" as string]: "1.05s" }}>
           Como chegamos lá
         </p>
         {/* etapas livres, ligadas por uma linha — sem caixas nem números */}

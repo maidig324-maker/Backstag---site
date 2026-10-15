@@ -167,7 +167,7 @@ export function LeadForm() {
           type="tel"
           inputMode="tel"
           autoComplete="tel-national"
-          placeholder="(31) 99999-9999"
+          placeholder="(21) 99999-9999"
           value={data.phone}
           onChange={(e) => set("phone")(e.target.value)}
           aria-invalid={!!errors.phone}
@@ -258,7 +258,7 @@ export function LeadForm() {
 }
 
 const inputCls =
-  "w-full border-0 border-b border-line-strong bg-transparent px-0 py-3 text-base text-paper placeholder:text-paper/30 transition-colors focus:border-gold focus:outline-none focus-visible:outline-none aria-[invalid=true]:border-[#ff9b8a]";
+  "w-full border-0 border-b border-line-strong bg-transparent px-0 py-3 text-base text-paper placeholder:text-paper/45 transition-colors focus:border-gold focus:shadow-[0_2px_0_0_var(--color-gold-light)] focus:outline-none focus-visible:outline-none aria-[invalid=true]:border-[#ff9b8a]";
 
 function Field({
   id,
@@ -274,8 +274,8 @@ function Field({
   children: React.ReactNode;
 }) {
   return (
-    <div className={className}>
-      <label htmlFor={id} className="cue block text-[0.68rem] text-paper/60">
+    <div className={`group ${className ?? ""}`}>
+      <label htmlFor={id} className="cue block text-[0.68rem] text-paper/75 transition-colors group-focus-within:text-gold-light">
         {label}
       </label>
       {children}

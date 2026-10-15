@@ -29,7 +29,7 @@ export function Projects() {
   const items = visibleProjects;
   const n = items.length;
   const stageRef = useRef<HTMLDivElement>(null);
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const cardRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const pos = useRef(0); // posição contínua do anel
   const target = useRef(0);
   const [current, setCurrent] = useState(0);
@@ -151,6 +151,12 @@ export function Projects() {
 
   const step = (dir: 1 | -1) => goRef.current(Math.round(target.current) + dir);
 
+  // teclado: o foco acompanha o card que vem para a frente
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (stage && stage.contains(document.activeElement)) cardRefs.current[current]?.focus({ preventScroll: true });
+  }, [current]);
+
   if (n === 0) return null;
   const front = items[current];
 
@@ -177,28 +183,30 @@ export function Projects() {
         ref={stageRef}
         role="region"
         aria-roledescription="carrossel"
-        aria-label="Projetos"
-        tabIndex={0}
+        aria-label="Projetos — use as setas para girar"
         onKeyDown={(e) => {
           if (e.key === "ArrowRight") step(1);
           if (e.key === "ArrowLeft") step(-1);
-          if (e.key === "Enter") setActive(front);
         }}
         className="c3-stage relative mx-auto mt-8 h-[min(90vw,30rem)] w-full max-w-[88rem] cursor-grab select-none [--cw:60vw] [--sx:33vw] [--sz:260px] active:cursor-grabbing md:mt-12 md:h-[min(40vw,36rem)] md:[--cw:min(30vw,26rem)] md:[--sx:min(24vw,22rem)] md:[--sz:320px]"
         style={{ touchAction: "pan-y" }}
       >
         {items.map((p, i) => (
-          <div
+          <button
+            type="button"
             key={p.id}
             ref={(el) => {
               cardRefs.current[i] = el;
             }}
-            className="c3-card absolute left-1/2 top-1/2 w-[var(--cw)]"
+            className="c3-card absolute left-1/2 top-1/2 block w-[var(--cw)] cursor-[inherit] rounded-lg text-left"
             aria-hidden={i !== current}
+            tabIndex={i === current ? 0 : -1}
+            aria-label={`Ver estudo de caso: ${projectTitle(p)}`}
+            aria-haspopup="dialog"
             onClick={() => onCardClick(i)}
           >
             <CardFace project={p} />
-          </div>
+          </button>
         ))}
         {/* reflexo/chão do palco */}
         <span aria-hidden className="pointer-events-none absolute inset-x-[10%] bottom-0 h-16 rounded-[100%] bg-[radial-gradient(ellipse_at_center,rgb(215_168_62/0.18),transparent_70%)] blur-md" />
@@ -210,7 +218,7 @@ export function Projects() {
         <div key={front.id} className="mx-auto min-h-[16rem] max-w-2xl text-center md:min-h-[12.5rem]">
           <motion.p
             data-reveal
-            className="label-tech flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-paper/55"
+            className="label-tech flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-paper/70"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: EASE }}
@@ -335,7 +343,7 @@ function CardFace({ project: p }: { project: Project }) {
         />
       ) : (
         <div className="placeholder-surface flex h-full w-full flex-col justify-between p-5 md:p-6">
-          <span className="label-tech text-paper/50">Imagens reais pendentes</span>
+          <span className="label-tech text-paper/70">Imagens reais pendentes</span>
           <span className="display text-[clamp(2.4rem,8vw,4.5rem)] leading-[0.9] text-paper/[0.1]">{p.sector}</span>
         </div>
       )}

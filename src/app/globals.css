@@ -25,6 +25,7 @@
 
 @layer base {
   html {
+    -webkit-tap-highlight-color: transparent;
     scroll-behavior: smooth;
     scroll-padding-top: 5rem;
     -webkit-text-size-adjust: 100%;
@@ -37,6 +38,21 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+  }
+  /* toque imediato no celular (sem atraso de duplo toque) */
+  a,
+  button,
+  input,
+  select,
+  textarea,
+  label,
+  [role="button"] {
+    touch-action: manipulation;
+  }
+  /* toque com resposta visual própria em vez do cinza do iOS */
+  a:active,
+  button:active {
+    opacity: 0.85;
   }
   ::selection {
     background: var(--color-gold);
@@ -598,40 +614,7 @@ ol > .rv-line {
 @keyframes fv-pulse { 0%, 100% { opacity: 0.9; } 50% { opacity: 0.35; } }
 
 /* ---------- Trilha de circuito da página ---------- */
-.pc-pulse {
-  stroke: rgb(255 226 150);
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-dasharray: 14 640;
-  filter: drop-shadow(0 0 4px rgb(240 199 102 / 0.9));
-  animation: pc-run 7s linear infinite;
-}
-.pc-pulse-2 {
-  stroke-dasharray: 8 900;
-  animation-duration: 11s;
-  animation-delay: -4s;
-  opacity: 0.7;
-}
-@keyframes pc-run { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -2616; } }
-.pc-node {
-  fill: rgb(240 199 102);
-  animation: fv-pulse 2.8s ease-in-out infinite;
-}
 
-/* ---------- Card com câmera passeando pela imagem ----------
-   Zoom no perfil em destaque, abre para mostrar todos e visita os vizinhos.
-   Para centralizar o ponto fx com scale(S): translateX = (0.5 - fx) * 100%. */
-.c3-pan {
-  animation: c3-pan 20s cubic-bezier(0.65, 0, 0.35, 1) infinite;
-  will-change: transform;
-}
-@keyframes c3-pan {
-  0%, 14% { transform: scale(2.2) translate(-12%, -1%); }
-  30%, 40% { transform: scale(1.04) translate(0, 0); }
-  54%, 62% { transform: scale(2.2) translate(-27%, -1%); }
-  78%, 86% { transform: scale(2.2) translate(12%, -1%); }
-  100% { transform: scale(2.2) translate(-12%, -1%); }
-}
 
 /* ---------- Projeto com vídeo real (varredura de luz) ---------- */
 .fp-scan {
