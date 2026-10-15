@@ -318,18 +318,44 @@ function LoopVideo({
   const [visible, setVisible] = useState(false);
   const [armed, setArmed] = useState(false); // já pode baixar o arquivo
   useEffect(() => {
-    const io = new IntersectionObserver(([e]) => setVisible(e.isIntersecting), { threshold: 0.3 });
-    io.observe(ref.current!);
+    // no carrossel 3D o Safari mede mal o cartão girado: observa o palco inteiro
+    const v = ref.current!;
+    const target = v.closest<HTMLElement>(".c3-stage") ?? v;
+    const io = new IntersectionObserver(([e]) => setVisible(e.isIntersecting), { threshold: 0.15 });
+    io.observe(target);
     return () => io.disconnect();
   }, []);
   useEffect(() => {
     const v = ref.current!;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (active && visible) {
+    if (!active || !visible) {
+      v.pause();
+      return;
+    }
+    // 1º passo: libera o arquivo; o play acontece no render seguinte, já com o src
+    if (!armed) {
       setArmed(true);
-      if (!reduced) v.play().catch(() => {});
-    } else v.pause();
-  }, [active, visible]);
+      return;
+    }
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // iPhone só toca sozinho se o vídeo estiver mudo (atributo e propriedade)
+    v.muted = true;
+    v.setAttribute("muted", "");
+    const gestures = ["touchend", "pointerdown", "keydown"] as const;
+    const stopRetry = () => gestures.forEach((g) => window.removeEventListener(g, play));
+    function play() {
+      v.play().then(stopRetry, () => {
+        // modo de economia de bateria bloqueia o autoplay: toca no próximo toque na tela
+        gestures.forEach((g) => window.addEventListener(g, play, { once: true, passive: true }));
+      });
+    }
+    play();
+    // se o arquivo ainda estiver carregando, tenta de novo assim que puder tocar
+    v.addEventListener("canplay", play);
+    return () => {
+      v.removeEventListener("canplay", play);
+      stopRetry();
+    };
+  }, [active, visible, armed]);
   return (
     <video
       ref={ref}
@@ -341,6 +367,7 @@ function LoopVideo({
       muted
       loop
       playsInline
+      disablePictureInPicture
       preload={armed ? "auto" : "none"}
       controls={controls}
       aria-label={video.alt}
