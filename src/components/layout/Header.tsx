@@ -29,10 +29,12 @@ export function Header({ linkPrefix = "" }: { linkPrefix?: string } = {}) {
       raf = 0;
       setScrolled(window.scrollY > 24);
       // a seção que está logo abaixo do cabeçalho decide o tom
-      const hit = document.elementsFromPoint(window.innerWidth / 2, 34).find((el) => !el.closest("#site-header") && el.closest("[data-surface]"));
-      const host = hit?.closest<HTMLElement>("[data-surface]");
-      const tone = host?.dataset.surface === "light" ? "light" : "dark";
-      const rgb = host?.dataset.rgb ?? "9 9 11";
+      const hit = document.elementsFromPoint(window.innerWidth / 2, 34).find((el) => !el.closest("#site-header") && el.closest("[data-surface], .tone-night"));
+      // um bloco preto (tone-night) dentro de uma seção clara também conta como escuro
+      const host = hit?.closest<HTMLElement>("[data-surface], .tone-night");
+      const night = !!host && host.classList.contains("tone-night") && !host.dataset.surface;
+      const tone = !night && host?.dataset.surface === "light" ? "light" : "dark";
+      const rgb = night ? "20 20 20" : (host?.dataset.rgb ?? "9 9 11");
       setSurface((v) => (v === tone ? v : tone));
       setSurfaceRgb((v) => (v === rgb ? v : rgb));
     };
