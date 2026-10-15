@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactElement } from "react";
+import { useEffect, useRef, useState } from "react";
 import { problem } from "@/content/site";
 import { Reveal } from "@/components/ui/motion";
 import { SectionIntro, splitSentences } from "@/components/ui/SectionIntro";
-import { discoverySymbols } from "./DiscoverySymbols";
+import { CompanyBuild } from "./CompanyBuild";
 import { MessageCircle } from "lucide-react";
 import { primaryContact } from "@/lib/contact";
 import { ButtonLink } from "@/components/ui/ButtonLink";
@@ -91,9 +91,10 @@ export function Problem() {
   useEffect(() => {
     const boxes = Array.from(trackRef.current!.querySelectorAll<HTMLElement>("[data-sym-box]"));
     const fit = () => {
-      const max = window.innerWidth < 768 ? 1.2 : 3;
+      // prédio base de ~200×200 (mais a torre e a planta em volta)
+      const max = window.innerWidth < 768 ? 1.3 : 2.2;
       for (const b of boxes) {
-        const k = Math.max(0.35, Math.min(max, (b.clientHeight * 1.05) / 200, (b.clientWidth * 0.8) / 200));
+        const k = Math.max(0.4, Math.min(max, (b.clientHeight * 0.95) / 215, (b.clientWidth * 0.94) / 240));
         b.style.setProperty("--k", k.toFixed(3));
       }
     };
@@ -131,7 +132,6 @@ export function Problem() {
       <div ref={trackRef} data-pin className="relative" style={{ height: `${(n - 1) * STEP + 100}svh` }}>
         <div className="sticky top-0 h-[100svh] overflow-hidden">
           {items.map((item, i) => {
-            const Symbol = discoverySymbols[i];
             const on = entered && i <= seen;
             // só a cena atual e as vizinhas animam; as demais ficam congeladas
             const live = inView && Math.abs(i - active) <= 1;
@@ -155,7 +155,7 @@ export function Problem() {
                         "radial-gradient(ellipse 60% 45% at 50% 38%, rgb(215 168 62 / 0.08), transparent 70%), radial-gradient(ellipse 70% 50% at 100% 100%, rgb(150 112 60 / 0.07), transparent 70%), radial-gradient(120% 90% at 50% 40%, transparent 55%, rgb(0 0 0 / 0.45) 100%)",
                     }}
                   />
-                  <Scene item={item} Symbol={Symbol} />
+                  <Scene item={item} index={i} />
                 </div>
               </div>
             );
@@ -187,7 +187,7 @@ export function Problem() {
 
 type Item = (typeof problem.items)[number];
 
-function Scene({ item, Symbol }: { item: Item; Symbol: () => ReactElement }) {
+function Scene({ item, index }: { item: Item; index: number }) {
   return (
     <div className="container-x relative grid h-full grid-rows-[auto_minmax(0,1fr)_auto] gap-3 pb-16 pt-[4.75rem] md:grid-cols-12 md:grid-rows-1 md:items-center md:gap-10 md:pb-20 md:pt-24">
       {/* cabeçalho da cena */}
@@ -195,9 +195,9 @@ function Scene({ item, Symbol }: { item: Item; Symbol: () => ReactElement }) {
         <span className="label-tech rounded-full border border-gold/40 px-3 py-1.5 text-gold-light">{item.front}</span>
       </div>
 
-      {/* símbolo 3D: o problema se transforma diante do visitante */}
+      {/* empresa em 3D: cada desafio encaixa uma parte do prédio */}
       <div data-sym-box className="relative min-h-[96px] md:col-span-6 md:h-[66vh]">
-        <Symbol />
+        <CompanyBuild step={index} labels={[...problem.pieces]} done={problem.pieces[5]} />
       </div>
 
       {/* narrativa */}
@@ -212,7 +212,7 @@ function Scene({ item, Symbol }: { item: Item; Symbol: () => ReactElement }) {
         <h3 className="rv display t-h3 mt-2" style={{ ["--d" as string]: "0.22s" }}>
           {item.title}
         </h3>
-        <p className="rv mt-2 max-w-lg text-[0.84rem] leading-relaxed text-mute [@media(max-height:740px)]:hidden md:mt-4 md:text-base" style={{ ["--d" as string]: "0.3s" }}>
+        <p className="rv mt-2 max-w-lg text-[0.8rem] leading-relaxed text-mute [@media(max-height:740px)]:hidden md:mt-4 md:text-base" style={{ ["--d" as string]: "0.3s" }}>
           {item.text}
         </p>
 
@@ -221,7 +221,7 @@ function Scene({ item, Symbol }: { item: Item; Symbol: () => ReactElement }) {
         <p className="rv label-tech mt-4 text-gold md:mt-8" style={{ ["--d" as string]: "0.8s" }}>
           O que enxergamos
         </p>
-        <p className="rv mt-2 max-w-xl text-[0.98rem] leading-snug text-paper [@media(max-height:700px)]:text-[0.9rem] md:text-xl md:leading-snug" style={{ ["--d" as string]: "0.9s" }}>
+        <p className="rv mt-2 max-w-xl text-[0.92rem] leading-snug text-paper [@media(max-height:700px)]:text-[0.86rem] md:text-xl md:leading-snug" style={{ ["--d" as string]: "0.9s" }}>
           {item.approach}
         </p>
 

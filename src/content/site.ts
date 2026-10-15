@@ -132,6 +132,15 @@ export const problem = {
       steps: ["Indicadores-chave do negócio", "Painel e rotina de acompanhamento", "Ciclos de melhoria contínua"],
     },
   ],
+  /** Peças do quebra-cabeça da operação: cada encaixe vira esta informação. */
+  pieces: [
+    "Processos organizados",
+    "Tarefas automatizadas",
+    "Site e vendas online",
+    "Atendimento conectado",
+    "Indicadores no painel",
+    "Operação funcionando",
+  ],
   bridge:
     "A Backstag entra nos bastidores: avalia como a sua empresa funciona hoje, entende as necessidades reais do negócio e implementa as soluções adequadas a cada caso — da organização interna à presença digital.",
 } as const;
