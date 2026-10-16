@@ -16,7 +16,7 @@ q "update crm.lead_notificacoes set status='cancelada' where status <> 'enviada'
 q "update crm.lead_notificacoes set status='pendente', tentativas=0, max_tentativas=8, houve_incerteza=false, primeira_tentativa_em=null, proxima_tentativa_em=now(), reservado_ate=null where lead_id=(select id from crm.leads where envio_id='$ENVIO')" >/dev/null
 for i in $(seq 1 8); do q "set role service_role; select jsonb_array_length(public.leads_reservar_notificacoes('{\"limite\":25}'))" > /tmp/bk_r_$i & done
 wait
-T=$(cat /tmp/bk_r_* | paste -sd+ | bc)
+T=$(cat /tmp/bk_r_* | awk '{s+=$1} END {print s+0}')
 rm -f /tmp/bk_r_*
 [ "$T" = "1" ] && echo "ok - 8 filas simultâneas reservaram a notificação 1 vez" || { echo "FALHOU: notificação reservada $T vezes"; exit 1; }
 echo TESTES_DE_CONCORRENCIA_PASSARAM

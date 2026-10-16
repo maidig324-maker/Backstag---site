@@ -28,9 +28,25 @@ export type LeadForm = {
   challenge: string;
 };
 
-export function formatLeadMessage(f: LeadForm): string {
+/**
+ * Mensagem para o WhatsApp a partir do formulário.
+ * - Com protocolo: o cadastro já foi confirmado; a mensagem só continua a conversa.
+ * - Sem protocolo: o cadastro NÃO foi confirmado; a mensagem leva os dados
+ *   preenchidos (para a pessoa não digitar de novo) e diz isso claramente.
+ */
+export function formatLeadMessage(f: LeadForm, protocolo?: string): string {
+  if (protocolo) {
+    return [
+      "Olá! Acabei de enviar uma solicitação de diagnóstico pelo site da BACKSTAG.",
+      "",
+      `*Protocolo:* ${protocolo}`,
+      `*Nome:* ${f.name.trim()}`,
+      `*Empresa:* ${f.company.trim()}`,
+      `*Serviço de interesse:* ${f.service}`,
+    ].join("\n");
+  }
   return [
-    "Olá! Conheci a Backstag pelo site e gostaria de conversar sobre soluções para minha empresa.",
+    "Olá! Tentei enviar uma solicitação de diagnóstico pelo site da BACKSTAG, mas o cadastro não foi concluído. Seguem meus dados:",
     "",
     `*Nome:* ${f.name.trim()}`,
     `*Empresa:* ${f.company.trim()}`,

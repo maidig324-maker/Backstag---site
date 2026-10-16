@@ -73,6 +73,21 @@ export const contact = {
   socials: [] as { label: string; url: string }[],
 } as const;
 
+/**
+ * Dados do controlador para a Política de Privacidade (LGPD).
+ * PREENCHER com os dados reais quando o fundador informar. Enquanto forem
+ * null, a política não mostra o campo — nunca dados fictícios.
+ */
+export const legal = {
+  razaoSocial: null as string | null,
+  cnpj: null as string | null,
+  endereco: null as string | null,
+  /** Canal para pedidos sobre dados pessoais (ex.: privacidade@dominio). */
+  emailPrivacidade: null as string | null,
+  /** Data da versão vigente da política (dd/mm/aaaa). */
+  politicaAtualizadaEm: "16/10/2026",
+} as const;
+
 export const navigation = [
   { label: "Soluções", href: "#desafios" },
   { label: "Projetos", href: "#projetos" },

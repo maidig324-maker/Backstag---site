@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo, Oswald } from "next/font/google";
 import { AmbientBackground } from "@/components/layout/AmbientBackground";
+import { OriginCapture } from "@/components/layout/OriginCapture";
 import { contact, site } from "@/content/site";
 import { MotionProvider } from "@/components/providers/MotionProvider";
 import "./globals.css";
@@ -83,6 +84,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Pular para o conteúdo
         </a>
         <AmbientBackground />
+        <OriginCapture />
         <MotionProvider>{children}</MotionProvider>
         <script
           type="application/ld+json"
