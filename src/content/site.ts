@@ -15,8 +15,18 @@ export const site = {
   valueProposition:
     "Ajudamos empresas a organizar processos, desenvolver sua presença digital e implementar soluções para melhorar a operação e criar oportunidades de crescimento.",
 
-  /** URL pública. Defina NEXT_PUBLIC_SITE_URL na Vercel. */
-  url: (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/$/, ""),
+  /**
+   * URL pública (canonical, sitemap, robots, Open Graph).
+   * Production: NEXT_PUBLIC_SITE_URL=https://www.backstag.com.br (o build
+   * de produção falha se faltar ou for inválida — ver next.config.ts).
+   * Prévias: NEXT_PUBLIC_SITE_URL da branch ou, sem ela, o endereço da prévia.
+   */
+  url: (
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    (process.env.VERCEL_ENV !== "production" && (process.env.VERCEL_BRANCH_URL || process.env.VERCEL_URL)
+      ? `https://${process.env.VERCEL_BRANCH_URL || process.env.VERCEL_URL}`
+      : "http://localhost:3000")
+  ).replace(/\/+$/, ""),
 
   /**
    * Logo oficial.
