@@ -39,7 +39,7 @@ const toFields = (d: LeadData) => ({ nome: d.name, empresa: d.company, whatsapp:
 
 /** Novo identificador de envio (UUID v4). Reutilizado em novas tentativas do mesmo conteúdo. */
 function newEnvioId(): string {
-  if (typeof crypto !== "undefined" && "randomUUID" in crypto) return crypto.randomUUID();
+  if (typeof crypto.randomUUID === "function") return crypto.randomUUID();
   const b = crypto.getRandomValues(new Uint8Array(16));
   b[6] = (b[6] & 0x0f) | 0x40;
   b[8] = (b[8] & 0x3f) | 0x80;
