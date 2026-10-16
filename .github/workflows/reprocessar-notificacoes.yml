@@ -1,0 +1,73 @@
+# Reprocessamento MANUAL da fila de avisos de leads.
+# A Vercel não executa agendamentos (Cron Jobs) em prévias, então na
+# homologação o reprocessamento é acionado à mão: GitHub → Actions →
+# "Reprocessar notificações de leads" → Run workflow.
+# Não há agendamento aqui: só roda quando alguém com acesso de escrita
+# ao repositório aciona.
+#
+# Segredos (Settings → Environments → homologacao):
+#   LEADS_REPROCESS_SECRET          — o mesmo valor configurado na Vercel (Preview)
+#   VERCEL_AUTOMATION_BYPASS_SECRET — Vercel → Settings → Deployment Protection
+#                                     → Protection Bypass for Automation
+name: Reprocessar notificações de leads
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "Endereço da prévia (ex.: https://backstag-site-git-leads-supabase-xxxx.vercel.app)"
+        required: true
+        type: string
+      modo:
+        description: "resumo = só contar a fila | processar = enviar avisos pendentes"
+        required: true
+        default: resumo
+        type: choice
+        options: [resumo, processar]
+      limite:
+        description: "Máximo de avisos nesta execução (1 a 25)"
+        required: false
+        default: "10"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  reprocessar:
+    runs-on: ubuntu-latest
+    environment: homologacao
+    timeout-minutes: 5
+    steps:
+      - name: Conferir endereço (só prévias deste projeto na Vercel)
+        env:
+          URL: ${{ inputs.url }}
+          LIMITE: ${{ inputs.limite }}
+        run: |
+          if ! [[ "$URL" =~ ^https://backstag-site-[a-z0-9-]+\.vercel\.app/?$ ]]; then
+            echo "Endereço recusado: use o endereço da prévia na Vercel (https://backstag-site-....vercel.app)."; exit 1
+          fi
+          if ! [[ "$LIMITE" =~ ^[0-9]+$ ]] || [ "$LIMITE" -lt 1 ] || [ "$LIMITE" -gt 25 ]; then
+            echo "Limite deve ser de 1 a 25."; exit 1
+          fi
+
+      - name: Chamar o reprocessamento
+        env:
+          URL: ${{ inputs.url }}
+          MODO: ${{ inputs.modo }}
+          LIMITE: ${{ inputs.limite }}
+          SEGREDO: ${{ secrets.LEADS_REPROCESS_SECRET }}
+          BYPASS: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+        run: |
+          if [ -z "$SEGREDO" ] || [ -z "$BYPASS" ]; then echo "Configure os segredos do ambiente 'homologacao'."; exit 1; fi
+          BASE="${URL%/}"
+          CORPO=$(printf '{"modo":"%s","limite":%s}' "$MODO" "$LIMITE")
+          STATUS=$(curl -sS -o resposta.json -w '%{http_code}' -X POST "$BASE/api/leads/notificacoes" \
+            -H "Authorization: Bearer $SEGREDO" \
+            -H "x-vercel-protection-bypass: $BYPASS" \
+            -H "Content-Type: application/json" \
+            --data "$CORPO")
+          echo "HTTP $STATUS"
+          # A resposta contém apenas contagens (sem dados pessoais).
+          cat resposta.json; echo
+          [ "$STATUS" = "200" ]
